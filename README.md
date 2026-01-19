@@ -1,17 +1,20 @@
 # pypsa-nza-data
 
-**pypsa-nza-data** is a Python-based data preparation and processing toolkit for constructing PyPSA-compatible power system datasets for New Zealand (Aotearoa).
-It focuses on the ingestion, cleaning, transformation, and harmonisation of publicly available electricity system data into a form suitable for power flow and capacity expansion analysis using [PyPSA](https://pypsa.org).
+**pypsa-nza-data** is a Python-based data preparation and processing toolkit for 
+* constructing PyPSA-compatible power system datasets for New Zealand (Aotearoa).
+It focuses on the **acquisition, cleaning, transformation, and harmonisation** of 
+publicly available electricity system data into a form suitable for power flow and capacity expansion analysis using [PyPSA](https://pypsa.org).
 
-The software has been developed to support reproducible energy systems modelling and research workflows, particularly in academic and policy-oriented studies of the New Zealand electricity system.
+The software has been developed to support reproducible energy systems modelling 
+and research workflows, particularly in academic and policy-oriented studies of 
+the New Zealand electricity system.
 
----
 
 ## Scope and purpose
 
 This repository provides tools to:
 
-* download and ingest static and time-varying electricity system data from public sources,
+* acquire static and time-varying electricity system data from public sources,
 * clean and standardise heterogeneous datasets with inconsistent formats and naming,
 * construct load, generation, and network input tables compatible with PyPSA,
 * generate derived time series (e.g. demand profiles, renewable availability),
@@ -20,7 +23,6 @@ This repository provides tools to:
 The package is **not** a complete power system model.
 Instead, it provides the **data engineering layer** required before PyPSA-based modelling can be undertaken.
 
----
 
 ## Data sources
 
@@ -64,9 +66,10 @@ pypsa_nza_data/
 ¦
 +-- README.md
 
+
 The two main execution entry points are:
 
-* `run_loader_pipeline.py` – retrieves and stores raw source data
+* `run_loader_pipeline.py` – acquires and stores raw source data
 * `run_process_data_pipeline.py` – transforms raw data into PyPSA-ready inputs
 
 
@@ -123,14 +126,15 @@ This mapping is informed by visual inspection using GIS tools (e.g. QGIS).
 This limitation is documented clearly and is not hidden from users or reviewers.
 
 
-## Installation (development)
+## Installation and platform compatibility
 
-During development, the code can be run by:
+The codebase is written in pure Python and is designed to run transparently on both **Windows** and **Linux** platforms.
 
-* setting `PYTHONPATH` to include the repository root, or
-* running scripts from within an IDE such as Spyder.
+Development and testing have primarily been carried out on Windows systems; however, the software does not rely on operating-system-specific features, shell commands, or path conventions. All file and directory handling is performed using standard Python libraries, and environment-specific configuration is isolated via YAML configuration files.
 
-A formal installation step will be documented for reviewers prior to submission.
+Linux compatibility is explicitly tested as part of the project workflow to ensure portability and reproducibility across common research environments.
+
+Formal installation instructions (including package installation and execution from the command line) will be finalised prior to publication.
 
 
 ## Intended use
