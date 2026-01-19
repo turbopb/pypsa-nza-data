@@ -135,9 +135,9 @@ Minimal validation for speed:
     - No row counting
     - Assumes EA publishes valid data
 
-Rationale: EA data is reliable, and downstream PyPSA processing will catch
+Rationale: EA data is reliable, and downstream processing will catch
 any data quality issues. The time saved is significant when downloading
-hundreds of files.
+hundreds of large files.
 
 ERROR HANDLING
 --------------
@@ -197,7 +197,12 @@ import calendar
 import requests
 import yaml
 
-from nza_root import ROOT_DIR
+from pypsa_nza_data.config.project_paths import load_paths_config
+
+PATHS = load_paths_config()
+
+raw_dir = PATHS["raw_data_dir"]
+processed_dir = PATHS["processed_data_dir"]
 
 
 # ============================================================================
