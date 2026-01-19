@@ -34,11 +34,13 @@ The software primarily uses publicly available New Zealand electricity system da
 All source data remain subject to their original licences and attribution requirements.
 This repository does **not** redistribute raw proprietary data.
 
+---
 
 ## Repository structure
 
 The package follows a modular structure organised by function:
 
+```
 pypsa_nza_data/
 ¦
 +-- loaders/
@@ -63,12 +65,14 @@ pypsa_nza_data/
 ¦   +-- paths_and_settings.yaml
 ¦
 +-- README.md
+```
 
 The two main execution entry points are:
 
 * `run_loader_pipeline.py` – retrieves and stores raw source data
 * `run_process_data_pipeline.py` – transforms raw data into PyPSA-ready inputs
 
+---
 
 ## Configuration and portability
 
@@ -87,6 +91,7 @@ Users are expected to edit the YAML configuration file to define:
 
 No hard-coded absolute paths are required.
 
+---
 
 ## Transmission line geometry mapping (manual step)
 
@@ -122,6 +127,7 @@ This mapping is informed by visual inspection using GIS tools (e.g. QGIS).
 
 This limitation is documented clearly and is not hidden from users or reviewers.
 
+---
 
 ## Installation (development)
 
@@ -132,6 +138,7 @@ During development, the code can be run by:
 
 A formal installation step will be documented for reviewers prior to submission.
 
+---
 
 ## Intended use
 
@@ -143,12 +150,14 @@ The software is intended for:
 
 It is not intended to be a turn-key modelling framework.
 
+---
 
 ## Relationship to PyPSA
 
 This repository produces **input data only**.
 Simulation, optimisation, and analysis are performed downstream using PyPSA.
 
+---
 
 ## Limitations
 
@@ -159,16 +168,19 @@ Simulation, optimisation, and analysis are performed downstream using PyPSA.
 
 All limitations are documented explicitly to support transparent interpretation of results.
 
+---
 
 ## Citation and attribution
 
 If you use this software in academic work, please cite the associated JOSS paper (once published).
 
+---
 
 ## License
 
 An open-source licence will be added prior to public release.
 
+---
 
 ## Acknowledgements
 
