@@ -33,6 +33,7 @@ affiliations:
 date: 13 August 2017
 bibliography: paper.bib
 
+Dirk Pons (0000-0001-7141-0291)
 ---
 ## Summary
 
