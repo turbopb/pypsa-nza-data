@@ -1,5 +1,5 @@
+---
 # pypsa-nza-data
-
 ## Overview
 `pypsa-nza-data` is an open-source Python software package for the preparation, 
 processing, and validation of New Zealand electricity system data for use with 
