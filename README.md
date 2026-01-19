@@ -1,10 +1,8 @@
----
 # pypsa-nza-data
 ## Overview
 `pypsa-nza-data` is an open-source Python software package for the preparation, 
 processing, and validation of New Zealand electricity system data for use with 
 the PyPSA (Python for Power System Analysis) modelling framework.
-
 The software ingests heterogeneous public datasets from sources such as the 
 Electricity Authority of New Zealand, Transpower, and international technology 
 cost databases, and transforms them into a consistent, reproducible, and PyPSA
@@ -15,8 +13,6 @@ scenario design.
 The package focuses exclusively on **data preparation**. It does not define 
 optimisation scenarios or policy assumptions, and it can be used independently of 
 any larger modelling framework.
-
----
 
 ## Scope and design principles
 
@@ -29,26 +25,19 @@ The design of `pypsa-nza-data` is guided by the following principles:
 * **Pragmatism**: where full automation is not feasible, controlled manual steps 
 are documented
 
----
-
 ## Repository structure
 
 The repository is organised into three main functional layers:
 
-```
 pypsa_nza_data/
 +-- loaders/        # Downloading and ingesting raw static and dynamic datasets
 +-- processors/     # Cleaning, transforming, and standardising data
 +-- helpers/        # Reusable utilities (aggregation, resampling, validation)
-```
 
 Pipeline entry points are provided via script-level drivers (e.g. `run_loader_pipeline.py`, 
 `run_process_data_pipeline.py`) that execute the full data preparation workflow.
 
----
-
 ## Data sources
-
 The software is designed to work with publicly available data, including:
 
 * Electricity Authority of New Zealand market and demand data
@@ -58,7 +47,6 @@ The software is designed to work with publicly available data, including:
 Specific data sources, versions, and access URLs are documented in the 
 accompanying documentation.
 
----
 
 ## Manual inputs and known limitations
 
@@ -88,8 +76,6 @@ This design choice prioritises correctness and transparency over partial automat
 and reflects current limitations in the available source data rather than a 
 limitation of the modelling framework itself.
 
----
-
 ## Outputs
 
 The primary outputs of `pypsa-nza-data` are PyPSA-compatible CSV files, including:
@@ -103,7 +89,6 @@ The primary outputs of `pypsa-nza-data` are PyPSA-compatible CSV files, includin
 These files can be loaded directly into a PyPSA `Network` object for power flow 
 analysis or capacity expansion modelling.
 
----
 
 ## Validation
 
@@ -116,8 +101,6 @@ steps such as:
 
 These checks provide confidence that the prepared dataset is internally consistent 
 and suitable for subsequent modelling studies.
-
----
 
 ## Intended use
 
@@ -132,21 +115,15 @@ important.
 The package may also serve as the data preparation layer for larger, ongoing 
 modelling efforts, but it is fully usable as a standalone tool.
 
----
-
 ## License
 
 This project is released under an open-source license. See the `LICENSE` file for 
 details.
 
----
-
 ## Citation
 
 If you use this software, please cite the accompanying JOSS paper (once published). 
 A Zenodo DOI will be provided for archived releases.
-
----
 
 ## Acknowledgements
 
