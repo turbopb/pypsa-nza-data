@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pypsa-nza-data"
+version = "0.1.0"
+description = "Data preparation and processing utilities for PyPSA-based electricity system modelling of New Zealand (Aotearoa)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+
+authors = [
+{ name = "Phillippe Bruneau" }
+]
+
+dependencies = [
+"numpy",
+"pandas",
+"pyyaml",
+"matplotlib"
+]
+
+[project.urls]
+Repository = "[https://github.com/](https://github.com/)<your-username>/<your-repo-name>"
+Documentation = "[https://github.com/](https://github.com/)<your-username>/<your-repo-name>#readme"

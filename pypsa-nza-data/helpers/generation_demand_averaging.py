@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jan  6 17:40:23 2026
+generation_demand_averaging.py
 
-@author: OEM
-"""
-
-"""
 Calculate monthly average generation and demand from 30-minute interval data.
 
 This script reads monthly CSV files for generation and demand data,
 calculates the mean for each month, and produces a summary dataframe.
+
+Created on Tue Jan  6 17:40:23 2026
+
 """
 
 import pandas as pd
