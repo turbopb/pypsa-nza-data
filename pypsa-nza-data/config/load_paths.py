@@ -1,3 +1,4 @@
+# NUST BE IN EVERY SCRIPT!!!! 
 from pypsa_nza_data.config.project_paths import load_paths_config
 
 PATHS = load_paths_config()
