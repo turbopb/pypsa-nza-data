@@ -47,7 +47,7 @@ The package follows a modular structure organised by function:
 '''pypsa_nza_data/|
 ¦
 =======
-'''pypsa_nza_data/|
+<pre>'''pypsa_nza_data/|
 
 +-- loaders/|
     +-- nza_load_static_data_from_url.py|
@@ -72,10 +72,10 @@ The package follows a modular structure organised by function:
 ¦
 +-- README.md'''
 =======
-Å    +-- paths_and_settings.yaml|
-Å 
+    +-- paths_and_settings.yaml|
+ 
 +-- README.md'''<pre>
->>>>>>> 8e7aa6c93e1465b5bc227512308bf673108952d5
+
 
 
 The two main execution entry points are:
