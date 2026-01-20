@@ -44,36 +44,30 @@ This repository does **not** redistribute raw proprietary data.
 
 The package follows a modular structure organised by function:
 
-
-=======
-<pre>'''pypsa_nza_data/|
+'''pypsa_nza_data/|
 
 +-- loaders/|
-    +-- nza_load_static_data_from_url.py|
-    +-- nza_load_dynamic_data_from_url.py|
-    +-- run_loader_pipeline.py|
- 
+   +-- nza_load_static_data_from_url.py|
+   +-- nza_load_dynamic_data_from_url.py|
+   +-- run_loader_pipeline.py|
+
 +-- processors/|
-    +-- nza_process_static_data.py|
-    +-- nza_process_dynamic_data.py|
-    +-- nza_create_load_profile.py|
-    +-- nza_convert_energy_to_power.py|
-    +-- nza_modality_standard.py|
-    +-- nza_transmission_line_processor.py|
-    +-- run_process_data_pipeline.py|
-    +-- helpers/|
-        +-- nza_resample_timeseries.py|
-        +-- nza_process_generator_data.py|
-        +-- ...|
- 
+   +-- nza_process_static_data.py|
+   +-- nza_process_dynamic_data.py|
+   +-- nza_create_load_profile.py|
+   +-- nza_convert_energy_to_power.py|
+   +-- nza_modality_standard.py|
+   +-- nza_transmission_line_processor.py|
+   +-- run_process_data_pipeline.py|
+   +-- helpers/|
+       +-- nza_resample_timeseries.py|
+       +-- nza_process_generator_data.py|
+       +-- ...|
+
 +-- config/|
    +-- paths_and_settings.yaml|
 
-+-- README.md|'''<pre>
-
-
-=======
-
++-- README.md'''
 
 
 The two main execution entry points are:
