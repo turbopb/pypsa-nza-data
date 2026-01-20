@@ -49,35 +49,36 @@ The package follows a modular structure organised by function:
 <pre>'''pypsa_nza_data/|
 
 +-- loaders/|
-    +-- nza_load_static_data_from_url.py|
-    +-- nza_load_dynamic_data_from_url.py|
-    +-- run_loader_pipeline.py|
- 
+Â    +-- nza_load_static_data_from_url.py|
+Â    +-- nza_load_dynamic_data_from_url.py|
+Â    +-- run_loader_pipeline.py|
+Â 
 +-- processors/|
-    +-- nza_process_static_data.py|
-    +-- nza_process_dynamic_data.py|
-    +-- nza_create_load_profile.py|
-    +-- nza_convert_energy_to_power.py|
-    +-- nza_modality_standard.py|
-    +-- nza_transmission_line_processor.py|
-    +-- run_process_data_pipeline.py|
-    +-- helpers/|
-        +-- nza_resample_timeseries.py|
-        +-- nza_process_generator_data.py|
-        +-- ...|
- 
+Â    +-- nza_process_static_data.py|
+Â    +-- nza_process_dynamic_data.py|
+Â    +-- nza_create_load_profile.py|
+Â    +-- nza_convert_energy_to_power.py|
+Â    +-- nza_modality_standard.py|
+Â    +-- nza_transmission_line_processor.py|
+Â    +-- run_process_data_pipeline.py|
+Â    +-- helpers/|
+Â        +-- nza_resample_timeseries.py|
+Â        +-- nza_process_generator_data.py|
+Â        +-- ...|
+Â 
 +-- config/|
    +-- paths_and_settings.yaml|
 
-+-- README.md'''<pre>
++-- README.md'''
+<pre>
 =======
 
 
 
 The two main execution entry points are:
 
-* `run_loader_pipeline.py` Â– acquires and stores raw source data
-* `run_process_data_pipeline.py` Â– transforms raw data into PyPSA-ready inputs
+* `run_loader_pipeline.py` Ã‚â€“ acquires and stores raw source data
+* `run_process_data_pipeline.py` Ã‚â€“ transforms raw data into PyPSA-ready inputs
 
 
 ## Configuration and portability
