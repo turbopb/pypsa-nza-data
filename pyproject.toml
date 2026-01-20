@@ -22,5 +22,6 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "[https://github.com/](https://github.com/)<your-username>/<your-repo-name>"
-Documentation = "[https://github.com/](https://github.com/)<your-username>/<your-repo-name>#readme"
+Repository = "https://github.com/turbopb/pypsa-nza-data"
+Documentation = "https://github.com/turbopb/pypsa-nza-data#readme"
+

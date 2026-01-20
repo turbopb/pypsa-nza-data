@@ -197,7 +197,7 @@ import calendar
 import requests
 import yaml
 
-from pypsa_nza_data.config.project_paths import load_paths_config
+from pypsa-nza-data.config.project_paths import load_paths_config
 
 PATHS = load_paths_config()
 
