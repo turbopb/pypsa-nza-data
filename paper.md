@@ -10,31 +10,48 @@ tags:
 authors:
   - name: Phillippe R. Bruneau.
     orcid: 0000-0000-0000-0000
+    corresponding: true # (This is how to denote the corresponding author)
     equal-contrib: true
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
+    affiliation: 1 # (Multiple affiliations must be quoted "1, 2")
+
+  - name: Dirk J. Pons 
+    orcid: 0000-0001-7141-0291
     equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
-    affiliation: 2
+    affiliation: 1
+
+  - name: Alan Wood 
+    orcid: 0000-000
+    affiliation: 1
+
+  - name: Dirk J. Shepard
+    orcid: 0000-000
+    affiliation: 1
+
+
   - name: Author with no affiliation
     corresponding: true # (This is how to denote the corresponding author)
     affiliation: 3
+
   - given-names: Ludwig
     dropping-particle: van
     surname: Beethoven
     affiliation: 3
+
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, United States
+ - name: University of Canterbury, New Zealand
    index: 1
    ror: 00hx57361
  - name: University of Canterbury, New Zealand
    index: 2
  - name: Independent Researcher, Country
    index: 3
+
 date: 13 August 2017
 bibliography: paper.bib
 
-Dirk Pons (0000-0001-7141-0291)
+
 ---
+
 ## Summary
 
 Power system modeling studies are heavily dependent on the quality, consistency, 
