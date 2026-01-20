@@ -44,8 +44,7 @@ This repository does **not** redistribute raw proprietary data.
 
 The package follows a modular structure organised by function:
 
-'''pypsa_nza_data/|
-¦
+
 =======
 <pre>'''pypsa_nza_data/|
 
@@ -68,13 +67,10 @@ The package follows a modular structure organised by function:
         +-- ...|
  
 +-- config/|
-¦   +-- paths_and_settings.yaml|
-¦
-+-- README.md'''
-=======
-    +-- paths_and_settings.yaml|
- 
+   +-- paths_and_settings.yaml|
+
 +-- README.md'''<pre>
+=======
 
 
 
