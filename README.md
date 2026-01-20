@@ -69,7 +69,9 @@ The package follows a modular structure organised by function:
 +-- config/|
    +-- paths_and_settings.yaml|
 
-+-- README.md'''<pre>
++-- README.md|'''<pre>
+
+
 =======
 
 
