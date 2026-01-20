@@ -33,6 +33,7 @@ affiliations:
 date: 13 August 2017
 bibliography: paper.bib
 
+Dirk Pons (0000-0001-7141-0291)
 ---
 ## Summary
 
@@ -189,4 +190,7 @@ International Renewable Energy Agency (IRENA). (2023). Renewable power generatio
 costs. [https://www.irena.org/](https://www.irena.org/)
 
 
+https://elements.canterbury.ac.nz/viewobject.html?cid=1&id=501998
 
+
+https://elements.canterbury.ac.nz/viewobject.html?cid=1&id=501986
