@@ -41,7 +41,7 @@ This repository does **not** redistribute raw proprietary data.
 
 The package follows a modular structure organised by function:
 
-<pre>'''pypsa_nza_data/|
+'''pypsa_nza_data/|
 ¦
 +-- loaders/|
 ¦   +-- nza_load_static_data_from_url.py|
@@ -64,7 +64,7 @@ The package follows a modular structure organised by function:
 +-- config/|
 ¦   +-- paths_and_settings.yaml|
 ¦
-+-- README.md'''<pre>
++-- README.md'''
 
 
 The two main execution entry points are:
