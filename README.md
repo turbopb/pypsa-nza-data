@@ -44,33 +44,30 @@ This repository does **not** redistribute raw proprietary data.
 
 The package follows a modular structure organised by function:
 
-<<<<<<< HEAD
 '''pypsa_nza_data/|
 ¦
 =======
-<pre>'''pypsa_nza_data/|
-Å 
->>>>>>> 8e7aa6c93e1465b5bc227512308bf673108952d5
+'''pypsa_nza_data/|
+
 +-- loaders/|
-Å    +-- nza_load_static_data_from_url.py|
-Å    +-- nza_load_dynamic_data_from_url.py|
-Å    +-- run_loader_pipeline.py|
-Å 
+    +-- nza_load_static_data_from_url.py|
+    +-- nza_load_dynamic_data_from_url.py|
+    +-- run_loader_pipeline.py|
+ 
 +-- processors/|
-Å    +-- nza_process_static_data.py|
-Å    +-- nza_process_dynamic_data.py|
-Å    +-- nza_create_load_profile.py|
-Å    +-- nza_convert_energy_to_power.py|
-Å    +-- nza_modality_standard.py|
-Å    +-- nza_transmission_line_processor.py|
-Å    +-- run_process_data_pipeline.py|
-Å    +-- helpers/|
-Å        +-- nza_resample_timeseries.py|
-Å        +-- nza_process_generator_data.py|
-Å        +-- ...|
-Å 
+    +-- nza_process_static_data.py|
+    +-- nza_process_dynamic_data.py|
+    +-- nza_create_load_profile.py|
+    +-- nza_convert_energy_to_power.py|
+    +-- nza_modality_standard.py|
+    +-- nza_transmission_line_processor.py|
+    +-- run_process_data_pipeline.py|
+    +-- helpers/|
+        +-- nza_resample_timeseries.py|
+        +-- nza_process_generator_data.py|
+        +-- ...|
+ 
 +-- config/|
-<<<<<<< HEAD
 ¦   +-- paths_and_settings.yaml|
 ¦
 +-- README.md'''
