@@ -1,11 +1,11 @@
-```markdown
+﻿```markdown
 ---
 title: 'pypsa-nza-data': A Python package for processing New Zealand electricity system
 data for use in PyPSA
 tags:
   - Python
   - energy systems modeling
-  - pysa
+  - pypsa
   - data extraction and pre-processing
 authors:
   - name: Phillippe R. Bruneau.
@@ -37,9 +37,9 @@ Dirk Pons (0000-0001-7141-0291)
 ---
 ## Summary
 
-Power system modelling studies are heavily depwndent on the quality, consistency, 
+Power system modeling studies are heavily dependent on the quality, consistency, 
 and transparency of their input data. In practice, preparing real-world electricity 
-system datasets for modelling frameworks such as PyPSA often requires substantial 
+system datasets for modeling frameworks such as PyPSA often requires substantial 
 bespoke data engineering that is rarely documented or reusable.
 
 **pypsa-nza-data** is a Python-based data preparation and processing toolkit 
