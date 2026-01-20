@@ -3,7 +3,7 @@
 title: 'pypsa-nza-data': A Python package for processing New Zealand electricity system
 data for use in PyPSA
 tags:
-  - Python
+  - python
   - energy systems modeling
   - pypsa
   - data extraction and pre-processing
