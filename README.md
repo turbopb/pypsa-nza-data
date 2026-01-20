@@ -3,7 +3,8 @@
 **pypsa-nza-data** is a Python-based data preparation and processing toolkit for 
 * constructing PyPSA-compatible power system datasets for New Zealand (Aotearoa).
 It focuses on the **acquisition, cleaning, transformation, and harmonisation** of 
-publicly available electricity system data into a form suitable for power flow and capacity expansion analysis using [PyPSA](https://pypsa.org).
+publicly available electricity system data into a form suitable for power flow and 
+capacity expansion analysis using [PyPSA](https://pypsa.org).
 
 The software has been developed to support reproducible energy systems modelling 
 and research workflows, particularly in academic and policy-oriented studies of 
@@ -21,12 +22,14 @@ This repository provides tools to:
 * perform consistency checks on generator locations, modalities, and site coverage.
 
 The package is **not** a complete power system model.
-Instead, it provides the **data engineering layer** required before PyPSA-based modelling can be undertaken.
+Instead, it provides the **data engineering layer** required before PyPSA-based 
+modelling can be undertaken.
 
 
 ## Data sources
 
-The software primarily uses publicly available New Zealand electricity system data, including (but not limited to):
+The software primarily uses publicly available New Zealand electricity system data, 
+including (but not limited to):
 
 * Electricity Authority of New Zealand datasets,
 * Transpower New Zealand grid and transmission data,
@@ -42,35 +45,35 @@ This repository does **not** redistribute raw proprietary data.
 The package follows a modular structure organised by function:
 
 <pre>'''pypsa_nza_data/|
-¦
+Å 
 +-- loaders/|
-¦   +-- nza_load_static_data_from_url.py|
-¦   +-- nza_load_dynamic_data_from_url.py|
-¦   +-- run_loader_pipeline.py|
-¦
+Å    +-- nza_load_static_data_from_url.py|
+Å    +-- nza_load_dynamic_data_from_url.py|
+Å    +-- run_loader_pipeline.py|
+Å 
 +-- processors/|
-¦   +-- nza_process_static_data.py|
-¦   +-- nza_process_dynamic_data.py|
-¦   +-- nza_create_load_profile.py|
-¦   +-- nza_convert_energy_to_power.py|
-¦   +-- nza_modality_standard.py|
-¦   +-- nza_transmission_line_processor.py|
-¦   +-- run_process_data_pipeline.py|
-¦   +-- helpers/|
-¦       +-- nza_resample_timeseries.py|
-¦       +-- nza_process_generator_data.py|
-¦       +-- ...|
-¦
+Å    +-- nza_process_static_data.py|
+Å    +-- nza_process_dynamic_data.py|
+Å    +-- nza_create_load_profile.py|
+Å    +-- nza_convert_energy_to_power.py|
+Å    +-- nza_modality_standard.py|
+Å    +-- nza_transmission_line_processor.py|
+Å    +-- run_process_data_pipeline.py|
+Å    +-- helpers/|
+Å        +-- nza_resample_timeseries.py|
+Å        +-- nza_process_generator_data.py|
+Å        +-- ...|
+Å 
 +-- config/|
-¦   +-- paths_and_settings.yaml|
-¦
+Å    +-- paths_and_settings.yaml|
+Å 
 +-- README.md'''<pre>
 
 
 The two main execution entry points are:
 
-* `run_loader_pipeline.py` – acquires and stores raw source data
-* `run_process_data_pipeline.py` – transforms raw data into PyPSA-ready inputs
+* `run_loader_pipeline.py` Â– acquires and stores raw source data
+* `run_process_data_pipeline.py` Â– transforms raw data into PyPSA-ready inputs
 
 
 ## Configuration and portability
