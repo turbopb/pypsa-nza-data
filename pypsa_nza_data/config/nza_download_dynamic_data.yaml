@@ -69,7 +69,7 @@ datasets:
         months: "all"  # or ['jan', 'feb'] or [1, 2, 3]
         validate_min_rows: 700
     grid_import:
-        enabled: false
+        enabled: true
         source: "emi_blob"
         description: "Half-hourly grid imports at connection points"
         url_prefix: "Datasets/Wholesale/Metered_data/Grid_import"
@@ -79,7 +79,7 @@ datasets:
         months: "all"
         validate_min_rows: 700
     grid_export:
-        enabled: false
+        enabled: true
         source: "emi_blob"
         description: "Half-hourly grid exports at connection points"
         url_prefix: "Datasets/Wholesale/Metered_data/Grid_export"
@@ -89,7 +89,7 @@ datasets:
         months: "all"
         validate_min_rows: 700
     hvdc:
-        enabled: false
+        enabled: true
         source: "emi_blob"
         description: "Half-hourly HVDC transfers between islands"
         url_prefix: "Datasets/Wholesale/Metered_data/HVDC_Flows"
@@ -99,7 +99,7 @@ datasets:
         months: "all"
         validate_min_rows: 700
     reactive_power:
-      enabled: false
+      enabled: true
       source: "emi_blob"
       description: "Half-hourly reactive power flows"
       url_prefix: "Datasets/Wholesale/Metered_data/Reactive_power"

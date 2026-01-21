@@ -359,7 +359,7 @@ def download_monthly_file(
     output_path = output_dir / monthly_filename
 
     # Always show what we are attempting (console + log file)
-    logger.info(f"    Attempting URL: {file_url}")
+    logger.info(f"\n    Attempting URL: {file_url}")
     logger.info(f"    Output file:    {output_path}")
 
     if dry_run:
