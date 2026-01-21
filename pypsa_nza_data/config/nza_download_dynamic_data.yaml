@@ -13,29 +13,34 @@
 # ------------------------------------------------------------------------------
 # OUTPUT DIRECTORIES
 # ------------------------------------------------------------------------------
-# Paths relative to ROOT_DIR. Use {year} placeholder for year-specific dirs.
+# Paths relative to project root. Use {year} placeholder for year-specific dirs.
 
 directories:
-  # Base directory
-  base: "data/raw"
+    # Base directory
+    base: "data/raw"
   
-  # Year-specific directories for each data type
-  generation: "data/raw/{year}/gen"
-  grid_import: "data/raw/{year}/import"
-  grid_export: "data/raw/{year}/export"
-  hvdc: "data/raw/{year}/hvdc"
-  reactive: "data/raw/{year}/react"
+    # Year-specific directories for each data type
+    generation: "data/raw/{year}/gen"
+    grid_import: "data/raw/{year}/import"
+    grid_export: "data/raw/{year}/export"
+    hvdc: "data/raw/{year}/hvdc"
+    reactive: "data/raw/{year}/react"
   
-  # Archive for timestamped backups
-  archive: "data/raw/dynamic/archived"
+    # Archive for timestamped backups
+    archive: "data/raw/dynamic/archived"
 
 # ------------------------------------------------------------------------------
 # DATA SOURCE
 # ------------------------------------------------------------------------------
 data_sources:
-  electricity_authority:
-    name: "Electricity Authority (EMI) - Wholesale Datasets"
-    base_url: "https://www.ea.govt.nz/data-and-insights/datasets/"
+    electricity_authority:
+        name: "Electricity Authority (EMI) - Wholesale Datasets"
+        base_url: "https://www.emi.ea.govt.nz/Wholesale/Datasets"
+
+    emi_blob:
+        name: "EMI publicdata (Azure Blob)"
+        base_url: "https://emidatasets.blob.core.windows.net/publicdata"
+
 
 # ------------------------------------------------------------------------------
 # DATASETS TO DOWNLOAD
@@ -50,62 +55,62 @@ data_sources:
 #   enabled: true/false
 
 datasets:
-  generation:
-    enabled: true
-    description: "Half-hourly generation by station and unit"
-    url_prefix: "Generation/Generation_MD"
-    filename: "Generation_MD.csv"
-    directory_pattern: "generation"
-    years: [2023, 2024]
-    months: "all"  # or ['jan', 'feb'] or [1, 2, 3]
-    validate_min_rows: 700
-  
-  grid_import:
-    enabled: true
-    description: "Half-hourly grid imports at connection points"
-    url_prefix: "Metered_data/Grid_import"
-    filename: "Grid_import.csv"
-    directory_pattern: "grid_import"
-    years: [2023, 2024]
-    months: "all"
-    validate_min_rows: 700
-  
-  grid_export:
-    enabled: true
-    description: "Half-hourly grid exports at connection points"
-    url_prefix: "Metered_data/Grid_export"
-    filename: "Grid_export.csv"
-    directory_pattern: "grid_export"
-    years: [2023, 2024]
-    months: "all"
-    validate_min_rows: 700
-  
-  hvdc:
-    enabled: true
-    description: "Half-hourly HVDC transfers between islands"
-    url_prefix: "Metered_data/HVDC_Flows"
-    filename: "HVDC_flows.csv"
-    directory_pattern: "hvdc"
-    years: [2023, 2024]
-    months: "all"
-    validate_min_rows: 700
-  
-  reactive_power:
-    enabled: true  # Often not needed for capacity expansion or linear power flow/optimisation
-    description: "Half-hourly reactive power flows"
-    url_prefix: "Metered_data/Reactive_power"
-    filename: "Reactive_power.csv"
-    directory_pattern: "reactive"
-    years: [2023, 2024]
-    months: "all"
-    validate_min_rows: 700
+    generation:
+        enabled: false
+        description: "Half-hourly generation by station and unit"
+        url_prefix: "Generation/Generation_MD"
+        filename: "Generation_MD.csv"
+        directory_pattern: "generation"
+        years: [2023, 2024]
+        months: "all"  # or ['jan', 'feb'] or [1, 2, 3]
+        validate_min_rows: 700
+    grid_import:
+        enabled: true
+        source: "emi_blob"
+        description: "Half-hourly grid imports at connection points"
+        url_prefix: "Datasets/Wholesale/Metered_data/Grid_import"
+        filename: "Grid_import.csv"
+        directory_pattern: "grid_import"
+        years: [2023, 2024]
+        months: "all"
+        validate_min_rows: 700
+    grid_export:
+        enabled: true
+        source: "emi_blob"
+        description: "Half-hourly grid exports at connection points"
+        url_prefix: "Datasets/Wholesale/Metered_data/Grid_export"
+        filename: "Grid_export.csv"
+        directory_pattern: "grid_export"
+        years: [2023, 2024]
+        months: "all"
+        validate_min_rows: 700
+    hvdc:
+        enabled: true
+        source: "emi_blob"
+        description: "Half-hourly HVDC transfers between islands"
+        url_prefix: "Datasets/Wholesale/Metered_data/HVDC_Flows"
+        filename: "HVDC_flows.csv"
+        directory_pattern: "hvdc"
+        years: [2023, 2024]
+        months: "all"
+        validate_min_rows: 700
+    reactive_power:
+      enabled: true
+      source: "emi_blob"
+      description: "Half-hourly reactive power flows"
+      url_prefix: "Datasets/Wholesale/Metered_data/Reactive_power"
+      filename: "Reactive_power.csv"
+      directory_pattern: "reactive"
+      years: [2023, 2024]
+      months: "all"
+      validate_min_rows: 700
 
 # ------------------------------------------------------------------------------
 # VALIDATION SETTINGS
 # ------------------------------------------------------------------------------
 validation:
-  check_file_size: true
-  check_row_count: false
-  create_checksums: false  # Not needed for time-series data
-  archive_downloads: false
+    check_file_size: true
+    check_row_count: false
+    create_checksums: false  # Not needed for time-series data
+    archive_downloads: false
   

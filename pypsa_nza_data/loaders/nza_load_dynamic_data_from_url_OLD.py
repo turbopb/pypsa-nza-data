@@ -285,13 +285,6 @@ def parse_months_to_numbers(month_list: List[str]) -> List[int]:
     return sorted(set(result))
 
 
-def parse_months(month_list):
-    """
-    Backward-compatible wrapper for parse_months_to_numbers().
-    Accepts the same inputs as the CLI would supply (list of strings).
-    """
-    return parse_months_to_numbers(month_list)
-
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
@@ -316,90 +309,48 @@ def load_config(config_file: Path) -> Dict:
         raise ValueError(f"Error parsing YAML: {e}")
 
 
-def get_enabled_datasets(config: dict) -> list:
-    """
-    Return a list of dataset names that are enabled in the YAML.
-    Expects config['datasets'] to be a dict of dataset_name -> dataset_config.
-    """
-    datasets = config.get("datasets", {})
-    if not isinstance(datasets, dict):
-        return []
-
-    enabled = []
-    for name, ds in datasets.items():
-        if isinstance(ds, dict) and ds.get("enabled", False):
-            enabled.append(name)
-    return enabled
-    
-
 # ============================================================================
 # SIMPLE DOWNLOADER (USING YOUR ORIGINAL LOGIC)
 # ============================================================================
 
-def download_monthly_file(
-    base_url: str,
-    url_prefix: str,
-    filename: str,
-    year: int,
-    month: int,
-    output_dir: Path,
-    dry_run: bool = False,
-) -> bool:
+def download_monthly_file(base_url: str, url_prefix: str, filename: str,
+                         year: int, month: int, output_dir: Path) -> bool:
     """
-    Download a single monthly file (YYYYMM_<filename>) from a dataset URL prefix.
-
-    Diagnostics:
-      - Logs the fully resolved URL and local output path for every attempt.
-      - In dry-run mode, no HTTP request is made; the function returns False and does
-        not create any files.
+    Download a single monthly file using simple, fast approach.
+    
+    This uses the original download logic that works reliably.
     """
-
+    # Construct filename and paths
     monthly_filename = f"{year}{month:02d}_{filename}"
-    file_url = f"{base_url.rstrip('/')}/{url_prefix.strip('/')}/{monthly_filename}"
+    file_url = f"{base_url}/{url_prefix}/{monthly_filename}"
     output_path = output_dir / monthly_filename
-
-    # Always show what we are attempting (console + log file)
-    logger.info(f"    Attempting URL: {file_url}")
-    logger.info(f"    Output file:    {output_path}")
-
-    if dry_run:
-        logger.info(f"  {year}-{month:02d}: Dry-run (no download)")
-        return False
-
+    
     try:
-        response = requests.get(file_url, timeout=60)
-        logger.info(f"    HTTP status:    {response.status_code}")
+        # ORIGINAL SIMPLE APPROACH - FAST AND RELIABLE
+        response = requests.get(file_url)
         response.raise_for_status()
-
-        output_dir.mkdir(parents=True, exist_ok=True)
-        with open(output_path, "wb") as f:
+        
+        with open(output_path, 'wb') as f:
             f.write(response.content)
-
+        
         # Quick validation - just check file isn't empty
         if output_path.stat().st_size < 100:
             logger.warning(f"  {year}-{month:02d}: Downloaded but file very small")
             return False
-
-        logger.info(
-            f"  {year}-{month:02d}: ✓ Downloaded ({output_path.stat().st_size:,} bytes)"
-        )
+        
+        logger.info(f"  {year}-{month:02d}: ✓ Downloaded ({output_path.stat().st_size:,} bytes)")
         return True
-
+        
     except requests.HTTPError as e:
-        status = e.response.status_code if e.response is not None else None
-        if status == 404:
-            logger.info(f"  {year}-{month:02d}: Not available (404)")
+        if e.response.status_code == 404:
+            logger.info(f"  {year}-{month:02d}: Not available yet")
         else:
-            logger.error(f"  {year}-{month:02d}: HTTP error {status if status is not None else 'unknown'}")
+            logger.error(f"  {year}-{month:02d}: HTTP error {e.response.status_code}")
         return False
-
+        
     except Exception as e:
         logger.error(f"  {year}-{month:02d}: Error - {e}")
         return False
-
-
-# ============================================================================
-# ORCHESTRATOR
 
 
 # ============================================================================
@@ -413,8 +364,9 @@ class DownloadOrchestrator:
         self.root = Path(root_dir)
         self.config = config
         
-        # Data sources are selected per-dataset (see datasets[*].source)
-        # Default source is 'electricity_authority'.
+        # Get EA base URL
+        ea_config = config.get('data_sources', {}).get('electricity_authority', {})
+        self.base_url = ea_config.get('base_url', '')
         
         # Statistics
         self.stats = {
@@ -441,20 +393,11 @@ class DownloadOrchestrator:
     
     def download_dataset(self, name: str, config: Dict,
                         year_filter: Optional[List[int]] = None,
-                        month_filter: Optional[List[int]] = None,
-                        dry_run: bool = False) -> None:
+                        month_filter: Optional[List[int]] = None) -> None:
         """Download all files for a dataset."""
         print_section(f"Dataset: {name}")
         
         logger.info(f"Description: {config.get('description', 'N/A')}")
-
-        # Select data source (default: electricity_authority)
-        source_key = config.get('source', 'electricity_authority')
-        source_cfg = self.config.get('data_sources', {}).get(source_key, {})
-        base_url = source_cfg.get('base_url', '')
-        if not base_url:
-            logger.error(f"No base_url configured for data source '{source_key}'")
-            return
         
         # Get years
         years = year_filter if year_filter else config.get('years', [])
@@ -496,13 +439,12 @@ class DownloadOrchestrator:
                 self.stats['total_files'] += 1
                 
                 success = download_monthly_file(
-                    base_url,
+                    self.base_url,
                     config['url_prefix'],
                     config['filename'],
                     year,
                     month,
-                    output_dir,
-                    dry_run=dry_run,
+                    output_dir
                 )
                 
                 if success:
@@ -530,8 +472,7 @@ class DownloadOrchestrator:
     
     def download_all(self, dataset_filter: Optional[str] = None,
                     year_filter: Optional[List[int]] = None,
-                    month_filter: Optional[List[int]] = None,
-                    dry_run: bool = False) -> None:
+                    month_filter: Optional[List[int]] = None) -> None:
         """Download all enabled datasets."""
         datasets = self.config.get('datasets', {})
         
@@ -544,7 +485,7 @@ class DownloadOrchestrator:
                 continue
             
             self.stats['total_datasets'] += 1
-            self.download_dataset(name, dataset_config, year_filter, month_filter, dry_run=dry_run)
+            self.download_dataset(name, dataset_config, year_filter, month_filter)
     
     def print_summary(self) -> None:
         """Print download summary."""
@@ -589,27 +530,18 @@ def get_default_config_path() -> Path:
 # MAIN
 # ============================================================================
 
-
 def main():
     """Main execution function."""
 
     parser = argparse.ArgumentParser(
-        description="Download PyPSA-NZA time-series datasets"
+        description='Download PyPSA-NZA time-series datasets'
     )
-    parser.add_argument("--dataset", type=str, help="Download only a specific dataset")
-    parser.add_argument("--years", type=int, nargs="+", help="Override years")
-    parser.add_argument("--months", type=str, nargs="+", help="Override months")
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Show what would be downloaded (no HTTP requests, no files written)",
-    )
-    parser.add_argument(
-        "--config",
-        type=str,
-        default=None,
-        help="Path to YAML config file (optional override)",
-    )
+    parser.add_argument('--dataset', type=str, help='Download only specific dataset')
+    parser.add_argument('--years', type=int, nargs='+', help='Override years')
+    parser.add_argument('--months', type=str, nargs='+', help='Override months')
+    parser.add_argument('--dry-run', action='store_true', help='Show what would be downloaded')
+    parser.add_argument('--config', type=str, default=None,
+                        help='Path to YAML config file (optional override)')
 
     args = parser.parse_args()
     start_time = datetime.now()
@@ -629,7 +561,7 @@ def main():
     log_dir = (root_path / logs_rel).resolve() if logs_rel else (root_path / "logs").resolve()
     log_file, file_handler = setup_logging(log_dir)
 
-    # Header (console)
+    # Header
     print_header("PYPSA-NZA DYNAMIC DATA DOWNLOADER")
     logger.info("")
     logger.info(f"Start time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -640,59 +572,83 @@ def main():
         logger.info(f"Years:      {args.years}")
     if args.months:
         logger.info(f"Months:     {args.months}")
-    if args.dry_run:
-        logger.info("Mode:       DRY-RUN (no downloads)")
     logger.info("")
-
+    
+    
+    
+    
+    args = parser.parse_args()
+    start_time = datetime.now()
+    
+    
+    log_file, file_handler = setup_logging(log_dir)
+    
+    # Header
+    print_header("PYPSA-NZA DYNAMIC DATA DOWNLOADER")
+    logger.info("")
+    logger.info(f"Start time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"Config:     {config_file}")
+    if args.dataset:
+        logger.info(f"Filter:     {args.dataset}")
+    if args.years:
+        logger.info(f"Years:      {args.years}")
+    if args.months:
+        logger.info(f"Months:     {args.months}")
+    logger.info("")
+    
     try:
-        # Validate and show enabled datasets
-        print_section("LOADING CONFIGURATION")
-        enabled = get_enabled_datasets(config)
-        logger.info(f"Enabled datasets: {', '.join(enabled) if enabled else '(none)'}")
-
-        if not enabled:
-            logger.error("No datasets are enabled in the configuration.")
-            return 2
-
-        # Create orchestrator
+        # Load config
+        print_header("LOADING CONFIGURATION", '=')
+        logger.info("")
+        
+        enabled = [n for n, c in config['datasets'].items() if c.get('enabled', True)]
+        logger.info(f"Enabled datasets: {', '.join(enabled)}")
+        logger.info("")
+        
+        # Parse month filter
+        month_filter = None
+        if args.months:
+            month_filter = parse_months_to_numbers(args.months)
+        
+        if args.dry_run:
+            logger.info("✓ Dry run complete")
+            return 0
+        
+        # Download
+        print_header("DOWNLOADING DATASETS", '=')
+        logger.info("")
+        
         orchestrator = DownloadOrchestrator(root_path, config)
-
-        # Run downloads
-        print_section("DOWNLOADING DATASETS")
-        orchestrator.download_all(
-            dataset_filter=args.dataset,
-            year_filter=args.years,
-            month_filter=parse_months(args.months) if args.months else None,
-            dry_run=args.dry_run,
-        )
-
+        orchestrator.download_all(args.dataset, args.years, month_filter)
+        
         # Summary
         orchestrator.print_summary()
-
-        print_section("COMPLETE")
+        
+        # Complete
+        print_header("COMPLETE", '=')
+        logger.info("")
+        
         end_time = datetime.now()
         elapsed = (end_time - start_time).total_seconds()
-
+        
         logger.info(f"End time: {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
         logger.info(f"Elapsed:  {elapsed:.2f} seconds")
         logger.info(f"Log:      {log_file}")
-
-        return 0
-
-    except KeyboardInterrupt:
-        logger.warning("Interrupted by user.")
-        return 130
-
+        logger.info("")
+        
+        return 0 if orchestrator.stats['failed'] == 0 else 1
+        
     except Exception as e:
-        logger.exception(f"Fatal error: {e}")
+        logger.error(f"✗ Failed: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
         return 1
-
+    
     finally:
-        try:
-            logger.removeHandler(file_handler)
-            file_handler.close()
-        except Exception:
-            pass
+        file_handler.close()
+        logging.getLogger().removeHandler(file_handler)
+
+
 if __name__ == '__main__':
     try:
         exit_code = main()
