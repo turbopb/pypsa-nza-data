@@ -54,54 +54,58 @@ data_sources:
 #   validate_min_rows: Minimum rows expected (half-hourly = ~720-8760)
 #   enabled: true/false
 
+
+# *****
+#https://emidatasets.blob.core.windows.net/publicdata/Datasets/Wholesale/Generation/Generation_MD/202408_Generation_MD.csv
+
 datasets:
     generation:
-        enabled: false
+        enabled: true
         description: "Half-hourly generation by station and unit"
-        url_prefix: "Generation/Generation_MD"
+        url_prefix: "Generation/Generation_MD" # "Datasets/Wholesale/Generation/Generation_MD" # "Generation/Generation_MD"  
         filename: "Generation_MD.csv"
         directory_pattern: "generation"
-        years: [2023, 2024]
+        years: [2024]
         months: "all"  # or ['jan', 'feb'] or [1, 2, 3]
         validate_min_rows: 700
     grid_import:
-        enabled: true
+        enabled: false
         source: "emi_blob"
         description: "Half-hourly grid imports at connection points"
         url_prefix: "Datasets/Wholesale/Metered_data/Grid_import"
         filename: "Grid_import.csv"
         directory_pattern: "grid_import"
-        years: [2023, 2024]
+        years: [2024]
         months: "all"
         validate_min_rows: 700
     grid_export:
-        enabled: true
+        enabled: false
         source: "emi_blob"
         description: "Half-hourly grid exports at connection points"
         url_prefix: "Datasets/Wholesale/Metered_data/Grid_export"
         filename: "Grid_export.csv"
         directory_pattern: "grid_export"
-        years: [2023, 2024]
+        years: [2024]
         months: "all"
         validate_min_rows: 700
     hvdc:
-        enabled: true
+        enabled: false
         source: "emi_blob"
         description: "Half-hourly HVDC transfers between islands"
         url_prefix: "Datasets/Wholesale/Metered_data/HVDC_Flows"
         filename: "HVDC_flows.csv"
         directory_pattern: "hvdc"
-        years: [2023, 2024]
+        years: [2024]
         months: "all"
         validate_min_rows: 700
     reactive_power:
-      enabled: true
+      enabled: false
       source: "emi_blob"
       description: "Half-hourly reactive power flows"
       url_prefix: "Datasets/Wholesale/Metered_data/Reactive_power"
       filename: "Reactive_power.csv"
       directory_pattern: "reactive"
-      years: [2023, 2024]
+      years: [2024]
       months: "all"
       validate_min_rows: 700
 
