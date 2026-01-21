@@ -130,7 +130,13 @@ import requests
 import pandas as pd
 import yaml
 
-from nza_root import ROOT_DIR
+from pypsa_nza_data.config.project_paths import load_paths_config
+
+PATHS = load_paths_config()
+
+raw_dir = PATHS["raw_data_dir"]
+processed_dir = PATHS["processed_data_dir"]
+
 
 
 # ============================================================================

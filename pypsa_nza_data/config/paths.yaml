@@ -9,6 +9,16 @@ network_data_dir: data/network
 output_dir: outputs
 logs_dir: logs
 
+raw_data_sources:
+# Electricity Authority
+    emi_url: "https://www.emi.ea.govt.nz/Wholesale/Datasets"
+
+
+
+
+
+
+
 #
 # paths:
 #     dirpath_static:      "data/processed/static/"

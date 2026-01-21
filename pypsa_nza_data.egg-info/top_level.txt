@@ -1,1 +1,1 @@
-data
+pypsa_nza_data

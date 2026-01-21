@@ -13,12 +13,12 @@ This script downloads monthly time-series datasets from the Electricity Authorit
 HVDC flows, reactive power) across specified year and month ranges.
 
 Configuration (URLs, directories, date ranges) is in a YAML file. The download
-logic is kept simple and fast - uses direct requests.get() without streaming,
-sessions, or heavy validation.
+logic is kept simple and uses direct requests.get() without streaming,
+sessions, or heavy validation to enhance speed.
 
 WORKFLOW
 --------
-The script follows this streamlined process:
+The script sequence follows:
 
 1. INITIALIZATION
    - Load configuration from YAML file (nza_download_dynamic_data.yaml)
@@ -62,7 +62,7 @@ The script follows this streamlined process:
 
 DESIGN PHILOSOPHY
    - Speed: No streaming, no heavy validation, no archiving
-   - Simplicity: Direct file download using proven requests.get() approach
+   - Simplicity: Direct file download using requests.get() approach
    - Reliability: Minimal dependencies, simple error handling
    - Configurability: All settings in YAML, easy to modify
 
@@ -197,12 +197,8 @@ import calendar
 import requests
 import yaml
 
-from pypsa-nza-data.config.project_paths import load_paths_config
-
-PATHS = load_paths_config()
-
-raw_dir = PATHS["raw_data_dir"]
-processed_dir = PATHS["processed_data_dir"]
+#from pypsa_nza_data.config.project_paths import load_paths_config
+from importlib.resources import files
 
 
 # ============================================================================
@@ -512,12 +508,31 @@ class DownloadOrchestrator:
             logger.info("")
 
 
+def get_repo_root() -> Path:
+    """
+    Resolve repo root robustly for editable installs.
+    This file is: pypsa_nza_data/loaders/<script>.py
+    parents[2] => pypsa_nza_data/
+    parents[3] => repo root
+    """
+    return Path(__file__).resolve().parents[3]
+
+
+def get_default_config_path() -> Path:
+    """
+    Locate the packaged default YAML config.
+    Ensure you place the YAML at: pypsa_nza_data/config/nza_download_dynamic_data.yaml
+    """
+    return files("pypsa_nza_data").joinpath("config/nza_download_dynamic_data.yaml")
+
+
 # ============================================================================
 # MAIN
 # ============================================================================
 
 def main():
     """Main execution function."""
+
     parser = argparse.ArgumentParser(
         description='Download PyPSA-NZA time-series datasets'
     )
@@ -525,14 +540,46 @@ def main():
     parser.add_argument('--years', type=int, nargs='+', help='Override years')
     parser.add_argument('--months', type=str, nargs='+', help='Override months')
     parser.add_argument('--dry-run', action='store_true', help='Show what would be downloaded')
+    parser.add_argument('--config', type=str, default=None,
+                        help='Path to YAML config file (optional override)')
+
+    args = parser.parse_args()
+    start_time = datetime.now()
+
+    # Resolve root + config path (reviewer-proof)
+    root_path = get_repo_root()
+    config_file = Path(args.config) if args.config else Path(get_default_config_path())
+
+    # Load config early so we can derive log directory from it
+    config = load_config(config_file)
+
+    # Log directory: use YAML directories section if it has a logs entry; else default to <repo>/logs
+    logs_rel = None
+    if isinstance(config.get("directories", {}), dict):
+        logs_rel = config["directories"].get("logs")
+
+    log_dir = (root_path / logs_rel).resolve() if logs_rel else (root_path / "logs").resolve()
+    log_file, file_handler = setup_logging(log_dir)
+
+    # Header
+    print_header("PYPSA-NZA DYNAMIC DATA DOWNLOADER")
+    logger.info("")
+    logger.info(f"Start time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"Config:     {config_file}")
+    if args.dataset:
+        logger.info(f"Filter:     {args.dataset}")
+    if args.years:
+        logger.info(f"Years:      {args.years}")
+    if args.months:
+        logger.info(f"Months:     {args.months}")
+    logger.info("")
+    
+    
+    
     
     args = parser.parse_args()
     start_time = datetime.now()
     
-    # Setup
-    root_path = Path(ROOT_DIR)
-    config_file = root_path / "config" / "nza_load_dynamic_data.yaml"
-    log_dir = root_path / "logs"
     
     log_file, file_handler = setup_logging(log_dir)
     
@@ -553,8 +600,6 @@ def main():
         # Load config
         print_header("LOADING CONFIGURATION", '=')
         logger.info("")
-        
-        config = load_config(config_file)
         
         enabled = [n for n, c in config['datasets'].items() if c.get('enabled', True)]
         logger.info(f"Enabled datasets: {', '.join(enabled)}")

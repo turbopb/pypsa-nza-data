@@ -1,6 +1,7 @@
 LICENSE
 README.md
 pyproject.toml
+pypsa_nza_data/__init__.py
 pypsa_nza_data.egg-info/PKG-INFO
 pypsa_nza_data.egg-info/SOURCES.txt
 pypsa_nza_data.egg-info/dependency_links.txt

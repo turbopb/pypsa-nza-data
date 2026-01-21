@@ -1,0 +1,111 @@
+# ==============================================================================
+# PyPSA-NZA Dynamic Data Download Configuration
+# ==============================================================================
+# This file controls downloading of time-series (monthly) datasets from the
+# Electricity Authority's EMI website.
+#
+# Key features:
+#   - {year} placeholder in directory paths
+#   - Flexible month specifications (names, numbers, 'all')
+#   - Individual enable/disable per dataset
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# OUTPUT DIRECTORIES
+# ------------------------------------------------------------------------------
+# Paths relative to ROOT_DIR. Use {year} placeholder for year-specific dirs.
+
+directories:
+  # Base directory
+  base: "data/raw"
+  
+  # Year-specific directories for each data type
+  generation: "data/raw/{year}/gen"
+  grid_import: "data/raw/{year}/import"
+  grid_export: "data/raw/{year}/export"
+  hvdc: "data/raw/{year}/hvdc"
+  reactive: "data/raw/{year}/react"
+  
+  # Archive for timestamped backups
+  archive: "data/raw/dynamic/archived"
+
+# ------------------------------------------------------------------------------
+# DATA SOURCE
+# ------------------------------------------------------------------------------
+data_sources:
+  electricity_authority:
+    name: "Electricity Authority (EMI) - Wholesale Datasets"
+    base_url: "https://www.ea.govt.nz/data-and-insights/datasets/"
+
+# ------------------------------------------------------------------------------
+# DATASETS TO DOWNLOAD
+# ------------------------------------------------------------------------------
+# Each dataset specifies:
+#   url_prefix: Path component after base_url
+#   filename: Base filename (YYYYMM_ prefix added automatically)
+#   directory_pattern: Which directory pattern to use (supports {year})
+#   years: List of years to download
+#   months: 'all' or list of month names/numbers
+#   validate_min_rows: Minimum rows expected (half-hourly = ~720-8760)
+#   enabled: true/false
+
+datasets:
+  generation:
+    enabled: true
+    description: "Half-hourly generation by station and unit"
+    url_prefix: "Generation/Generation_MD"
+    filename: "Generation_MD.csv"
+    directory_pattern: "generation"
+    years: [2023, 2024]
+    months: "all"  # or ['jan', 'feb'] or [1, 2, 3]
+    validate_min_rows: 700
+  
+  grid_import:
+    enabled: true
+    description: "Half-hourly grid imports at connection points"
+    url_prefix: "Metered_data/Grid_import"
+    filename: "Grid_import.csv"
+    directory_pattern: "grid_import"
+    years: [2023, 2024]
+    months: "all"
+    validate_min_rows: 700
+  
+  grid_export:
+    enabled: true
+    description: "Half-hourly grid exports at connection points"
+    url_prefix: "Metered_data/Grid_export"
+    filename: "Grid_export.csv"
+    directory_pattern: "grid_export"
+    years: [2023, 2024]
+    months: "all"
+    validate_min_rows: 700
+  
+  hvdc:
+    enabled: true
+    description: "Half-hourly HVDC transfers between islands"
+    url_prefix: "Metered_data/HVDC_Flows"
+    filename: "HVDC_flows.csv"
+    directory_pattern: "hvdc"
+    years: [2023, 2024]
+    months: "all"
+    validate_min_rows: 700
+  
+  reactive_power:
+    enabled: true  # Often not needed for capacity expansion or linear power flow/optimisation
+    description: "Half-hourly reactive power flows"
+    url_prefix: "Metered_data/Reactive_power"
+    filename: "Reactive_power.csv"
+    directory_pattern: "reactive"
+    years: [2023, 2024]
+    months: "all"
+    validate_min_rows: 700
+
+# ------------------------------------------------------------------------------
+# VALIDATION SETTINGS
+# ------------------------------------------------------------------------------
+validation:
+  check_file_size: true
+  check_row_count: false
+  create_checksums: false  # Not needed for time-series data
+  archive_downloads: false
+  
