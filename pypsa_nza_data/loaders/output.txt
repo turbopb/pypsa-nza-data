@@ -1,35 +1,59 @@
-(pypsa-nza-data) C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>python -m pypsa_nza_data.loaders.nza_load_dynamic_data_from_url --dataset grid_import --years 2024 --dry-run
+
+(pypsa-nza-data) C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>python -m pypsa_nza_data.loaders.nza_load_static_data_from_url --dataset generator_registry --dry-run
 ================================================================================
-                       PYPSA-NZA DYNAMIC DATA DOWNLOADER
+                        PYPSA-NZA STATIC DATA DOWNLOADER
 ================================================================================
 
-Start time: 2026-01-21 21:42:10
-Config:     C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\config\nza_download_dynamic_data.yaml
-Filter:     grid_import
-Years:      [2024]
-Mode:       DRY-RUN (no downloads)
+Start time: 2026-01-23 10:57:19
+Repo root:  C:\Users\Public\Documents\Thesis\analysis
+Config:     C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\config\nza_download_static_data_from_url.yaml
+Filter:     Only 'generator_registry'
+Mode:       DRY RUN (no downloads)
+
+================================================================================
+                             LOADING CONFIGURATION
+================================================================================
+
+Output directories (relative paths from YAML):
+  base            → data/raw
+  static_data_dir → data/raw/static
+  archive         → data/raw/static/archived
+  generators      → data/raw/generation
+  load            → data/raw/load
+  logs            → logs
+
+Enabled datasets (YAML): sites, transmission_lines, transmission_lines_json, generator_registry, network_supply_points
+Selected datasets (run): generator_registry
+
+================================================================================
+                                    DRY RUN
+================================================================================
 
 
---- LOADING CONFIGURATION ---
+--- Dataset: generator_registry ---
 
-Enabled datasets: generation
-
---- DOWNLOADING DATASETS ---
-
+Description: Registry of all grid-connected generation units
+Source:      electricity_authority
+Format:      csv
+Filename:    20250917_DispatchedGenerationPlant.csv
+Save to:     C:\Users\Public\Documents\Thesis\analysis\data\raw\static\20250917_DispatchedGenerationPlant.csv
+    Attempting URL: https:://emidatasets.blob.core.windows.net/publicdata/Datasets/Wholesale/Generation/GenerationFleet/Existing/20250917_DispatchedGenerationPlant.csv
+    Output file:    C:\Users\Public\Documents\Thesis\analysis\data\raw\static\20250917_DispatchedGenerationPlant.csv
 ================================================================================
                                     SUMMARY
 ================================================================================
 
-Total files attempted: 0
-Downloaded:            0
-Not available:         0
-Failed:                0
+Total datasets:          1
+Successfully downloaded: 0
+Failed:                  0
 
+================================================================================
+                                    COMPLETE
+================================================================================
 
---- COMPLETE ---
+End time:   2026-01-23 10:57:19
+Elapsed:    0.01 seconds
+Log saved:  C:\Users\Public\Documents\Thesis\analysis\logs\nza_download_static_20260123_105719.log
 
-End time: 2026-01-21 21:42:10
-Elapsed:  0.02 seconds
-Log:      C:\Users\Public\Documents\Thesis\analysis\logs\nza_download_dynamic_20260121_214210.log
 
 (pypsa-nza-data) C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>

@@ -1,0 +1,134 @@
+# ==============================================================================
+# PyPSA-NZA Data Download Configuration
+# ==============================================================================
+# This file controls ALL aspects of data downloading:
+#   - Where to download from (URLs)
+#   - Where to save files (directories)
+#   - What to download (datasets)
+#
+# To change anything, just edit this file - no need to touch Python code!
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# OUTPUT DIRECTORIES
+# ------------------------------------------------------------------------------
+# All paths are relative to ROOT_DIR (from nza_root.py)
+# Change these to control where files are saved
+
+directories:
+  # Main data directory
+  base: "data/raw"
+  
+  # Static data (Sites, generators, transmission lines)
+  static_data_dir: "data/raw/static"        # ← Change this for testing
+  
+  # Archive for timestamped backups
+  archive: "data/raw/static/archived"
+  
+  # Monthly generation data
+  generators : "data/raw/generation"
+  
+  # Monthly load data  
+  load: "data/raw/load"
+  
+  # Logging  
+  logs: "logs"
+  
+
+# ------------------------------------------------------------------------------
+# DATA SOURCE URLs
+# ------------------------------------------------------------------------------
+data_sources:
+  transpower:
+    name: "Transpower ArcGIS Open Data"
+    base_url: "https://data-transpower.opendata.arcgis.com"
+    api_url: "https://services2.arcgis.com/0Ein4Ol1p77ZWL66/arcgis/rest/services"
+    
+  electricity_authority:
+    name: "Electricity Authority (EMI) - Azure Blob Storage"
+    base_url: "https://emidatasets.blob.core.windows.net/publicdata/Datasets/Wholesale"
+
+# ------------------------------------------------------------------------------
+# DATASETS TO DOWNLOAD
+# ------------------------------------------------------------------------------
+# Each dataset specifies:
+#   source: Which data source to use (transpower or electricity_authority)
+#   dataset_id: The dataset identifier (for ArcGIS datasets)
+#   url_path: URL path relative to base_url (for direct downloads)
+#   format: File format (csv, geojson)
+#   filename: What to name the downloaded file
+#   directory: Where to save it (from directories section above)
+#   validate_min_rows: Minimum rows expected (for validation)
+#   enabled: true/false to enable/disable download
+
+datasets:
+  # --------------------------------------------------------------------------
+  # TRANSPOWER DATASETS
+  # --------------------------------------------------------------------------
+  
+  sites:
+    enabled: true
+    source: "transpower"
+    dataset_id: "e507953ab8934fc3a115b2e79226cbd6_0"
+    format: "csv"
+    filename: "sites.csv"
+    directory: "static_data_dir"
+    description: "Points of Connection (substations/grid connection points)"
+    validate_min_rows: 200
+  
+  transmission_lines:
+    enabled: true
+    source: "transpower"
+    dataset_id: "0c8db240553f47b5844bdc2eb1146b9b_0"
+    format: "csv"
+    filename: "transmission_lines.csv"
+    directory: "static_data_dir"
+    description: "Transmission line circuits and routes"
+    validate_min_rows: 50
+
+  transmission_lines_json:
+    enabled: true
+    source: "transpower"
+    dataset_id: "0c8db240553f47b5844bdc2eb1146b9b_0"
+    format: "geojson"
+    filename: "transmission_lines.geojson"
+    directory: "static_data_dir"
+    description: "Transmission line circuits and routes"
+    validate_min_rows: 50
+  
+  # --------------------------------------------------------------------------
+  # ELECTRICITY AUTHORITY DATASETS
+  # --------------------------------------------------------------------------
+  
+  generator_registry:
+    enabled: true
+    source: "electricity_authority"
+    url_path: "Generation/GenerationFleet/Existing/20250917_DispatchedGenerationPlant.csv"
+    format: "csv"
+    filename: "20250917_DispatchedGenerationPlant.csv"  # Local filename - change to what suits you
+    directory: "static_data_dir"
+    description: "Registry of all grid-connected generation units"
+    validate_min_rows: 100
+  
+  network_supply_points:
+    enabled: true
+    source: "electricity_authority"
+    url_path: "MappingsAndGeospatial/NetworkSupplyPointsTable/20250830_NetworkSupplyPointsTable.csv"
+    format: "csv"
+    filename: "NetworkSupplyPointsTable.csv"
+    directory: "static_data_dir"
+    description: "Network Supply Points mapping table"
+    validate_min_rows: 50
+
+# ------------------------------------------------------------------------------
+# VALIDATION SETTINGS
+# ------------------------------------------------------------------------------
+# General validation rules
+
+validation:
+  check_file_size: true          # Verify file is not empty
+  check_row_count: true          # Verify minimum row count
+  create_checksums: true         # Compute MD5 checksums
+  archive_downloads: true        # Save timestamped copies to archive
+
+

@@ -239,9 +239,7 @@ class DataDownloader:
         url_path = dataset_config["url_path"]
         ea = self.sources["electricity_authority"]
         base_url = ea["base_url"]
-        base_url = str(base_url).rstrip("/")
-        url_path = str(url_path).lstrip("/")
-        url = f"{base_url}/{url_path}"
+        url = f"{base_url}/{url_path}".replace("//", "://", 1)
 
         logger.info(f"    Attempting URL: {url}")
         logger.info(f"    Output file:    {output_path}")
@@ -389,9 +387,7 @@ class DownloadOrchestrator:
                 url = f"{tp}/datasets/{dataset_id}.{ 'geojson' if fmt == 'geojson' else 'csv' }"
             elif src == "electricity_authority":
                 base = self.config["data_sources"]["electricity_authority"]["base_url"]
-                base = str(base).rstrip("/")
-                url_path = str(cfg['url_path']).lstrip("/")
-                url = f"{base}/{url_path}"
+                url = f"{base}/{cfg['url_path']}".replace("//", "://", 1)
             else:
                 url = "(unknown source)"
             logger.info(f"    Attempting URL: {url}")
