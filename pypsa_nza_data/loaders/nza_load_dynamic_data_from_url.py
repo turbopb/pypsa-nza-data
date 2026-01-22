@@ -197,7 +197,6 @@ import calendar
 import requests
 import yaml
 
-#from pypsa_nza_data.config.project_paths import load_paths_config
 from importlib.resources import files
 
 
@@ -397,9 +396,6 @@ def download_monthly_file(
         logger.error(f"  {year}-{month:02d}: Error - {e}")
         return False
 
-
-# ============================================================================
-# ORCHESTRATOR
 
 
 # ============================================================================

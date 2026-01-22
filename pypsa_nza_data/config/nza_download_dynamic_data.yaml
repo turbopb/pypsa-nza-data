@@ -55,14 +55,11 @@ data_sources:
 #   enabled: true/false
 
 
-# *****
-#https://emidatasets.blob.core.windows.net/publicdata/Datasets/Wholesale/Generation/Generation_MD/202408_Generation_MD.csv
-
 datasets:
     generation:
         enabled: true
         description: "Half-hourly generation by station and unit"
-        url_prefix: "Generation/Generation_MD" # "Datasets/Wholesale/Generation/Generation_MD" # "Generation/Generation_MD"  
+        url_prefix: "Datasets/Wholesale/Generation/Generation_MD" # "Datasets/Wholesale/Generation/Generation_MD" # "Generation/Generation_MD"  
         filename: "Generation_MD.csv"
         directory_pattern: "generation"
         years: [2024]
