@@ -1,4 +1,3 @@
-LICENSE
 README.md
 pyproject.toml
 pypsa_nza_data/__init__.py
