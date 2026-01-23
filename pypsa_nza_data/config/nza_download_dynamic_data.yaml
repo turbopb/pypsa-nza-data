@@ -58,6 +58,7 @@ data_sources:
 datasets:
     generation:
         enabled: true
+        source: "emi_blob"
         description: "Half-hourly generation by station and unit"
         url_prefix: "Datasets/Wholesale/Generation/Generation_MD" # "Datasets/Wholesale/Generation/Generation_MD" # "Generation/Generation_MD"  
         filename: "Generation_MD.csv"

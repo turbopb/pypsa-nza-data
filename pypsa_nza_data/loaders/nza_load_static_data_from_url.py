@@ -49,7 +49,7 @@ def get_repo_root() -> Path:
 
 def get_default_config_path() -> Path:
     """Locate the packaged default YAML config."""
-    return files("pypsa_nza_data").joinpath("config/nza_download_static_data_from_url.yaml")
+    return files("pypsa_nza_data").joinpath("config/nza_download_static_data.yaml")
 
 
 def setup_logging(log_dir: Path) -> Tuple[Path, logging.FileHandler]:
