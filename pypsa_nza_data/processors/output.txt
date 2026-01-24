@@ -1,0 +1,180 @@
+(pypsa-nza-data) C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>python -m pypsa_nza_data.processors.nza_process_dynamic_data --config pypsa_nza_data/config/nza_process_dynamic_data.yaml
+================================================================================
+                        PYPSA-NZA DYNAMIC DATA PROCESSOR
+================================================================================
+Config: pypsa_nza_data\config\nza_process_dynamic_data.yaml
+Root:   C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA
+
+Energy types to process: gen, export, import, hvdc, react
+Scale factor:            0.001
+
+================================================================================
+                                PROCESSING: GEN
+================================================================================
+Input directory:  C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\external\2024\gen
+Output directory: C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\processed\2024\gen\cons_MWh
+File tag:         gen_md
+
+Processing: 202401_Generation_MD.csv  (year=2024, month=1)
+✗ Failed processing 202401_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202402_Generation_MD.csv  (year=2024, month=2)
+✗ Failed processing 202402_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202403_Generation_MD.csv  (year=2024, month=3)
+✗ Failed processing 202403_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202404_Generation_MD.csv  (year=2024, month=4)
+✗ Failed processing 202404_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202405_Generation_MD.csv  (year=2024, month=5)
+✗ Failed processing 202405_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202406_Generation_MD.csv  (year=2024, month=6)
+✗ Failed processing 202406_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202407_Generation_MD.csv  (year=2024, month=7)
+✗ Failed processing 202407_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202408_Generation_MD.csv  (year=2024, month=8)
+✗ Failed processing 202408_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202409_Generation_MD.csv  (year=2024, month=9)
+✗ Failed processing 202409_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202410_Generation_MD.csv  (year=2024, month=10)
+✗ Failed processing 202410_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202411_Generation_MD.csv  (year=2024, month=11)
+✗ Failed processing 202411_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+Processing: 202412_Generation_MD.csv  (year=2024, month=12)
+✗ Failed processing 202412_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+
+Successfully processed 0/12 files
+================================================================================
+                               PROCESSING: EXPORT
+================================================================================
+Input directory:  C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\external\2024\export
+Output directory: C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\processed\2024\export\cons_MWh
+File tag:         export_md
+
+Processing: 202401_Grid_export.csv  (year=2024, month=1)
+✗ Failed processing 202401_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202402_Grid_export.csv  (year=2024, month=2)
+✗ Failed processing 202402_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202403_Grid_export.csv  (year=2024, month=3)
+✗ Failed processing 202403_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202404_Grid_export.csv  (year=2024, month=4)
+✗ Failed processing 202404_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202405_Grid_export.csv  (year=2024, month=5)
+✗ Failed processing 202405_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202406_Grid_export.csv  (year=2024, month=6)
+✗ Failed processing 202406_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202407_Grid_export.csv  (year=2024, month=7)
+✗ Failed processing 202407_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202408_Grid_export.csv  (year=2024, month=8)
+✗ Failed processing 202408_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202409_Grid_export.csv  (year=2024, month=9)
+✗ Failed processing 202409_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202410_Grid_export.csv  (year=2024, month=10)
+✗ Failed processing 202410_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202411_Grid_export.csv  (year=2024, month=11)
+✗ Failed processing 202411_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202412_Grid_export.csv  (year=2024, month=12)
+✗ Failed processing 202412_Grid_export.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+
+Successfully processed 0/12 files
+================================================================================
+                               PROCESSING: IMPORT
+================================================================================
+Input directory:  C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\external\2024\import
+Output directory: C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\processed\2024\import\cons_MWh
+File tag:         import_md
+
+Processing: 202401_Grid_import.csv  (year=2024, month=1)
+✗ Failed processing 202401_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202402_Grid_import.csv  (year=2024, month=2)
+✗ Failed processing 202402_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202403_Grid_import.csv  (year=2024, month=3)
+✗ Failed processing 202403_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202404_Grid_import.csv  (year=2024, month=4)
+✗ Failed processing 202404_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202405_Grid_import.csv  (year=2024, month=5)
+✗ Failed processing 202405_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202406_Grid_import.csv  (year=2024, month=6)
+✗ Failed processing 202406_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202407_Grid_import.csv  (year=2024, month=7)
+✗ Failed processing 202407_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202408_Grid_import.csv  (year=2024, month=8)
+✗ Failed processing 202408_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202409_Grid_import.csv  (year=2024, month=9)
+✗ Failed processing 202409_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202410_Grid_import.csv  (year=2024, month=10)
+✗ Failed processing 202410_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202411_Grid_import.csv  (year=2024, month=11)
+✗ Failed processing 202411_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202412_Grid_import.csv  (year=2024, month=12)
+✗ Failed processing 202412_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+
+Successfully processed 0/12 files
+================================================================================
+                                PROCESSING: HVDC
+================================================================================
+Input directory:  C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\external\2024\hvdc
+Output directory: C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\processed\2024\hvdc\cons_MWh
+File tag:         hvdc_md
+
+Processing: 202401_HVDC_flows.csv  (year=2024, month=1)
+✗ Failed processing 202401_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202402_HVDC_flows.csv  (year=2024, month=2)
+✗ Failed processing 202402_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202403_HVDC_flows.csv  (year=2024, month=3)
+✗ Failed processing 202403_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202404_HVDC_flows.csv  (year=2024, month=4)
+✗ Failed processing 202404_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202405_HVDC_flows.csv  (year=2024, month=5)
+✗ Failed processing 202405_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202406_HVDC_flows.csv  (year=2024, month=6)
+✗ Failed processing 202406_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202407_HVDC_flows.csv  (year=2024, month=7)
+✗ Failed processing 202407_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202408_HVDC_flows.csv  (year=2024, month=8)
+✗ Failed processing 202408_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202409_HVDC_flows.csv  (year=2024, month=9)
+✗ Failed processing 202409_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202410_HVDC_flows.csv  (year=2024, month=10)
+✗ Failed processing 202410_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202411_HVDC_flows.csv  (year=2024, month=11)
+✗ Failed processing 202411_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+Processing: 202412_HVDC_flows.csv  (year=2024, month=12)
+✗ Failed processing 202412_HVDC_flows.csv: Unknown datetime string format, unable to parse: BEN2201, at position 0
+
+Successfully processed 0/12 files
+================================================================================
+                               PROCESSING: REACT
+================================================================================
+Input directory:  C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\external\2024\react
+Output directory: C:\Users\Public\Documents\Thesis\analysis\PYPSA-NZA\data\processed\2024\react\cons_MWh
+File tag:         react_md
+
+Processing: 202401_Reactive_power.csv  (year=2024, month=1)
+✗ Failed processing 202401_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202402_Reactive_power.csv  (year=2024, month=2)
+✗ Failed processing 202402_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202403_Reactive_power.csv  (year=2024, month=3)
+✗ Failed processing 202403_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202404_Reactive_power.csv  (year=2024, month=4)
+✗ Failed processing 202404_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202405_Reactive_power.csv  (year=2024, month=5)
+✗ Failed processing 202405_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202406_Reactive_power.csv  (year=2024, month=6)
+✗ Failed processing 202406_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202407_Reactive_power.csv  (year=2024, month=7)
+✗ Failed processing 202407_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202408_Reactive_power.csv  (year=2024, month=8)
+✗ Failed processing 202408_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202409_Reactive_power.csv  (year=2024, month=9)
+✗ Failed processing 202409_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202410_Reactive_power.csv  (year=2024, month=10)
+✗ Failed processing 202410_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202411_Reactive_power.csv  (year=2024, month=11)
+✗ Failed processing 202411_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+Processing: 202412_Reactive_power.csv  (year=2024, month=12)
+✗ Failed processing 202412_Reactive_power.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+
+Successfully processed 0/12 files
+================================================================================
+                                    SUMMARY
+================================================================================
+Total files processed: 0
+Elapsed:              0.91 seconds

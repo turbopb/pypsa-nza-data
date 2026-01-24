@@ -1,0 +1,92 @@
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO -                         PYPSA-NZA DYNAMIC DATA PROCESSOR                        
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO - Config: pypsa_nza_data\config\nza_process_dynamic_data.yaml
+2026-01-24 20:38:28 - __main__ - INFO - Root:   C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data
+2026-01-24 20:38:28 - __main__ - INFO - 
+2026-01-24 20:38:28 - __main__ - INFO - Energy types to process: gen, export, import, hvdc, react
+2026-01-24 20:38:28 - __main__ - INFO - Scale factor:            0.001
+2026-01-24 20:38:28 - __main__ - INFO - 
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO -                                 PROCESSING: GEN                                 
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO - Input directory:  C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\..\data\raw\2024\gen
+2026-01-24 20:38:28 - __main__ - INFO - Output directory: C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\..\data\processed\2024\gen\cons_MWh
+2026-01-24 20:38:28 - __main__ - INFO - File tag:         gen_md
+2026-01-24 20:38:28 - __main__ - INFO - 
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202401_Generation_MD.csv  (year=2024, month=1)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202401_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202402_Generation_MD.csv  (year=2024, month=2)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202402_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202403_Generation_MD.csv  (year=2024, month=3)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202403_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202404_Generation_MD.csv  (year=2024, month=4)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202404_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202405_Generation_MD.csv  (year=2024, month=5)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202405_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202406_Generation_MD.csv  (year=2024, month=6)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202406_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202407_Generation_MD.csv  (year=2024, month=7)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202407_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202408_Generation_MD.csv  (year=2024, month=8)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202408_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202409_Generation_MD.csv  (year=2024, month=9)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202409_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202410_Generation_MD.csv  (year=2024, month=10)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202410_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202411_Generation_MD.csv  (year=2024, month=11)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202411_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202412_Generation_MD.csv  (year=2024, month=12)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202412_Generation_MD.csv: Unknown datetime string format, unable to parse: ARA, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - 
+2026-01-24 20:38:28 - __main__ - INFO - Successfully processed 0/12 files
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO -                                PROCESSING: EXPORT                               
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Input directory does not exist: C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\data\raw\2024\export
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO -                                PROCESSING: IMPORT                               
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO - Input directory:  C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\..\data\raw\2024\import
+2026-01-24 20:38:28 - __main__ - INFO - Output directory: C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\..\data\processed\2024\import\cons_MWh
+2026-01-24 20:38:28 - __main__ - INFO - File tag:         import_md
+2026-01-24 20:38:28 - __main__ - INFO - 
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202401_Grid_import.csv  (year=2024, month=1)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202401_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202402_Grid_import.csv  (year=2024, month=2)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202402_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202403_Grid_import.csv  (year=2024, month=3)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202403_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202404_Grid_import.csv  (year=2024, month=4)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202404_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202405_Grid_import.csv  (year=2024, month=5)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202405_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202406_Grid_import.csv  (year=2024, month=6)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202406_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202407_Grid_import.csv  (year=2024, month=7)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202407_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202408_Grid_import.csv  (year=2024, month=8)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202408_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202409_Grid_import.csv  (year=2024, month=9)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202409_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202410_Grid_import.csv  (year=2024, month=10)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202410_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202411_Grid_import.csv  (year=2024, month=11)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202411_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - Processing: 202412_Grid_import.csv  (year=2024, month=12)
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Failed processing 202412_Grid_import.csv: Unknown datetime string format, unable to parse: ABY0111, at position 0
+2026-01-24 20:38:28 - __main__ - INFO - 
+2026-01-24 20:38:28 - __main__ - INFO - Successfully processed 0/12 files
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO -                                 PROCESSING: HVDC                                
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Input directory does not exist: C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\data\raw\2024\hvdc
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO -                                PROCESSING: REACT                                
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - ERROR - ✗ Input directory does not exist: C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\data\raw\2024\react
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO -                                     SUMMARY                                     
+2026-01-24 20:38:28 - __main__ - INFO - ================================================================================
+2026-01-24 20:38:28 - __main__ - INFO - Total files processed: 0
+2026-01-24 20:38:28 - __main__ - INFO - Elapsed:              0.29 seconds

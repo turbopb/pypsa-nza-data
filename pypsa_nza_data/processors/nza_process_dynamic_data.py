@@ -125,8 +125,12 @@ import yaml
 import pandas as pd
 import numpy as np
 
-# Import project root directory
-from nza_root import ROOT_DIR
+import argparse
+
+try:
+    from importlib.resources import files as pkg_files
+except Exception:  # pragma: no cover
+    pkg_files = None
 
 
 # ============================================================================
@@ -212,6 +216,20 @@ DEFAULT_SCALE_FACTOR = 1.0e-3
 # ============================================================================
 # CONFIGURATION MANAGEMENT
 # ============================================================================
+
+
+def default_config_path() -> Path:
+    """Return the packaged default config path for this processor."""
+    if pkg_files is None:
+        raise RuntimeError("importlib.resources.files not available; please use Python >= 3.9")
+    candidate = pkg_files("pypsa_nza_data").joinpath("config/nza_process_dynamic_data.yaml")
+    return Path(str(candidate))
+
+
+def resolve_path(path_value: str, base_dir: Path) -> Path:
+    """Resolve a path that may be absolute or relative to base_dir."""
+    p = Path(str(path_value)).expanduser()
+    return p if p.is_absolute() else (base_dir / p).resolve()
 
 def load_config(config_file: Path) -> Dict:
     """
@@ -936,7 +954,28 @@ def process_energy_by_modality(
 # MAIN EXECUTION
 # ============================================================================
 
-def main():
+
+def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        prog="nza_process_dynamic_data",
+        description="Process NZ dynamic (half-hourly) datasets into standardised time series."
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        default=None,
+        help="Path to YAML config. If omitted, uses packaged default (pypsa_nza_data/config/nza_process_dynamic_data.yaml).",
+    )
+    parser.add_argument(
+        "--root",
+        type=str,
+        default=None,
+        help="Override paths.root from the YAML (workspace/data root). Use this to point data/logs/outputs outside the repo.",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Optional[List[str]] = None):
     """
     Main execution function for the data processing pipeline.
     
@@ -949,9 +988,9 @@ def main():
     start_time = time.time()
 
     # Read the yaml config file data
-    root_path = Path(ROOT_DIR)
-    config_file = root_path / 'config' / 'nza_process_dynamic_data.yaml'
-    
+    args = parse_args(argv)
+
+    config_file = Path(args.config).expanduser() if args.config else default_config_path()
     try:
         config = load_config(config_file)
     except (FileNotFoundError, yaml.YAMLError) as e:
@@ -959,8 +998,9 @@ def main():
         return 1
 
     # Extract configuration parameters
-    root = Path(config.get('paths', {}).get('root', ROOT_DIR))
-    log_dir = root / 'logs'
+    workspace_root = Path(args.root).expanduser().resolve() if args.root else Path(config.get('paths', {}).get('root', Path.cwd())).expanduser().resolve()
+    root = workspace_root
+    log_dir = resolve_path(config.get('paths', {}).get('logs', 'logs'), root)
     grid_energy_types = config.get('grid_energy_types', [])
     
     # Set up logging
@@ -988,8 +1028,8 @@ def main():
         logger.info("")
 
         # Get input and output directories from config
-        input_dir = root / config['paths'].get(f'{grid_energy}_in', '')
-        output_dir = root / config['paths'].get(f'{grid_energy}_out', '')
+        input_dir = resolve_path(config['paths'].get(f'{grid_energy}_in', ''), root)
+        output_dir = resolve_path(config['paths'].get(f'{grid_energy}_out', ''), root)
         file_tag = f"{grid_energy}_md"
 
         # Validate directories
