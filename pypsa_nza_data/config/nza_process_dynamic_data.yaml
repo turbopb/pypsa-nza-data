@@ -12,7 +12,8 @@
 # Paths relative to project root. Use {year} placeholder for year-specific dirs.
 # ------------------------------------------------------------------------------
 paths:
-#   root:     "/home/pbrun/{{enter sub-dir name}}"  # Linux work-space directory: user spec
+    # Directory paths for primary processing of raw data: "raw" to "consolidated" (aka "cons_MWh")
+    # root:     "/home/pbrun/{{enter sub-dir name}}"  # Linux work-space directory: user spec
     root:       "C:/Users/Public/Documents/Thesis/analysis"  # Windows work-space directory: user spec
     gen_in:     "data/raw/2024/gen/"
     gen_out:    "data/processed/2024/gen/cons_MWh/"
@@ -24,7 +25,21 @@ paths:
     hvdc_out:   "data/processed/2024/hvdc/cons_MWh/"
     react_in:   "data/raw/2024/react/"
     react_out:  "data/processed/2024/react/cons_MWh/"
-
+#
+    # Directory paths for processing of consolidated" data files
+    dirpath_static: "data/processed/static/"
+    dirpath_export: "data/processed/2024/export/cons_MWh/"
+    dirpath_import: "data/processed/2024/import/cons_MWh/"
+    dirpath_gen:    "data/processed/2024/gen/cons_MWh/"
+    dirpath_g_MWh:  "data/processed/2024/gen/g_MWh/"
+    dirpath_g_MW:   "data/processed/2024/gen/g_MW/"
+    dirpath_bus:    "data/processed/2024/bus"
+    dirpath_load:   "data/processed/2024/load/delta_f1f2/"
+    dirpath_f1f2:   "data/processed/2024/delta_f1f2/"
+    dirpath_demand: "data/processed/2024/demand/d_MW"
+    dirpath_d_MW:   "data/processed/2024/demand/d_MW"
+    dirpath_d_MWh:  "data/processed/2024/demand/d_MWh/"
+    dirpath_d:      "data/processed/2024/demand/d_MWh"
 
 
 grid_energy_types:

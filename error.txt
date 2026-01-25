@@ -1,0 +1,38 @@
+                           NZA STATIC DATA PROCESSING
+================================================================================
+
+Root directory:   C:\Users\Public\Documents\Thesis\analysis
+Input directory:  C:\Users\Public\Documents\Thesis\analysis\data\external\static
+Output directory: C:\Users\Public\Documents\Thesis\analysis\data\processed\static
+Log directory:    C:\Users\Public\Documents\Thesis\analysis\logs
+
+================================================================================
+                     PROCESSING POCs (POINTS OF CONNECTION)
+================================================================================
+Input file:  C:\Users\Public\Documents\Thesis\analysis\data\external\static\NetworkSupplyPointsTable.csv
+Output file: C:\Users\Public\Documents\Thesis\analysis\data\processed\static\pocs.csv
+
+✗ Error processing POC data: [Errno 2] No such file or directory: 'C:\\Users\\Public\\Documents\\Thesis\\analysis\\data\\external\\static\\NetworkSupplyPointsTable.csv'
+✗ Application failed with error: [Errno 2] No such file or directory: 'C:\\Users\\Public\\Documents\\Thesis\\analysis\\data\\external\\static\\NetworkSupplyPointsTable.csv'
+Traceback (most recent call last):
+  File "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\processors\nza_process_static_data.py", line 644, in main
+    processor.process_pocs()
+  File "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\processors\nza_process_static_data.py", line 497, in process_pocs
+    df_poc = pd.read_csv(input_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\OEM\anaconda3\envs\pypsa-nza-data\Lib\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\OEM\anaconda3\envs\pypsa-nza-data\Lib\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\OEM\anaconda3\envs\pypsa-nza-data\Lib\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\OEM\anaconda3\envs\pypsa-nza-data\Lib\site-packages\pandas\io\parsers\readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "C:\Users\OEM\anaconda3\envs\pypsa-nza-data\Lib\site-packages\pandas\io\common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Public\\Documents\\Thesis\\analysis\\data\\external\\static\\NetworkSupplyPointsTable.csv'

@@ -55,13 +55,16 @@ def _default_config_path(basename: str) -> Path:
     return Path(str(candidate))
 
 
-def _run_module(module: str, config: Optional[Path], dry_run: bool, verbose: bool) -> int:
+def _run_module(module: str, config: Optional[Path], root: Optional[Path], dry_run: bool, verbose: bool) -> int:
     """
-    Execute a sub-step as: sys.executable -m <module> [--config <config>]
+    Execute a sub-step as: sys.executable -m <module> [--config <config>] [--root <workspace_root>]
     """
     cmd = [sys.executable, "-m", module]
     if config is not None:
         cmd += ["--config", str(config)]
+
+    if root is not None:
+        cmd += ["--root", str(root)]
 
     if dry_run:
         print(f"[DRY RUN] Would run: {' '.join(cmd)}")
@@ -74,7 +77,7 @@ def _run_module(module: str, config: Optional[Path], dry_run: bool, verbose: boo
         subprocess.run(cmd, check=True)
         return 0
     except subprocess.CalledProcessError as e:
-        print(f"? Step failed: {module} (exit code {e.returncode})", file=sys.stderr)
+        print(f"✗ Step failed: {module} (exit code {e.returncode})", file=sys.stderr)
         return e.returncode
 
 
@@ -161,6 +164,17 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     c.add_argument("--config-load", type=str, default=None, help="Override YAML for load profile step.")
     c.add_argument("--config-convert", type=str, default=None, help="Override YAML for conversion step.")
 
+    # Workspace root override (passed through to all steps)
+    p.add_argument(
+        "--root",
+        type=str,
+        default=None,
+        help=(
+            "Workspace root used to resolve relative paths for all steps (overrides each step YAML paths.root). "
+            "Use this to keep data/outputs outside the repo."
+        ),
+    )
+
     # Execution flags
     p.add_argument("--dry-run", action="store_true", help="Print commands without executing.")
     p.add_argument("--verbose", action="store_true", help="Print executed commands and additional info.")
@@ -171,9 +185,11 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
 def main(argv: Optional[list[str]] = None) -> int:
     args = parse_args(argv)
 
+    root = Path(args.root) if args.root else None
+
     steps = build_steps(args)
     if not steps:
-        print("? No steps selected.")
+        print("✗ No steps selected.")
         return 2
 
     print("================================================================================")
@@ -181,20 +197,21 @@ def main(argv: Optional[list[str]] = None) -> int:
     print("================================================================================")
     print(f"Selected steps: {', '.join(s.name for s in steps)}")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'EXECUTE'}")
+    print(f"Workspace root: {root}" if root else "Workspace root: (from each YAML paths.root)")
     print("")
 
     for s in steps:
         # Defensive: verify config exists (packaged configs will exist if installed correctly)
         if s.config_path is not None and not s.config_path.exists():
-            print(f"? Missing config for step '{s.name}': {s.config_path}", file=sys.stderr)
+            print(f"✗ Missing config for step '{s.name}': {s.config_path}", file=sys.stderr)
             return 2
 
-        rc = _run_module(s.module, s.config_path, dry_run=args.dry_run, verbose=args.verbose)
+        rc = _run_module(s.module, s.config_path, root=root, dry_run=args.dry_run, verbose=args.verbose)
         if rc != 0:
             return rc
 
     print("")
-    print("? Processing pipeline completed.")
+    print("✓ Processing pipeline completed.")
     return 0
 
 

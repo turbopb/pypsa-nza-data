@@ -61,46 +61,7 @@ import pandas as pd
 import yaml
 
 from utils.geospatial_utils import nztm_geod as gd
-import argparse
-import importlib
-from importlib import resources as importlib_resources
-
-def resolve_path(p: str, base: Path) -> Path:
-    """Resolve p as absolute if it is absolute, otherwise relative to base."""
-    pth = Path(p)
-    return pth if pth.is_absolute() else (base / pth).resolve()
-
-def default_config_path(filename: str) -> Path:
-    """Locate a default config YAML shipped with the installed package."""
-    pkg = importlib.import_module("pypsa_nza_data.config")
-    traversable = importlib_resources.files(pkg) / filename
-    with importlib_resources.as_file(traversable) as p:
-        return Path(p)
-
-def parse_args(argv=None):
-    p = argparse.ArgumentParser(
-        prog="nza_process_static_data",
-        description="PYPSA-NZA: process static NZ grid datasets into cleaned CSVs for modelling."
-    )
-    p.add_argument(
-        "--config",
-        type=str,
-        default=None,
-        help=(
-            "Path to static processing YAML config. If omitted, uses the packaged default "
-            "pypsa_nza_data/config/nza_raw_static_data.yaml."
-        ),
-    )
-    p.add_argument(
-        "--root",
-        type=str,
-        default=None,
-        help=(
-            "Workspace root used to resolve relative paths in the YAML (overrides config rootdir/root). "
-            "Use this to keep data/outputs outside the repo."
-        ),
-    )
-    return p.parse_args(argv)
+from nza_root import ROOT_DIR
 
 # ROOT_DIR should be a Path object or string - will be converted to Path below
 
@@ -447,17 +408,12 @@ class GridDataProcessor:
         self.config = config
         self.coord_converter = CoordinateConverter()
         
-        # Workspace root: base directory against which relative paths are resolved.
-        # This enables storing data products outside the repo, in any user-selected workspace.
-        root_value = config.get('rootdir') or config.get('root')
-        if not root_value:
-            raise KeyError("Config must define 'rootdir' (preferred) or 'root' in the YAML.")
-        self.root_dir = Path(root_value).resolve()
-
-        # Resolve input/output/log directories: absolute paths are used as-is; relative paths are resolved under root_dir.
-        self.input_dir = resolve_path(str(config['inpdir']), self.root_dir)
-        self.output_dir = resolve_path(str(config['outdir']), self.root_dir)
-        self.log_dir = resolve_path(str(config.get('logdir', 'logs')), self.root_dir)
+        # Convert all path strings to Path objects at initialization (cross-platform)
+        # Use .resolve() to get absolute paths - works identically on Windows and Linux
+        self.root_dir = Path(config['rootdir']).resolve()
+        self.input_dir = self.root_dir / config['inpdir']
+        self.output_dir = self.root_dir / config['outdir']
+        self.log_dir = self.root_dir / "logs"
         
         # Set up logging to both console and file
         setup_logging(self.log_dir)
@@ -613,45 +569,37 @@ def load_config(config_file: Path) -> dict:
         return {}
 
 
-def main(argv=None):
+def main():
     """Main function to run the grid data processing."""
     try:
-        args = parse_args(argv)
-
-        # Determine config path
-        if args.config:
-            config_file = Path(args.config).resolve()
-        else:
-            config_file = default_config_path("nza_raw_static_data.yaml")
-
+        # Convert ROOT_DIR to Path object and construct config file path
+        # Use Path / operator instead of string concatenation
+        root_path = Path(ROOT_DIR)
+        config_file = root_path / "config" / "nza_raw_static_data.yaml"
+        
         # Load configuration (logging not set up yet, so just use print for errors)
         config = load_config(config_file)
-
+        
         if not config:
             print(f"✗ Failed to load configuration from: {config_file}")
             print("Exiting.")
             return 1
 
-        # Apply workspace root override
-        if args.root:
-            workspace_root = Path(args.root).resolve()
-            config["rootdir"] = str(workspace_root)
-
         # Initialize processor (sets up logging)
         processor = GridDataProcessor(config)
 
-        # Process all data (explicit calls to keep behaviour unchanged)
+        # Process all data
         processor.process_pocs()
         processor.process_sites()
         processor.process_transmission_lines()
-
+        
         return 0
 
     except KeyboardInterrupt:
         logger.error("")
         logger.error("✗ Processing interrupted by user")
         return 130
-
+        
     except Exception as e:
         logger.error(f"✗ Application failed with error: {e}")
         import traceback
