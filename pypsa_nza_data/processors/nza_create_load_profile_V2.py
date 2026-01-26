@@ -75,7 +75,7 @@ CREATED
 
 MODIFIED
 --------
-    2025-12-07 - Standardized with nza_root.py integration
+    2025-12-07 - Standardized with legacy_root.py integration
                - Fixed ROOT_DIR conflicts
                - Added proper error handling
                - Improved cross-platform compatibility
@@ -96,13 +96,13 @@ import argparse
 import importlib
 from importlib import resources as importlib_resources
 
-def resolve_path(p: str, base: Path) -> str:
-    """Return a filesystem path string: absolute if p absolute, else resolved under base."""
+def resolve_path(p: str, base: Path) -> Path:
+    """Resolve p as absolute if it is absolute, otherwise relative to base."""
     pth = Path(p)
-    return str(pth) if pth.is_absolute() else str((base / pth).resolve())
+    return pth if pth.is_absolute() else (base / pth).resolve()
 
 def default_config_path() -> Path:
-    """Find the default YAML config shipped in pypsa_nza_data/config."""
+    """Locate the default config YAML shipped with the installed package."""
     pkg = importlib.import_module("pypsa_nza_data.config")
     candidates = [
         "nza_create_load_profile.yaml",
@@ -110,27 +110,24 @@ def default_config_path() -> Path:
         "nza_cx_config.yaml",
     ]
     for name in candidates:
-        t = importlib_resources.files(pkg) / name
-        try:
-            with importlib_resources.as_file(t) as p:
-                if Path(p).exists():
-                    return Path(p)
-        except FileNotFoundError:
-            continue
+        traversable = importlib_resources.files(pkg) / name
+        with importlib_resources.as_file(traversable) as p:
+            if Path(p).exists():
+                return Path(p)
     raise FileNotFoundError(
-        "No default load-profile config found in pypsa_nza_data/config. "
-        "Pass --config explicitly."
+        "Could not find a default load-profile config in pypsa_nza_data/config. "
+        "Please pass --config explicitly."
     )
 
 def parse_args(argv=None):
     p = argparse.ArgumentParser(
         prog="nza_create_load_profile",
-        description="Create bus-level half-hourly load profiles from downloaded NZ data."
+        description="PYPSA-NZA: build half-hourly load profiles from downloaded NZ data."
     )
     p.add_argument("--config", type=str, default=None,
-                   help="Path to YAML config. If omitted, uses a packaged default from pypsa_nza_data/config/.")
+                   help="Path to YAML config. If omitted, uses packaged default.")
     p.add_argument("--root", type=str, default=None,
-                   help="Workspace root used to resolve relative paths in the YAML (data outside repo).")
+                   help="Workspace root to resolve relative YAML paths.")
     return p.parse_args(argv)
 
 
@@ -848,184 +845,39 @@ def create_master_bus_file(bus_dir: str, output_path: str) -> int:
 # MAIN EXECUTION
 # =============================================================================
 
-def main(argv=None):
-    """
-    Main execution function for load profile creation.
-    
-    Processes 12 months of grid data to create bus, generation, and demand profiles
-    for PyPSA capital expansion analysis.
-    """
-    print("=" * 80)
-    print("NZA LOAD PROFILE CREATOR")
-    print("=" * 80)
-    print(f"Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
 
-
-    # Load configuration
+def main(argv=None) -> int:
     args = parse_args(argv)
-    
+
     config_path = Path(args.config).resolve() if args.config else default_config_path()
-    print(f"Loading configuration from: {config_path}")
-    
-    try:
-        config = load_config(str(config_path))
-    except (FileNotFoundError, yaml.YAMLError) as e:
-        print(f"Fatal error loading configuration: {e}")
-        return
-    
-    # Workspace root (data/output location)
+    config = load_config(config_path)
+
     root_from_cfg = None
     if isinstance(config, dict):
         paths_cfg = config.get("paths", {})
         if isinstance(paths_cfg, dict):
             root_from_cfg = paths_cfg.get("root") or paths_cfg.get("rootdir")
+
     workspace_root = Path(args.root).resolve() if args.root else (Path(root_from_cfg).resolve() if root_from_cfg else None)
-    
     if workspace_root is None:
-        print("Fatal error: no workspace root provided. Pass --root <WORKSPACE>, or set paths.root in the YAML.")
-        return
-    
-    # Extract paths from configuration (relative paths resolve under workspace_root)
+        raise RuntimeError("No workspace root provided. Pass --root or set paths.root in YAML.")
+
     paths = {
         'export': resolve_path(config['paths']['dirpath_export'], workspace_root),
         'import': resolve_path(config['paths']['dirpath_import'], workspace_root),
-        'gen':    resolve_path(config['paths']['dirpath_gen'], workspace_root),
-        'g':      resolve_path(config['paths']['dirpath_g_MWh'], workspace_root),
-        'bus':    resolve_path(config['paths']['dirpath_bus'], workspace_root),
-        'demand': resolve_path(config['paths']['dirpath_demand'], workspace_root),
-        'd'     : resolve_path(config['paths']['dirpath_d_MWh'], workspace_root),
-        'f1f2':   resolve_path(config['paths']['dirpath_f1f2'], workspace_root),
+        'gen': resolve_path(config['paths']['dirpath_gen'], workspace_root),
+        'bus': resolve_path(config['paths']['dirpath_bus'], workspace_root),
         'static': resolve_path(config['paths']['dirpath_static'], workspace_root),
+        'output': resolve_path(config['paths']['dirpath_output'], workspace_root),
+        'plot': resolve_path(config['paths']['dirpath_plot'], workspace_root),
     }
 
-    # Create output directories if they don't exist
-    print("\nEnsuring output directories exist...")
-    for key, path in paths.items():
-        if key != 'static':  # Don't create static directory
-            ensure_directory_exists(path, verbose=False)
+    paths['output'].mkdir(parents=True, exist_ok=True)
+    paths['plot'].mkdir(parents=True, exist_ok=True)
 
-    year = config['base_year']
-    print(f"\nPROCESSING YEAR: {year}")
-    print("\nLOADING AND PROCESSING ENERGY FLOW DATA...")
-
-    # Load grid export/import data (f1 & f2)
-    try:
-        df_f2 = aggregate_monthly_flow_data(paths['import'])  # Import data
-        df_f1 = aggregate_monthly_flow_data(paths['export'])  # Export data
-        print(f"Loaded {len(df_f1)} months of import/export data")
-    except Exception as e:
-        print(f"Error loading flow data: {e}")
-        return
-
-    # Read master bus data
-    bus_file = os.path.join(paths['static'], "nodes.csv")
-    if not os.path.exists(bus_file):
-        print(f"Error: Bus data file not found: {bus_file}")
-        return
-    
-    df_bus_master = pd.read_csv(bus_file)
-    print(f"\nLoaded {len(df_bus_master)} buses from NODES master file")
-    print(f"NODES file : {bus_file}")
-
-    # Generate file lists
-    bus_file_list = generate_monthly_filenames(year, "all", "bus_data", "csv")
-    gen_file_list = list_filenames_in_directory(paths['gen'], False)
-    delta_file_list = generate_monthly_filenames(year, "all", "delta_f1f2_md", "csv")
-    demand_file_list = generate_monthly_filenames(year, "all", "demand_md", "csv")
-
-    # Load transmission line data for connectivity checking
-    lines_file = os.path.join(paths['static'], "lines_data.csv")
-    if not os.path.exists(lines_file):
-        print(f"Error: Lines data file not found: {lines_file}")
-        return
-    
-    df_lines = pd.read_csv(lines_file)
-    print(f"Loaded {len(df_lines)} transmission lines")
-
-    print(f"\nProcessing {len(df_f1)} months of data...")
-    print("=" * 80)
-
-    # Process each month
-    for i in range(12):
-        month_name = calendar.month_name[i + 1]
-        print(f"\n{month_name} (Month {i + 1}/12)")
-        print("-" * 40)
-
-        # Get participating sites
-        f2_sites = set(df_f2[i].columns[1:])
-        f1_sites = set(df_f1[i].columns[1:])
-        f1f2_sites = sorted(list(f2_sites.union(f1_sites)))
-
-        print(f"  Found {len(f1f2_sites)} participating sites")
-
-        # PROCESS BUSES
-        df_filtered = extract_matching_buses(df_bus_master, f1f2_sites)
-        connected_buses, disconnected_buses = check_bus_connectivity(
-            df_lines, f1f2_sites, verbose=False
-        )
-
-        # Save bus data
-        bus_output_path = os.path.join(paths['bus'], bus_file_list[i])
-        df_filtered.to_csv(bus_output_path, index=False)
-        print(f"  Saved bus data: {bus_file_list[i]}")
-
-        # PROCESS GENERATION
-        gen_file_path = os.path.join(paths['gen'], gen_file_list[i])
-        df_g = aggregate_columns_by_prefix(gen_file_path)
-        df_g = process_generation_anomalies(df_g)
-
-        # Save generation data
-        gen_output_path = os.path.join(paths['g'], gen_file_list[i])
-        df_g.round(4).to_csv(gen_output_path, index=False)
-        print(f"  Saved generation: {gen_file_list[i]}")
-
-        # PROCESS DEMAND
-        # Compute net flow (export - import)
-        df_delta, missing_sites, clipped_sites = subtract_site_data(
-            df_f1[i], df_f2[i]
-        )
-
-        # Save delta data
-        delta_output_path = os.path.join(paths['f1f2'], delta_file_list[i])
-        df_delta.round(4).to_csv(delta_output_path, index=False)
-        print(f"  Saved delta flow: {delta_file_list[i]}")
-
-        # Combine generation and net flow to get demand
-        df_demand = add_matching_columns_with_timestamp(df_g, df_delta)
-        df_demand = replace_negatives_with_zero(df_demand)
-
-        # Save demand data
-        demand_output_path = os.path.join(paths['d'], demand_file_list[i])
-        df_demand.to_csv(demand_output_path, index=False)
-        print(f"  Saved demand: {demand_file_list[i]}")
+    create_load_profile(config, paths)
+    return 0
 
 
-    # Create master bus file from all monthly bus files
-    try:
-        master_bus_path = os.path.join(paths['static'], "busses.csv")
-        num_buses = create_master_bus_file(paths['bus'], master_bus_path)
-    except Exception as e:
-        print(f"\n⚠ Warning: Could not create master bus file: {e}")
-
-    print("\n" + "=" * 80)
-    print("DATA PROCESSING COMPLETE")
-    print("=" * 80)
-    print("\nGenerated files:")
-    print(f"  - {len(bus_file_list)} monthly bus data files")
-    print(f"  - 1 master bus data file (busses.csv)")
-    print(f"  - {len(gen_file_list)} generation files")
-    print(f"  - {len(delta_file_list)} delta flow files")
-    print(f"  - {len(demand_file_list)} demand files")
-    print(f"\nEnd time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
-
-
-if __name__ == '__main__':
-    try:
-        main()
-        sys.exit(0)  # Explicit success
-    except Exception as e:
-        print(f"\nError: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)  # Explicit failure
-    
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -92,47 +92,6 @@ import calendar
 import time
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
-import argparse
-import importlib
-from importlib import resources as importlib_resources
-
-def resolve_path(p: str, base: Path) -> str:
-    """Return a filesystem path string: absolute if p absolute, else resolved under base."""
-    pth = Path(p)
-    return str(pth) if pth.is_absolute() else str((base / pth).resolve())
-
-def default_config_path() -> Path:
-    """Find the default YAML config shipped in pypsa_nza_data/config."""
-    pkg = importlib.import_module("pypsa_nza_data.config")
-    candidates = [
-        "nza_create_load_profile.yaml",
-        "nza_create_load_profiles.yaml",
-        "nza_cx_config.yaml",
-    ]
-    for name in candidates:
-        t = importlib_resources.files(pkg) / name
-        try:
-            with importlib_resources.as_file(t) as p:
-                if Path(p).exists():
-                    return Path(p)
-        except FileNotFoundError:
-            continue
-    raise FileNotFoundError(
-        "No default load-profile config found in pypsa_nza_data/config. "
-        "Pass --config explicitly."
-    )
-
-def parse_args(argv=None):
-    p = argparse.ArgumentParser(
-        prog="nza_create_load_profile",
-        description="Create bus-level half-hourly load profiles from downloaded NZ data."
-    )
-    p.add_argument("--config", type=str, default=None,
-                   help="Path to YAML config. If omitted, uses a packaged default from pypsa_nza_data/config/.")
-    p.add_argument("--root", type=str, default=None,
-                   help="Workspace root used to resolve relative paths in the YAML (data outside repo).")
-    return p.parse_args(argv)
-
 
 import yaml
 import pandas as pd
@@ -141,6 +100,12 @@ import numpy as np
 # =============================================================================
 # PROJECT ROOT DETECTION
 # =============================================================================
+
+ROOT_PROJECT = Path(__file__).parent.parent.parent.parent
+sys.path.insert(0, str(ROOT_PROJECT))
+
+from nza_root import ROOT_DIR
+
 
 # =============================================================================
 # CONFIGURATION MANAGEMENT
@@ -848,7 +813,7 @@ def create_master_bus_file(bus_dir: str, output_path: str) -> int:
 # MAIN EXECUTION
 # =============================================================================
 
-def main(argv=None):
+def main():
     """
     Main execution function for load profile creation.
     
@@ -860,42 +825,28 @@ def main(argv=None):
     print("=" * 80)
     print(f"Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
 
-
     # Load configuration
-    args = parse_args(argv)
+    config_file = os.path.join(ROOT_DIR, 'config', 'nza_cx_config.yaml')
     
-    config_path = Path(args.config).resolve() if args.config else default_config_path()
-    print(f"Loading configuration from: {config_path}")
+    print(f"Loading configuration from: {config_file}")
     
     try:
-        config = load_config(str(config_path))
+        config = load_config(config_file)
     except (FileNotFoundError, yaml.YAMLError) as e:
         print(f"Fatal error loading configuration: {e}")
         return
-    
-    # Workspace root (data/output location)
-    root_from_cfg = None
-    if isinstance(config, dict):
-        paths_cfg = config.get("paths", {})
-        if isinstance(paths_cfg, dict):
-            root_from_cfg = paths_cfg.get("root") or paths_cfg.get("rootdir")
-    workspace_root = Path(args.root).resolve() if args.root else (Path(root_from_cfg).resolve() if root_from_cfg else None)
-    
-    if workspace_root is None:
-        print("Fatal error: no workspace root provided. Pass --root <WORKSPACE>, or set paths.root in the YAML.")
-        return
-    
-    # Extract paths from configuration (relative paths resolve under workspace_root)
+
+    # Extract paths from configuration
     paths = {
-        'export': resolve_path(config['paths']['dirpath_export'], workspace_root),
-        'import': resolve_path(config['paths']['dirpath_import'], workspace_root),
-        'gen':    resolve_path(config['paths']['dirpath_gen'], workspace_root),
-        'g':      resolve_path(config['paths']['dirpath_g_MWh'], workspace_root),
-        'bus':    resolve_path(config['paths']['dirpath_bus'], workspace_root),
-        'demand': resolve_path(config['paths']['dirpath_demand'], workspace_root),
-        'd'     : resolve_path(config['paths']['dirpath_d_MWh'], workspace_root),
-        'f1f2':   resolve_path(config['paths']['dirpath_f1f2'], workspace_root),
-        'static': resolve_path(config['paths']['dirpath_static'], workspace_root),
+        'export': os.path.join(ROOT_DIR, config['paths']['dirpath_export']),
+        'import': os.path.join(ROOT_DIR, config['paths']['dirpath_import']),
+        'gen':    os.path.join(ROOT_DIR, config['paths']['dirpath_gen']),
+        'g':      os.path.join(ROOT_DIR, config['paths']['dirpath_g_MWh']),
+        'bus':    os.path.join(ROOT_DIR, config['paths']['dirpath_bus']),
+        'demand': os.path.join(ROOT_DIR, config['paths']['dirpath_demand']),
+        'd'     : os.path.join(ROOT_DIR, config['paths']['dirpath_d_MWh']),
+        'f1f2':   os.path.join(ROOT_DIR, config['paths']['dirpath_f1f2']),
+        'static': os.path.join(ROOT_DIR, config['paths']['dirpath_static']),
     }
 
     # Create output directories if they don't exist
@@ -904,7 +855,7 @@ def main(argv=None):
         if key != 'static':  # Don't create static directory
             ensure_directory_exists(path, verbose=False)
 
-    year = config['base_year']
+    year = config['start_year']
     print(f"\nPROCESSING YEAR: {year}")
     print("\nLOADING AND PROCESSING ENERGY FLOW DATA...")
 

@@ -1,10 +1,17 @@
 # ==============================================================================
-# PyPSA-NZA-DATA Dynamic Data Processing Configuration
+# PyPSA-NZA-DATA : Create Load Profile Configuration
 # ==============================================================================
-# This file controls the processsing of time-series (monthly) datasets downloaded 
-# from the Electricity Authority's EMI website.
+# This file controls the creation of load profiles from the cleaned time-series 
+# (monthly) datasets modified by "nza_process_dynamic_data.py"
 #
 # ==============================================================================
+# python -m pypsa_nza_data.processors.nza_process_dynamic_data \
+#   --config pypsa_nza_data/config/nza_process_dynamic_data.yaml \
+#   --root /home/reviewer/nz_workspace
+# OR
+# python -m pypsa_nza_data.processors.nza_process_dynamic_data ^
+#   --config pypsa_nza_data/config/nza_process_dynamic_data.yaml ^
+#   --root /home/reviewer/nz_workspace
 
 
 # ------------------------------------------------------------------------------
@@ -12,32 +19,52 @@
 # Paths relative to project root. Use {year} placeholder for year-specific dirs.
 # ------------------------------------------------------------------------------
 paths:
-#   root:     "/home/pbrun/{{enter sub-dir name}}"  # Linux work-space directory: user spec
-    root:       "C:/Users/Public/Documents/Thesis/analysis"  # Windows work-space directory: user spec
-    gen_in:     "data/raw/2024/gen/"
-    gen_out:    "data/processed/2024/gen/cons_MWh/"
-    import_in:  "data/raw/2024/import/"
-    import_out: "data/processed/2024/import/cons_MWh/"
-    export_in:  "data/raw/2024/export/"
-    export_out: "data/processed/2024/export/cons_MWh/"
-    hvdc_in:    "data/raw/2024/hvdc/"
-    hvdc_out:   "data/processed/2024/hvdc/cons_MWh/"
-    react_in:   "data/raw/2024/react/"
-    react_out:  "data/processed/2024/react/cons_MWh/"
+#   root:                 "/home/pbrun/{{enter sub-dir name}}"  # Linux work-space directory: user spec
+    root:                "C:/Users/Public/Documents/Thesis/analysis"  # Windows work-space directory: user spec
+    dirpath_static:      "data/processed/static/"
+    dirpath_export:      "data/processed/2024/export/cons_MWh/"
+    dirpath_import:      "data/processed/2024/import/cons_MWh/"
+    dirpath_gen:         "data/processed/2024/gen/cons_MWh/"
+    dirpath_g_MWh:       "data/processed/2024/gen/g_MWh/"
+    dirpath_g_MW:        "data/processed/2024/gen/g_MW/"
+    dirpath_bus:         "data/processed/2024/bus"
+    dirpath_load:        "data/processed/2024/load/delta_f1f2/"
+    dirpath_f1f2:        "data/processed/2024/delta_f1f2/"
+    dirpath_demand:      "data/processed/2024/demand/d_MW"
+    dirpath_d_MW:        "data/processed/2024/demand/d_MW"
+    dirpath_d_MWh:       "data/processed/2024/demand/d_MWh/"
+    dirpath_d:           "data/processed/2024/demand/d_MWh"
+    dirpath_costs:       "data/costs/"
+    dirpath_networks:    "models/capacity_expansion/edgs/reference/networks/"
+    dirpath_base:        "models/capacity_expansion/edgs/reference/demand/"
+    dirpath_renewables:  "models/capacity_expansion/renewables/"
+    dirpath_mbie:        "data/external/mbie/"
+    dirpath_mbie_edgs:   "data/external/mbie_edgs/"
+    dirpath_NIWA:        "data/natural resources/wind/"
+    dirpath_wind_pu_ann: "wind/wind_data_output/"
+    dirpath_wind_pu_mon: "wind/wind_p_pu_monthly/2024/"
+    dirpath_solar_pu:    "solar/"
+    dirpath_cx_base_demand: "cases/reference/2024/"
 
+filename:
+    bus_data:   "busses.csv"
+    line_data:  "lines_data.csv"
+    link_data:  "links_data.csv"
+    gen_data:   "gen_data.csv"
+    costs_file: "nz_energy_tech_costs_2023_nzd.yaml"
+    wind:       "wind_p_pu_synthetic.csv"
+    wind_pu:    "NIWA_bus_p_pu_2024.csv"
+    wind_pu_mon: "wind_p_pu_{month_code}.csv"
+    NIWA:       "5ySWD-EC-tenm.csv"
+    solar:      "solar_PV_p_pu.csv"
+    shares:     "electricity_generation_modality.csv"
 
+demand_file_suffix: "_d_MW.csv"
 
-grid_energy_types:
-   - gen
-   - export
-   - import
-   - hvdc
-   - react
-
-# ------------------------------------------------------------------------------
-# SCALE FACTOR
-# Converts from kWh to MWh by multiplying all data by 0.001
-# ------------------------------------------------------------------------------
-scale_factor : 1.0e-3
-
-
+# Date Specifications
+start_date: '2024-01-01 00:00:00'
+end_date:   '2024-12-31 23:30:00'
+frequency:  '30T'  # 1/2 hour
+base_year: 2024
+start_year: 2024
+weather_year: 2024
