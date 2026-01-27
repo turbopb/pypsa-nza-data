@@ -90,11 +90,40 @@ import sys
 import os
 import calendar
 import time
+import logging
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 import argparse
 import importlib
 from importlib import resources as importlib_resources
+
+
+
+logger = logging.getLogger(__name__)
+
+def setup_logging(log_dir: Path) -> Path:
+    log_dir.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = log_dir / f"nza_create_load_profile_{ts}.log"
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    root_logger.handlers.clear()
+
+    fmt_file = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    fmt_console = logging.Formatter("%(message)s")
+
+    ch = logging.StreamHandler()
+    ch.setFormatter(fmt_console)
+    root_logger.addHandler(ch)
+
+    fh = logging.FileHandler(log_file, mode="w", encoding="utf-8")
+    fh.setFormatter(fmt_file)
+    root_logger.addHandler(fh)
+
+    return log_file
+
 
 def resolve_path(p: str, base: Path) -> str:
     """Return a filesystem path string: absolute if p absolute, else resolved under base."""
@@ -855,32 +884,34 @@ def main(argv=None):
     Processes 12 months of grid data to create bus, generation, and demand profiles
     for PyPSA capital expansion analysis.
     """
-    print("=" * 80)
-    print("NZA LOAD PROFILE CREATOR")
-    print("=" * 80)
-    print(f"Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
-
-
     # Load configuration
     args = parse_args(argv)
     
     config_path = Path(args.config).resolve() if args.config else default_config_path()
-    print(f"Loading configuration from: {config_path}")
-    
     try:
         config = load_config(str(config_path))
     except (FileNotFoundError, yaml.YAMLError) as e:
         print(f"Fatal error loading configuration: {e}")
         return
+    # Workspace root (data/output location): require --root for reviewer-safe runs
+    workspace_root = Path(args.root).resolve() if args.root else None
+    if workspace_root is None:
+        print("Fatal error: no workspace root provided. Pass --root <WORKSPACE>.")
+        return
+
+    # Logging (under workspace_root / paths.logs, default "logs")
+    logs_rel = config.get("paths", {}).get("logs", "logs")
+    log_dir = Path(resolve_path(str(logs_rel), workspace_root))
+    log_file = setup_logging(log_dir)
     
-    # Workspace root (data/output location)
-    root_from_cfg = None
-    if isinstance(config, dict):
-        paths_cfg = config.get("paths", {})
-        if isinstance(paths_cfg, dict):
-            root_from_cfg = paths_cfg.get("root") or paths_cfg.get("rootdir")
-    workspace_root = Path(args.root).resolve() if args.root else (Path(root_from_cfg).resolve() if root_from_cfg else None)
-    
+    logger.info("=" * 80)
+    logger.info("NZA LOAD PROFILE CREATOR")
+    logger.info("=" * 80)
+    logger.info(f"Start time:     {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"Config:         {config_path}")
+    logger.info(f"Workspace root: {workspace_root}")
+    logger.info(f"Log file:       {log_file}")
+    logger.info("")
     if workspace_root is None:
         print("Fatal error: no workspace root provided. Pass --root <WORKSPACE>, or set paths.root in the YAML.")
         return

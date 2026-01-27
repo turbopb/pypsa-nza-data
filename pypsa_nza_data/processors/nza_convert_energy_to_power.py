@@ -84,7 +84,7 @@ ENERGY_TO_POWER_FACTOR = 2.0
 TRADING_PERIOD_HOURS = 0.5
 
 # Default configuration file path (for Spyder/IDE use)
-DEFAULT_CONFIG_FILE = os.path.join(ROOT_DIR, 'config', 'nza_convert_config.yaml')
+DEFAULT_CONFIG_FILE = os.path.join(ROOT_DIR, 'config', 'nza_convert_energy_to_power.yamll')
 
 # Default profile (set to None to process all types, or specify a profile name)
 DEFAULT_PROFILE = None  # Options: None, "gen_only", "demand_only", "gen_demand", "all"

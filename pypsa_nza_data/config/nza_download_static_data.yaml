@@ -18,6 +18,9 @@
 directories:
   # Main data directory
   base: "data/raw"
+
+  # Logs
+  logs: "data/raw/logs"
   
   # Static data (Sites, generators, transmission lines)
   static_data_dir: "data/raw/static"        # ← Change this for testing
@@ -31,10 +34,7 @@ directories:
   # Monthly load data  
   load: "data/raw/load"
   
-  # Logging  
-  logs: "logs"
   
-
 # ------------------------------------------------------------------------------
 # DATA SOURCE URLs
 # ------------------------------------------------------------------------------
@@ -48,6 +48,7 @@ data_sources:
     name: "Electricity Authority (EMI) - Azure Blob Storage"
     base_url: "https://emidatasets.blob.core.windows.net/publicdata/Datasets/Wholesale"
 
+
 # ------------------------------------------------------------------------------
 # DATASETS TO DOWNLOAD
 # ------------------------------------------------------------------------------
@@ -60,6 +61,7 @@ data_sources:
 #   directory: Where to save it (from directories section above)
 #   validate_min_rows: Minimum rows expected (for validation)
 #   enabled: true/false to enable/disable download
+
 
 datasets:
   # --------------------------------------------------------------------------
@@ -95,7 +97,8 @@ datasets:
     directory: "static_data_dir"
     description: "Transmission line circuits and routes"
     validate_min_rows: 50
-  
+
+
   # --------------------------------------------------------------------------
   # ELECTRICITY AUTHORITY DATASETS
   # --------------------------------------------------------------------------
@@ -119,6 +122,7 @@ datasets:
     directory: "static_data_dir"
     description: "Network Supply Points mapping table"
     validate_min_rows: 50
+
 
 # ------------------------------------------------------------------------------
 # VALIDATION SETTINGS

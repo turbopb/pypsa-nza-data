@@ -19,8 +19,7 @@
 # Paths relative to project root. Use {year} placeholder for year-specific dirs.
 # ------------------------------------------------------------------------------
 paths:
-#   root:                 "/home/pbrun/{{enter sub-dir name}}"  # Linux work-space directory: user spec
-    root:                "C:/Users/Public/Documents/Thesis/analysis"  # Windows work-space directory: user spec
+    logs:                "logs"
     dirpath_static:      "data/processed/static/"
     dirpath_export:      "data/processed/2024/export/cons_MWh/"
     dirpath_import:      "data/processed/2024/import/cons_MWh/"

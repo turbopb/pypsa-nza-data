@@ -18,6 +18,9 @@
 directories:
     # Base directory
     base: "data/raw"
+
+    # Logs
+    logs: "data/raw/logs"
   
     # Year-specific directories for each data type
     generation: "data/raw/{year}/gen"
@@ -25,7 +28,7 @@ directories:
     grid_export: "data/raw/{year}/export"
     hvdc: "data/raw/{year}/hvdc"
     reactive: "data/raw/{year}/react"
-  
+    
     # Archive for timestamped backups
     archive: "data/raw/dynamic/archived"
 

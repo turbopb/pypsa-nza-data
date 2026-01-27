@@ -15,6 +15,7 @@ paths:
     # Directory paths for primary processing of raw data: "raw" to "consolidated" (aka "cons_MWh")
     # root:     "/home/pbrun/{{enter sub-dir name}}"  # Linux work-space directory: user spec
     root:       "C:/Users/Public/Documents/Thesis/analysis"  # Windows work-space directory: user spec
+    logs:       "logs"
     gen_in:     "data/raw/2024/gen/"
     gen_out:    "data/processed/2024/gen/cons_MWh/"
     import_in:  "data/raw/2024/import/"

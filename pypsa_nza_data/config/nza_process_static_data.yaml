@@ -1,7 +1,8 @@
 # rootdir: "/home/pbrun/"   # LINuX
 rootdir: "C://Users/Public/Documents/Thesis/analysis"
-inpdir: "data/raw/static/"
-outdir: "data/processed/static/"
+logs:    "logs"
+inpdir:  "data/raw/static/"
+outdir:  "data/processed/static/"
 
 sites_inp: "sites.csv"
 sites_out: "sites.csv"

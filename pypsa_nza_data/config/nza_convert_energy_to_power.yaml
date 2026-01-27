@@ -1,0 +1,93 @@
+# nza_convert_config.yaml
+#
+# Configuration file for nza_convert_energy_to_power.py
+#
+# USAGE:
+#   python nza_convert_energy_to_power.py --config config/nza_convert_config.yaml
+#
+# Or use specific profile:
+#   python nza_convert_energy_to_power.py --config config/nza_convert_config.yaml --profile gen_2024
+
+# Default conversion settings
+default:
+  conversion_factor: 2.0  # MWh to MW for 30-minute periods
+  year: "2024"
+  allow_negative: false   # Set true for reactive power
+
+# Individual energy type configurations
+energy_types:
+  
+  # Generation data
+  gen:
+    input_dir: "data/processed/2024/gen/g_MWh"
+    output_dir: "data/processed/2024/gen/g_MW"
+    input_pattern: "*_gen_md.csv"      # Files matching this pattern
+    output_suffix: "_g_MW.csv"          # Replace input filename with this
+    allow_negative: false
+    description: "Generation: MWh to MW"
+  
+  # Demand data
+  demand:
+    input_dir: "data/processed/2024/demand/d_MWh"
+    output_dir: "data/processed/2024/demand/d_MW"
+    input_pattern: "*_demand_md.csv"
+    output_suffix: "_d_MW.csv"
+    allow_negative: false
+    description: "Demand: MWh to MW"
+  
+  # DC link data (add when ready)
+  dc:
+    input_dir: "data/processed/2024/hvdc/cons_MWh"
+    output_dir: "data/processed/2024/hvdc/dc_MW"
+    input_pattern: "*_hvdc_md.csv"
+    output_suffix: "_dc_MW.csv"
+    allow_negative: false
+    description: "DC Link: MWh to MW"
+  
+  # Reactive power (add when ready)
+  react:
+    input_dir: "data/processed/2024/react/cons_MWh"
+    output_dir: "data/processed/2024/react/react_MVAR"
+    input_pattern: "*_react_md.csv"  
+    output_suffix: "_q_MVAR.csv"
+    allow_negative: true  # Reactive power can be negative
+    description: "Reactive Power: MWh to MVAR"
+
+# Named profiles for quick access
+profiles:
+  
+  # Process only generation
+  gen_only:
+    energy_types: ["gen"]
+    description: "Convert generation data only"
+  
+  # Process only demand
+  demand_only:
+    energy_types: ["demand"]
+    description: "Convert demand data only"
+  
+  # Process generation and demand (most common)
+  gen_demand:
+    energy_types: ["gen", "demand"]
+    description: "Convert generation and demand data"
+  
+  # Process all active power types
+  all_active:
+    energy_types: ["gen", "demand", "dc"]
+    description: "Convert all active power types"
+  
+  # Process everything
+  all:
+    energy_types: ["gen", "demand", "dc", "react"]
+    description: "Convert all energy types"
+
+# You can add more energy types as needed
+# Just follow the same pattern:
+#
+# new_type:
+#   input_dir: "path/to/input"
+#   output_dir: "path/to/output"
+#   input_pattern: "*_pattern.csv"
+#   output_suffix: "_output.csv"
+#   allow_negative: false
+#   description: "Description of this type"

@@ -60,7 +60,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from utils.geospatial_utils import nztm_geod as gd
+from pypsa_nza_data.geospatial_utils import nztm_geod as gd
 import argparse
 import importlib
 from importlib import resources as importlib_resources
@@ -502,7 +502,7 @@ class GridDataProcessor:
             # Save to output file
             logger.info("")
             logger.info(f"Writing {len(df_processed)} records to: {output_path}")
-            df_processed.to_csv(output_path, index=True)
+            df_processed.to_csv(output_path, index=False)
             
             logger.info("✓ POC processing completed successfully")
             logger.info("")
@@ -531,7 +531,7 @@ class GridDataProcessor:
             # Save to output file
             logger.info("")
             logger.info(f"Writing {len(df_processed)} records to: {output_path}")
-            df_processed.to_csv(output_path, index=True)
+            df_processed.to_csv(output_path, index=False)
             
             logger.info("✓ Sites processing completed successfully")
             logger.info("")
@@ -560,7 +560,7 @@ class GridDataProcessor:
             # Save to output file
             logger.info("")
             logger.info(f"Writing {len(df_processed)} records to: {output_path}")
-            df_processed.to_csv(output_path, index=True)
+            df_processed.to_csv(output_path, index=False)
             
             logger.info("✓ Transmission lines processing completed successfully")
             logger.info("")
@@ -622,7 +622,7 @@ def main(argv=None):
         if args.config:
             config_file = Path(args.config).resolve()
         else:
-            config_file = default_config_path("nza_raw_static_data.yaml")
+            config_file = default_config_path("nza_process_static_data.yaml")
 
         # Load configuration (logging not set up yet, so just use print for errors)
         config = load_config(config_file)
