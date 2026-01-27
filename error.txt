@@ -1,37 +1,5 @@
 
-Found 216 unique sites in input data
-Converting NZTM coordinates to latitude/longitude...
-Renamed column: 'description' -> 'name'
-Successfully processed 216 site records
-Output columns: X, Y, type, name, site, long, lat
-
-Writing 216 records to: C:\Users\Public\Documents\Thesis\analysis\data\processed\static\sites.csv
-✓ Sites processing completed successfully
-
-================================================================================
-                         PROCESSING TRANSMISSION LINES
-================================================================================
-Input file:  C:\Users\Public\Documents\Thesis\analysis\data\raw\static\transmission_Lines.csv
-Output file: C:\Users\Public\Documents\Thesis\analysis\data\processed\static\trans_lines.csv
 
 
---- Processing Transmission Lines Data ---
-
-Input records: 227
-Sorted by voltage level
-Parsing line names to extract bus connections...
-Successfully processed 227 transmission line records
-Output columns: name, volts, description, type, tag, length, bus0, bus1
-
-Writing 227 records to: C:\Users\Public\Documents\Thesis\analysis\data\processed\static\trans_lines.csv
-✓ Transmission lines processing completed successfully
-
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\processors\nza_create_load_profile.py", line 107, in <module>
-    from nza_root import ROOT_DIR
-ModuleNotFoundError: No module named 'nza_root'
-✗ Step failed: pypsa_nza_data.processors.nza_create_load_profile (exit code 1)
-
-(pypsa-nza-data) C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>
+pip install -e .
+python -c "from pypsa_nza_data.geospatial_utils import nztm_geod as gd; print('ok')"
