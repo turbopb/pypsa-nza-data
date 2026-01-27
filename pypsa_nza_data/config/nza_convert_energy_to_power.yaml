@@ -1,5 +1,14 @@
-# nza_convert_config.yaml
+# ==============================================================================
+# PyPSA-NZA-DATA : Convert Energy to Power Configuration
+# ==============================================================================
+# nza_convert_energy_to_power.yaml
 #
+# This file controls the converson of electrical energy from the cleaned time-
+# series (monthly) datasets modified by "nza_process_dynamic_data.py" and 
+# "nza_create_load_profile.py"
+#
+# ==============================================================================
+
 # Configuration file for nza_convert_energy_to_power.py
 #
 # USAGE:
@@ -7,6 +16,10 @@
 #
 # Or use specific profile:
 #   python nza_convert_energy_to_power.py --config config/nza_convert_config.yaml --profile gen_2024
+
+# Log Path
+paths:
+    logs: "logs"
 
 # Default conversion settings
 default:

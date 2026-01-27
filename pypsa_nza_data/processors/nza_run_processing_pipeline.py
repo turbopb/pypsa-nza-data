@@ -30,10 +30,10 @@ except Exception:  # pragma: no cover
 PACKAGE_NAME = "pypsa_nza_data"
 
 # Default config basenames (Option 1: separate YAML per processor script)
-DEFAULT_DYNAMIC_CONFIG = "nza_process_dynamic_data.yaml"
-DEFAULT_STATIC_CONFIG = "nza_process_static_data.yaml"
-DEFAULT_LOAD_PROFILE_CONFIG = "nza_cx_config.yaml"
-DEFAULT_CONVERT_CONFIG = "nza_convert_config.yaml"
+DEFAULT_DYNAMIC_CONFIG      = "nza_process_dynamic_data.yaml"
+DEFAULT_STATIC_CONFIG       = "nza_process_static_data.yaml"
+DEFAULT_LOAD_PROFILE_CONFIG = "nza_create_load_profile.yaml"
+DEFAULT_ENERGY_TO_POWER_CONFIG  = "nza_convert_energy_to_power.yaml"
 
 
 @dataclass(frozen=True)
@@ -98,7 +98,7 @@ def build_steps(args: argparse.Namespace) -> list[Step]:
     dyn_cfg = Path(args.config_dynamic) if args.config_dynamic else _default_config_path(DEFAULT_DYNAMIC_CONFIG)
     sta_cfg = Path(args.config_static) if args.config_static else _default_config_path(DEFAULT_STATIC_CONFIG)
     load_cfg = Path(args.config_load) if args.config_load else _default_config_path(DEFAULT_LOAD_PROFILE_CONFIG)
-    conv_cfg = Path(args.config_convert) if args.config_convert else _default_config_path(DEFAULT_CONVERT_CONFIG)
+    conv_cfg = Path(args.config_convert) if args.config_convert else _default_config_path(DEFAULT_ENERGY_TO_POWER_CONFIG)
 
     steps: list[Step] = []
 
@@ -155,7 +155,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     g.add_argument("--dynamic", action="store_true", help="Run dynamic processing step only.")
     g.add_argument("--static", action="store_true", help="Run static processing step only.")
     g.add_argument("--load-profile", action="store_true", help="Run load profile creation step only.")
-    g.add_argument("--convert", action="store_true", help="Run energy?power conversion step only.")
+    g.add_argument("--convert", action="store_true", help="Run energy to power conversion step only.")
 
     # Config overrides (Option 1)
     c = p.add_argument_group("Config overrides (optional)")
