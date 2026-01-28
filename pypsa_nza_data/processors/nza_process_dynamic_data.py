@@ -926,7 +926,7 @@ def process_energy_by_modality(
         date_index = pd.date_range(
             start=date_extracted, 
             periods=num_periods, 
-            freq=f'{MINUTES_PER_TRADING_PERIOD}T'
+            freq=f'{MINUTES_PER_TRADING_PERIOD}min'
         )
         
         df_vector.index = date_index

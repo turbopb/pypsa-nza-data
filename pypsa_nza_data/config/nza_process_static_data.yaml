@@ -7,7 +7,7 @@ outdir:  "data/processed/static/"
 sites_inp: "sites.csv"
 sites_out: "sites.csv"
 
-trans_inp: "transmission_Lines.csv"
+trans_inp: "transmission_lines.csv"
 trans_out: "trans_lines.csv"
 
 pocs_inp: "NetworkSupplyPointsTable.csv"
@@ -15,42 +15,3 @@ pocs_out: "pocs.csv"
 
 gen_inp: "20250917_DispatchedGenerationPlant.csv"
 gen_out: "generators.csv"
-
-
-# # Missing data in NSP file
-# pocs_add_data:
-#     HRP :
-#         name : "Harapaki"
-#         X : 1918647.8
-#         Y : 5654283.3
-#         lat : -39.2023
-#         long: 176.6899
-        
-#     JRD :
-#         name : "Junction Road"
-#         X : 1695406.1
-#         Y : 5669677.7
-#         lat : -39.11684
-#         long: 174.103595
-        
-#     TAB :
-#         name : "Tauhara"
-#         X : 1873840.6
-#         Y : 5715171.3
-#         lat : -38.669722
-#         long: 176.1475        
-        
-#     NWD :
-#         name : "Norwood"
-#         X : 1547495
-#         Y : 5177901
-#         lat : -43.55
-#         long: 172.35        
-
-#     HTU :
-#         name : "Hautapu (Forrest Road)"
-#         X : 1814590.2
-#         Y : 5804692.6
-#         lat : -37.88
-#         long: 175.44    
-
