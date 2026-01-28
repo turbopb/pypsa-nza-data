@@ -49,7 +49,7 @@ def get_repo_root() -> Path:
 
 def get_default_config_path() -> Path:
     """Locate the packaged default YAML config."""
-    return files("pypsa_nza_data").joinpath("config/nza_load_static_data.yaml")
+    return files("pypsa_nza_data").joinpath("config/nza_download_static_data.yaml")
 
 
 def setup_logging(log_dir: Path) -> Tuple[Path, logging.FileHandler]:
@@ -472,23 +472,20 @@ class DownloadOrchestrator:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Download PyPSA-NZA static datasets (config in YAML file)")
-    parser.add_argument("--root", type=str, required=True, help="Workspace root directory (data and logs are written here)")
-")
     parser.add_argument("--dataset", type=str, help="Download only specific dataset")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be downloaded without downloading")
     parser.add_argument("--config", type=str, default=None, help="Override path to YAML config")
     args = parser.parse_args()
 
     start_time = datetime.now()
-    workspace_root = Path(args.root).expanduser().resolve()
-
+    root_path = get_repo_root()
     config_path = Path(args.config) if args.config else Path(get_default_config_path())
 
     # Load config early (we need it for log_dir)
     config = load_config(config_path)
 
     logs_rel = config.get("directories", {}).get("logs") if isinstance(config.get("directories", {}), dict) else None
-    log_dir = (workspace_root / str(logs_rel)).resolve() if logs_rel else (workspace_root / "logs").resolve()
+    log_dir = (root_path / str(logs_rel)).resolve() if logs_rel else (root_path / "logs").resolve()
 
     log_file, file_handler = setup_logging(log_dir)
 
@@ -496,7 +493,7 @@ def main() -> int:
         print_header("PYPSA-NZA STATIC DATA DOWNLOADER", "=")
         logger.info("")
         logger.info(f"Start time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-        logger.info(f"Repo root:  {workspace_root}")
+        logger.info(f"Repo root:  {root_path}")
         logger.info(f"Config:     {config_path}")
         if args.dataset:
             logger.info(f"Filter:     Only '{args.dataset}'")
@@ -535,7 +532,7 @@ def main() -> int:
         print_header("DRY RUN" if args.dry_run else "DOWNLOADING DATASETS", "=")
         logger.info("")        
 
-        orchestrator = DownloadOrchestrator(workspace_root, config, dry_run=bool(args.dry_run))
+        orchestrator = DownloadOrchestrator(root_path, config, dry_run=bool(args.dry_run))
         orchestrator.download_all(selected)
         orchestrator.print_summary()
 

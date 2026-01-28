@@ -1,5 +1,15 @@
+python -m pypsa_nza_data.loaders.nza_load_dynamic_data_from_url `
+  --config pypsa_nza_data/config/nza_load_dynamic_data.yaml `
+  --root C:\Users\Public\Documents\Thesis\nz_workspace
+
+python -m pypsa_nza_data.loaders.nza_load_static_data_from_url `
+  --config pypsa_nza_data/config/nza_load_static_data.yaml `
+  --root C:\Users\Public\Documents\Thesis\nz_workspace
 
 
-
-pip install -e .
-python -c "from pypsa_nza_data.geospatial_utils import nztm_geod as gd; print('ok')"
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> python -m pypsa_nza_data.loaders.nza_load_static_data_from_url `
+>> --config pypsa_nza_data/config/nza_load_static_data.yaml `
+>> --root C:\Users\Public\Documents\Thesis\nz_workspace
+usage: nza_load_static_data_from_url.py [-h] [--dataset DATASET] [--dry-run] [--config CONFIG]
+nza_load_static_data_from_url.py: error: unrecognized arguments: --root C:\Users\Public\Documents\Thesis\nz_workspace
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>
