@@ -57,7 +57,7 @@ def setup_logging(log_dir: Path) -> Tuple[Path, logging.FileHandler]:
     log_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = log_dir / f"nza_load_static_{timestamp}.log"
+    log_file = log_dir / f"nza_download_static_{timestamp}.log"
 
     file_formatter = logging.Formatter(
         "%(asctime)s - %(levelname)s - %(message)s",
@@ -473,6 +473,7 @@ class DownloadOrchestrator:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Download PyPSA-NZA static datasets (config in YAML file)")
     parser.add_argument("--root", type=str, required=True, help="Workspace root directory (data and logs are written here)")
+")
     parser.add_argument("--dataset", type=str, help="Download only specific dataset")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be downloaded without downloading")
     parser.add_argument("--config", type=str, default=None, help="Override path to YAML config")
@@ -480,17 +481,14 @@ def main() -> int:
 
     start_time = datetime.now()
     workspace_root = Path(args.root).expanduser().resolve()
+
     config_path = Path(args.config) if args.config else Path(get_default_config_path())
 
     # Load config early (we need it for log_dir)
     config = load_config(config_path)
 
-    logs_rel = config.get("directories", {}).get("logs") if isinstance(config.get("directories", {}), dict) else "logs"
-    logs_rel_p = Path(str(logs_rel))
-    if logs_rel_p.is_absolute():
-        log_dir = (workspace_root / "logs").resolve()
-    else:
-        log_dir = (workspace_root / logs_rel_p).resolve()
+    logs_rel = config.get("directories", {}).get("logs") if isinstance(config.get("directories", {}), dict) else None
+    log_dir = (workspace_root / str(logs_rel)).resolve() if logs_rel else (workspace_root / "logs").resolve()
 
     log_file, file_handler = setup_logging(log_dir)
 
@@ -498,7 +496,7 @@ def main() -> int:
         print_header("PYPSA-NZA STATIC DATA DOWNLOADER", "=")
         logger.info("")
         logger.info(f"Start time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-        logger.info(f"Workspace root:  {workspace_root}")
+        logger.info(f"Repo root:  {workspace_root}")
         logger.info(f"Config:     {config_path}")
         if args.dataset:
             logger.info(f"Filter:     Only '{args.dataset}'")

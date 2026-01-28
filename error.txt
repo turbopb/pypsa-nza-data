@@ -7,9 +7,18 @@ python -m pypsa_nza_data.loaders.nza_load_static_data_from_url `
   --root C:\Users\Public\Documents\Thesis\nz_workspace
 
 
+
 (pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> python -m pypsa_nza_data.loaders.nza_load_static_data_from_url `
 >> --config pypsa_nza_data/config/nza_load_static_data.yaml `
 >> --root C:\Users\Public\Documents\Thesis\nz_workspace
-usage: nza_load_static_data_from_url.py [-h] [--dataset DATASET] [--dry-run] [--config CONFIG]
-nza_load_static_data_from_url.py: error: unrecognized arguments: --root C:\Users\Public\Documents\Thesis\nz_workspace
+Traceback (most recent call last):
+  File "<frozen runpy>", line 189, in _run_module_as_main
+  File "<frozen runpy>", line 159, in _get_module_details
+  File "<frozen importlib._bootstrap_external>", line 1074, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1004, in source_to_code
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\loaders\nza_load_static_data_from_url.py", line 476
+    ")
+    ^
+SyntaxError: unterminated string literal (detected at line 476)
 (pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>
