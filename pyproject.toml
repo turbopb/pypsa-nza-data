@@ -18,6 +18,7 @@ authors = [
 ]
 
 dependencies = [
+"requests",
 "numpy",
 "pandas",
 "pyyaml",
