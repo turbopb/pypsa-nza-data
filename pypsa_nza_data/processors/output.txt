@@ -1,3 +1,0 @@
-python -m pypsa_nza_data.processors.nza_create_load_profile ^
-  --config pypsa_nza_data/config/nza_create_load_profile.yaml ^
-  --root C:\Users\Public\Documents\Thesis\analysis
