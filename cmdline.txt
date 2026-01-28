@@ -1,7 +1,0 @@
-python -m pypsa_nza_data.processors.nza_process_dynamic_data \
-  --config pypsa_nza_data/config/nza_process_dynamic_data.yaml \
-  --root /home/reviewer/nz_workspace
-
-
-python -m pypsa_nza_data.processors.nza_run_processing_pipeline --dynamic --dry-run --verbose ^
-  --root C:\Users\Public\Documents\Thesis\analysis
