@@ -8,6 +8,7 @@ Project-URL: Repository, https://github.com/turbopb/pypsa-nza-data
 Project-URL: Documentation, https://github.com/turbopb/pypsa-nza-data#readme
 Requires-Python: >=3.9
 Description-Content-Type: text/markdown
+Requires-Dist: requests
 Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: pyyaml
