@@ -19,3 +19,15 @@ pypsa_nza_data = [
   "config/*.yaml",
   "resources/manual/*.csv",
 ]
+
+
+python -c "import pypsa_nza_data, pypsa_nza_data.processors.nza_create_load_profile as m; print(pypsa_nza_data.__file__); print(m.__file__)"
+
+
+python -m pypsa_nza_data.processors.nza_create_load_profile `
+  --config pypsa_nza_data/config/nza_create_load_profile.yaml `
+  --root C:\Users\Public\Documents\Thesis\nz_workspace
+
+python -m pypsa_nza_data.processors.nza_convert_energy_to_power `
+  --config pypsa_nza_data/config/nza_convert_energy_to_power.yaml `
+  --root C:\Users\Public\Documents\Thesis\nz_workspace

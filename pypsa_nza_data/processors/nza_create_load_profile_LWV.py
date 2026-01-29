@@ -527,49 +527,66 @@ def add_matching_columns_with_timestamp(
     df2: pd.DataFrame
 ) -> pd.DataFrame:
     """
-    Combine generation (df1) and net-flow (df2) into demand, preserving a timestamp column.
+    Add the values of corresponding named columns in two DataFrames.
 
-    Robust rules:
-      - Treat the first column in each df as the timestamp column.
-      - Compute the union of site columns; when a site is missing in one df, assume 0.
-      - Replace remaining NaNs in numeric columns with 0 to produce complete profiles.
+    The first column is assumed to be timestamps and is preserved.
+    Matching columns are summed, unmatched columns are retained.
+
+    Parameters
+    ----------
+    df1 : pd.DataFrame
+        First DataFrame with timestamp column.
+    df2 : pd.DataFrame
+        Second DataFrame with timestamp column.
+
+    Returns
+    -------
+    pd.DataFrame
+        New DataFrame with summed matched columns and all unmatched columns.
+        
+    Examples
+    --------
+    >>> df_demand = add_matching_columns_with_timestamp(df_gen, df_delta)
+    >>> print(f"Combined {df_demand.shape[1]-1} sites")
     """
-    ts_col_1 = df1.columns[0]
-    ts_col_2 = df2.columns[0]
-    timestamp1 = df1[ts_col_1]
+    # Extract timestamp columns (assumed to be first column)
+    timestamp1 = df1.iloc[:, 0]
+    timestamp2 = df2.iloc[:, 0]
 
-    if not df1[ts_col_1].equals(df2[ts_col_2]):
+    if not timestamp1.equals(timestamp2):
         print("  Warning: Timestamp columns do not match between DataFrames.")
 
-    df1_data = df1.drop(columns=[ts_col_1]).copy()
-    df2_data = df2.drop(columns=[ts_col_2]).copy()
+    # Drop the timestamp columns before processing
+    df1_data = df1.iloc[:, 1:]
+    df2_data = df2.iloc[:, 1:]
 
-    # Normalise column names to avoid whitespace mismatches
-    df1_data.columns = [str(c).strip() for c in df1_data.columns]
-    df2_data.columns = [str(c).strip() for c in df2_data.columns]
-
-    cols1 = set(df1_data.columns)
-    cols2 = set(df2_data.columns)
-    all_cols = sorted(cols1 | cols2)
-
-    matched_cols = sorted(cols1 & cols2)
-    unmatched_df1 = sorted(cols1 - cols2)
-    unmatched_df2 = sorted(cols2 - cols1)
+    # Find matched and unmatched columns
+    matched_cols = df1_data.columns.intersection(df2_data.columns)
+    unmatched_df1 = df1_data.columns.difference(df2_data.columns)
+    unmatched_df2 = df2_data.columns.difference(df1_data.columns)
 
     print(f"  Matched columns: {len(matched_cols)}")
-    if unmatched_df1:
+    if len(unmatched_df1) > 0:
         print(f"  Unmatched columns only in df1: {len(unmatched_df1)}")
-    if unmatched_df2:
+    if len(unmatched_df2) > 0:
         print(f"  Unmatched columns only in df2: {len(unmatched_df2)}")
 
-    df1_u = df1_data.reindex(columns=all_cols).fillna(0)
-    df2_u = df2_data.reindex(columns=all_cols).fillna(0)
+    # Add matched columns
+    df_sum = df1_data[matched_cols].add(df2_data[matched_cols], fill_value=0)
 
-    df_out = df1_u.add(df2_u, fill_value=0)
+    # Combine with unmatched columns
+    result = pd.concat([
+        df_sum,
+        df1_data[unmatched_df1],
+        df2_data[unmatched_df2]
+    ], axis=1)
 
-    ts = timestamp1.copy()
-    ts.name = ts_col_1
-    result = pd.concat([ts, df_out], axis=1).copy()
+    # Re-insert the timestamp column at the beginning
+    result.insert(0, df1.columns[0], timestamp1)
+
+    # Sort non-timestamp columns alphabetically
+    non_ts_cols = sorted(result.columns[1:])
+    result = result[[result.columns[0]] + non_ts_cols]
 
     return result
 

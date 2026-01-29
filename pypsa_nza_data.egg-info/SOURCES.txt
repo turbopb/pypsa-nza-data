@@ -6,3 +6,13 @@ pypsa_nza_data.egg-info/SOURCES.txt
 pypsa_nza_data.egg-info/dependency_links.txt
 pypsa_nza_data.egg-info/requires.txt
 pypsa_nza_data.egg-info/top_level.txt
+pypsa_nza_data/config/nza_convert_energy_to_power.yaml
+pypsa_nza_data/config/nza_create_load_profile.yaml
+pypsa_nza_data/config/nza_load_dynamic_data.yaml
+pypsa_nza_data/config/nza_load_static_data.yaml
+pypsa_nza_data/config/nza_process_dynamic_data.yaml
+pypsa_nza_data/config/nza_process_static_data.yaml
+pypsa_nza_data/config/paths.yaml
+pypsa_nza_data/resources/manual/lines_data.csv
+pypsa_nza_data/resources/manual/links_data.csv
+pypsa_nza_data/resources/manual/nodes.csv
