@@ -880,33 +880,56 @@ def create_master_bus_file(bus_dir: str, output_path: str) -> int:
 def main(argv=None):
     """
     Main execution function for load profile creation.
-
+    
     Processes 12 months of grid data to create bus, generation, and demand profiles
     for PyPSA capital expansion analysis.
     """
-    args = parse_args(argv)
-
-    # Workspace root (data/output location): require --root for reviewer-safe runs
-    workspace_root = Path(args.root).expanduser().resolve() if args.root else None
-    if workspace_root is None:
-        print("Fatal error: no workspace root provided. Pass --root <WORKSPACE>.")
-        return 2
-
-    # Config path
-    config_path = Path(args.config).resolve() if args.config else default_config_path()
-
     # Load configuration
+    args = parse_args(argv)
+    
+    config_path = Path(args.config).resolve() if args.config else default_config_path()
     try:
         config = load_config(str(config_path))
+        
+        # -------------------------------------------------------------------------
+        # Manual static inputs (small packaged tables copied into workspace)
+        # -------------------------------------------------------------------------
+        manual_rel = (
+            config.get("paths", {}).get("manual")
+            or config.get("directories", {}).get("manual")
+            or "data/manual"
+        )
+        manual_dir = (root_path / str(manual_rel)).resolve()
+
+        nodes_csv = manual_dir / "nodes.csv"
+        links_csv = manual_dir / "links_data.csv"
+        lines_csv = manual_dir / "lines_data.csv"
+
+        missing_manual = [p for p in [nodes_csv, links_csv, lines_csv] if not p.exists()]
+        if missing_manual:
+            logger.error(
+                "Missing required manual input file(s):\n  - "
+                + "\n  - ".join(str(p) for p in missing_manual)
+                + f"\n\nInitialize your workspace by running:\n"
+                + f"  python -m pypsa_nza_data.utils.nza_init_workspace --root {root_path}\n"
+            )
+        return 2
+
+        
     except (FileNotFoundError, yaml.YAMLError) as e:
         print(f"Fatal error loading configuration: {e}")
-        return 2
+        return
+    # Workspace root (data/output location): require --root for reviewer-safe runs
+    workspace_root = Path(args.root).resolve() if args.root else None
+    if workspace_root is None:
+        print("Fatal error: no workspace root provided. Pass --root <WORKSPACE>.")
+        return
 
     # Logging (under workspace_root / paths.logs, default "logs")
     logs_rel = config.get("paths", {}).get("logs", "logs")
     log_dir = Path(resolve_path(str(logs_rel), workspace_root))
     log_file = setup_logging(log_dir)
-
+    
     logger.info("=" * 80)
     logger.info("NZA LOAD PROFILE CREATOR")
     logger.info("=" * 80)
@@ -915,31 +938,10 @@ def main(argv=None):
     logger.info(f"Workspace root: {workspace_root}")
     logger.info(f"Log file:       {log_file}")
     logger.info("")
-
-    # -------------------------------------------------------------------------
-    # Manual static inputs (small packaged tables copied into workspace)
-    # -------------------------------------------------------------------------
-    manual_rel = (
-        config.get("paths", {}).get("manual")
-        or config.get("directories", {}).get("manual")
-        or "data/manual"
-    )
-    manual_dir = (workspace_root / str(manual_rel)).resolve()
-
-    nodes_csv = manual_dir / "nodes.csv"
-    links_csv = manual_dir / "links_data.csv"
-    lines_csv = manual_dir / "lines_data.csv"
-
-    missing_manual = [p for p in [nodes_csv, links_csv, lines_csv] if not p.exists()]
-    if missing_manual:
-        logger.error(
-            "Missing required manual input file(s):\n  - "
-            + "\n  - ".join(str(p) for p in missing_manual)
-            + "\n\nInitialize your workspace by running:\n"
-            + f"  python -m pypsa_nza_data.utils.nza_init_workspace --root {workspace_root}\n"
-        )
-        return 2
-
+    if workspace_root is None:
+        print("Fatal error: no workspace root provided. Pass --root <WORKSPACE>, or set paths.root in the YAML.")
+        return
+    
     # Extract paths from configuration (relative paths resolve under workspace_root)
     paths = {
         'export': resolve_path(config['paths']['dirpath_export'], workspace_root),
@@ -970,23 +972,32 @@ def main(argv=None):
         print(f"Loaded {len(df_f1)} months of import/export data")
     except Exception as e:
         print(f"Error loading flow data: {e}")
-        return 1
+        return
 
-    # Read master bus data (manual static input)
-    df_bus_master = pd.read_csv(nodes_csv)
+    # Read master bus data
+    bus_file = os.path.join(paths['static'], "nodes.csv")
+    if not os.path.exists(bus_file):
+        print(f"Error: Bus data file not found: {bus_file}")
+        return
+    
+    df_bus_master = pd.read_csv(bus_file)
     print(f"\nLoaded {len(df_bus_master)} buses from NODES master file")
-    print(f"NODES file : {nodes_csv}")
+    print(f"NODES file : {bus_file}")
 
     # Generate file lists
     bus_file_list = generate_monthly_filenames(year, "all", "bus_data", "csv")
-    gen_file_list = sorted(list_filenames_in_directory(paths['gen'], False))
+    gen_file_list = list_filenames_in_directory(paths['gen'], False)
     delta_file_list = generate_monthly_filenames(year, "all", "delta_f1f2_md", "csv")
     demand_file_list = generate_monthly_filenames(year, "all", "demand_md", "csv")
 
-    # Load transmission line data for connectivity checking (manual static input)
-    df_lines = pd.read_csv(lines_csv)
+    # Load transmission line data for connectivity checking
+    lines_file = os.path.join(paths['static'], "lines_data.csv")
+    if not os.path.exists(lines_file):
+        print(f"Error: Lines data file not found: {lines_file}")
+        return
+    
+    df_lines = pd.read_csv(lines_file)
     print(f"Loaded {len(df_lines)} transmission lines")
-    print(f"LINES file : {lines_csv}")
 
     print(f"\nProcessing {len(df_f1)} months of data...")
     print("=" * 80)
@@ -1006,7 +1017,7 @@ def main(argv=None):
 
         # PROCESS BUSES
         df_filtered = extract_matching_buses(df_bus_master, f1f2_sites)
-        _connected_buses, _disconnected_buses = check_bus_connectivity(
+        connected_buses, disconnected_buses = check_bus_connectivity(
             df_lines, f1f2_sites, verbose=False
         )
 
@@ -1027,7 +1038,7 @@ def main(argv=None):
 
         # PROCESS DEMAND
         # Compute net flow (export - import)
-        df_delta, _missing_sites, _clipped_sites = subtract_site_data(
+        df_delta, missing_sites, clipped_sites = subtract_site_data(
             df_f1[i], df_f2[i]
         )
 
@@ -1045,10 +1056,11 @@ def main(argv=None):
         df_demand.to_csv(demand_output_path, index=False)
         print(f"  Saved demand: {demand_file_list[i]}")
 
+
     # Create master bus file from all monthly bus files
     try:
         master_bus_path = os.path.join(paths['static'], "busses.csv")
-        _num_buses = create_master_bus_file(paths['bus'], master_bus_path)
+        num_buses = create_master_bus_file(paths['bus'], master_bus_path)
     except Exception as e:
         print(f"\n⚠ Warning: Could not create master bus file: {e}")
 
@@ -1063,14 +1075,14 @@ def main(argv=None):
     print(f"  - {len(demand_file_list)} demand files")
     print(f"\nEnd time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    return 0
-
 
 if __name__ == '__main__':
     try:
-        sys.exit(main())
+        main()
+        sys.exit(0)  # Explicit success
     except Exception as e:
         print(f"\nError: {e}")
         import traceback
         traceback.print_exc()
-        sys.exit(1)
+        sys.exit(1)  # Explicit failure
+    
