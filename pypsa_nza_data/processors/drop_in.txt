@@ -1,49 +1,21 @@
-python -m pypsa_nza_data.processors.nza_create_load_profile `
-  --config pypsa_nza_data/config/nza_create_load_profile.yaml `
+python -m pip install -e .
+
+python -m pypsa_nza_data.loaders.nza_run_loader_pipeline `
   --root C:\Users\Public\Documents\Thesis\nz_workspace
 
-(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> python -m pypsa_nza_data.processors.nza_create_load_profile `
->>   --config pypsa_nza_data/config/nza_create_load_profile.yaml `
->>   --root C:\Users\Public\Documents\Thesis\nz_workspace
-================================================================================
-NZA LOAD PROFILE CREATOR
-================================================================================
-Start time:     2026-01-29 16:24:14
-Config:         C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\config\nza_create_load_profile.yaml
-Workspace root: C:\Users\Public\Documents\Thesis\nz_workspace
-Log file:       C:\Users\Public\Documents\Thesis\nz_workspace\logs\nza_create_load_profile_20260129_162414.log
+python -m pypsa_nza_data.utils.nza_init_workspace `
+  --root C:\Users\Public\Documents\Thesis\nz_workspace
 
-Missing required manual input file(s):
-  - C:\Users\Public\Documents\Thesis\nz_workspace\data\manual\nodes.csv
-  - C:\Users\Public\Documents\Thesis\nz_workspace\data\manual\links_data.csv
-  - C:\Users\Public\Documents\Thesis\nz_workspace\data\manual\lines_data.csv
-
-Initialize your workspace by running:
-  python -m pypsa_nza_data.utils.nza_init_workspace --root C:\Users\Public\Documents\Thesis\nz_workspace
-
-(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>  python -m pypsa_nza_data.utils.nza_init_workspace --root C:\Users\Public\Documents\Thesis\nz_workspace
-Manual workspace directory: C:\Users\Public\Documents\Thesis\nz_workspace\data\manual
-Copied: 3 file(s); skipped: 0 file(s).
-(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> python -m pypsa_nza_data.processors.nza_create_load_profile `
->>   --config pypsa_nza_data/config/nza_create_load_profile.yaml `
->>   --root C:\Users\Public\Documents\Thesis\nz_workspace
-================================================================================
-NZA LOAD PROFILE CREATOR
-================================================================================
-Start time:     2026-01-29 16:25:15
-Config:         C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\config\nza_create_load_profile.yaml
-Workspace root: C:\Users\Public\Documents\Thesis\nz_workspace
-Log file:       C:\Users\Public\Documents\Thesis\nz_workspace\logs\nza_create_load_profile_20260129_162515.log
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline `
+  --all `
+  --root C:\Users\Public\Documents\Thesis\nz_workspace
 
 
-Ensuring output directories exist...
+C:\Users\Public\Documents\Thesis\nz_workspace\data\raw
 
-PROCESSING YEAR: 2024
 
-LOADING AND PROCESSING ENERGY FLOW DATA...
-Loaded 12 months of import/export data
-
-Loaded 239 buses from NODES master file
-NODES file : C:\Users\Public\Documents\Thesis\nz_workspace\data\manual\nodes.csv
-Loaded 202 transmission lines
-LINES file : C:\Users\Public\Documents\Thesis\nz_workspace\data\manual\lines_data.csv
+[tool.setuptools.package-data]
+pypsa_nza_data = [
+  "config/*.yaml",
+  "resources/manual/*.csv",
+]

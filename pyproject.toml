@@ -25,6 +25,12 @@ dependencies = [
 "matplotlib"
 ]
 
+[tool.setuptools.package-data]
+pypsa_nza_data = [
+  "config/*.yaml",
+  "resources/manual/*.csv",
+]
+
 [project.urls]
 Repository = "https://github.com/turbopb/pypsa-nza-data"
 Documentation = "https://github.com/turbopb/pypsa-nza-data#readme"
