@@ -1,0 +1,80 @@
+Successfully installed pypsa-nza-data-0.1.0
+(pypsa-nza-joss) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>   python -m pypsa_nza_data.demo.nza_demo_build_network `
+>>   --root C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace `
+>>   --config pypsa_nza_data\config\paths.yaml `
+>>   --config pypsa_nza_data\config\nza_process_static_data.yaml `
+>>   --config pypsa_nza_data\config\nza_process_dynamic_data.yaml `
+>>   --config pypsa_nza_data\config\nza_create_load_profile.yaml `
+>>   --year 2024 `
+>>   --months all
+Building PyPSA demo networks for year=2024, months=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+Demand dir: C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\data\processed\2024\demand\d_MW
+Manual dir: C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\data\manual
+Static candidates:
+  - C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\data\processed\static (exists=True)
+  - C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\data\raw\static (exists=True)
+  - C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\data\raw\static\csv (exists=False)
+  - C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\data\processed\static\csv (exists=False)
+Outputs: C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\demo
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202401: saved 202401.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202402: saved 202402.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202403: saved 202403.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202404: saved 202404.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202405: saved 202405.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202406: saved 202406.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202407: saved 202407.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202408: saved 202408.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202409: saved 202409.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202410: saved 202410.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202411: saved 202411.nc
+C:\Users\OEM\anaconda3\envs\pypsa-nza-joss\Lib\site-packages\pypsa\network\io.py:1281: PerformanceWarning:
+
+DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+
+  ? 202412: saved 202412.nc
+? Annual rollup written: C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\demo\summaries\2024_annual_rollup.txt
+(pypsa-nza-joss) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>

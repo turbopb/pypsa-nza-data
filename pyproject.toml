@@ -22,7 +22,8 @@ dependencies = [
 "numpy",
 "pandas",
 "pyyaml",
-"matplotlib"
+"matplotlib",
+"pypsa>=0.25"
 ]
 
 [tool.setuptools.package-data]
@@ -34,4 +35,3 @@ pypsa_nza_data = [
 [project.urls]
 Repository = "https://github.com/turbopb/pypsa-nza-data"
 Documentation = "https://github.com/turbopb/pypsa-nza-data#readme"
-

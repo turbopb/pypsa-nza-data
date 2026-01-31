@@ -31,3 +31,9 @@ python -m pypsa_nza_data.processors.nza_create_load_profile `
 python -m pypsa_nza_data.processors.nza_convert_energy_to_power `
   --config pypsa_nza_data/config/nza_convert_energy_to_power.yaml `
   --root C:\Users\Public\Documents\Thesis\nz_workspace
+
+
+
+Fix demand profile NaN's by aligning columns/timestamps robustly
+
+git tag -a v0.1.0-pre-joss -m "Pre-JOSS freeze: Windows and Linux pipelines verified"

@@ -13,6 +13,7 @@ Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: pyyaml
 Requires-Dist: matplotlib
+Requires-Dist: pypsa>=0.25
 
 # pypsa-nza-data
 

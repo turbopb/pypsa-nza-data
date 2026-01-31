@@ -3,3 +3,4 @@ numpy
 pandas
 pyyaml
 matplotlib
+pypsa>=0.25

@@ -13,6 +13,7 @@ pypsa_nza_data/config/nza_load_static_data.yaml
 pypsa_nza_data/config/nza_process_dynamic_data.yaml
 pypsa_nza_data/config/nza_process_static_data.yaml
 pypsa_nza_data/config/paths.yaml
+pypsa_nza_data/resources/manual/gen_data.csv
 pypsa_nza_data/resources/manual/lines_data.csv
 pypsa_nza_data/resources/manual/links_data.csv
 pypsa_nza_data/resources/manual/nodes.csv
