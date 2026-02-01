@@ -12,7 +12,7 @@ consistent formats suitable for PyPSA-based modelling workflows.
 ## Overview
 
 Electricity system modelling requires substantial data preparation before
-analysis can begin. For New Zealand, relevant datasets are publicly available
+analysis can begin. In the case of New Zealand, relevant datasets are publicly available
 but heterogeneous, distributed across multiple sources, and not directly
 compatible with modelling frameworks such as PyPSA.
 
@@ -24,7 +24,7 @@ pipeline that:
 - produces PyPSA-compatible inputs, and
 - demonstrates successful PyPSA network construction.
 
-The package is designed for academic and policy research where transparency,
+The package is intended for academic and policy research where transparency,
 reproducibility, and traceability of data preparation are essential.
 
 ---
@@ -35,11 +35,11 @@ This package:
 
 - Downloads raw static and dynamic electricity data from authoritative New
   Zealand sources (e.g. Electricity Authority, Transpower)
-- Cleans, harmonises, and aggregates datasets into consistent formats
+- Cleans, aligns, and aggregates datasets into consistent formats
 - Performs robust temporal alignment and unit conversion (energy → power)
-- Writes all outputs to a user-defined external workspace (never inside the repo)
+- Saves all outputs to a user-defined external workspace (external to the repo)
 - Provides reproducible demonstration scripts that:
-  - inventory available data products
+  - create inventories of data outputs
   - construct PyPSA networks and export NetCDF files
 
 ---
@@ -103,8 +103,9 @@ systems.
 
 ## Manual transmission geometry and generator metadata
 
-Certain transmission line geometries and generator metadata are not available
-in machine-readable form from public sources and must be specified manually.
+Certain transmission line geometries and generator metadata form from public sources 
+are either not available, not defined consistently or in some way appropraite for 
+direct reading. These are are therefore specified manually.
 
 These manual CSV files are:
 
@@ -122,7 +123,7 @@ The package requires Python ≥ 3.9 and is developed and tested using Conda-base
 environments.
 
 ```
-git clone https://github.com/<username>/pypsa-nza-data.git
+git clone https://github.com/turbopb/pypsa-nza-data.git
 cd pypsa-nza-data
 
 conda create -n pypsa-nza-joss python=3.10 -y
@@ -137,7 +138,7 @@ The software has been verified on both Windows and Linux platforms.
 
 ## Quickstart (end-to-end)
 
-Choose an empty directory to act as a workspace:
+Choose or create an empty directory to act as a workspace:
 
 ```
 mkdir ~/pypsa_nza_workspace
