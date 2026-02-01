@@ -103,9 +103,10 @@ systems.
 
 ## Manual transmission geometry and generator metadata
 
-Certain transmission line geometries and generator metadata form from public sources 
-are either not available, not defined consistently or in some way appropraite for 
-direct reading. These are are therefore specified manually.
+Certain transmission line geometries and generator metadata from public sources 
+are either not available, not defined consistently or in some way not appropraite 
+for direct inclusion. These are are therefore modified externally and imported 
+manually.
 
 These manual CSV files are:
 
