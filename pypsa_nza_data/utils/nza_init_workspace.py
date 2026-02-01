@@ -20,7 +20,7 @@ import shutil
 import sys
 import importlib.resources as resources
 
-MANUAL_FILES = ["nodes.csv", "links_data.csv", "lines_data.csv"]
+MANUAL_FILES = ["nodes.csv", "links_data.csv", "lines_data.csv", "gen_data.csv"]
 
 
 def _pkg_manual_dir() -> resources.abc.Traversable:
