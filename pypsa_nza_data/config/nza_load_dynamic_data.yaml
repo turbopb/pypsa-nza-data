@@ -20,7 +20,7 @@ directories:
     base: "data/raw"
 
     # Logs
-    logs: "data/raw/logs"
+    logs: "logs"
   
     # Year-specific directories for each data type
     generation: "data/raw/{year}/gen"

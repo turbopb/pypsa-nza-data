@@ -20,7 +20,7 @@ directories:
   base: "data/raw"
 
   # Logs
-  logs: "data/raw/logs"
+  logs: "logs"
   
   # Static data (Sites, generators, transmission lines)
   static_data_dir: "data/raw/static"        # ← Change this for testing
@@ -28,12 +28,7 @@ directories:
   # Archive for timestamped backups
   archive: "data/raw/static/archived"
   
-  # Monthly generation data
-  generators : "data/raw/generation"
-  
-  # Monthly load data  
-  load: "data/raw/load"
-  
+ 
   
 # ------------------------------------------------------------------------------
 # DATA SOURCE URLs

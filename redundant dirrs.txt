@@ -1,1 +1,4 @@
-C:\Users\Public\Documents\Thesis\joss\pypsa_nza_workspace\data\raw
+(pypsa-nza-joss) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> Select-String -Path .\pypsa_nza_data\**\*.py -Pattern "raw_dir.*(generation|load|logs)"
+(pypsa-nza-joss) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> Select-String -Path .\pypsa_nza_data\**\*.py -Pattern "generation.*load.*logs"
+(pypsa-nza-joss) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> Select-String -Path .\pypsa_nza_data\**\*.py -Pattern "data[\\/]+raw[\\/]+(generation|load|logs)"
+(pypsa-nza-joss) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>
