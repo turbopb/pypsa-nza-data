@@ -1,5 +1,5 @@
 ﻿---
-title: "pypsa-nza-data: A Python package for processing New Zealand electricity system data for use in PyPSA"
+title: "pypsa-nza-data: Reproducible preparation of New Zealand electricity system data for PyPSA"
 tags:
   - python
   - energy systems modelling
@@ -32,7 +32,7 @@ bibliography: paper.bib
 ## Summary
 
 pypsa_nza_data is an open-source Python package that provides a reproducible
-data-preparation pipeline for constructing electricity system datasets for
+data preparation pipeline for constructing electricity system datasets for
 New Zealand suitable for use with PyPSA. The package downloads authoritative
 public electricity data, performs cleaning, validation, temporal alignment,
 and unit conversion, and produces consistent, PyPSA-compatible outputs. All
@@ -47,16 +47,18 @@ performing optimisation.
 Electricity system modelling frameworks such as PyPSA [@brown2018pypsa] require substantial
 pre-processing of input data before analysis can begin. For New Zealand,
 relevant datasets are publicly available but are distributed across multiple
-institutions [@ea_nz; transpower_nz], provided in heterogeneous formats, and lack consistent temporal
-and spatial alignment. As a result, researchers frequently implement bespoke,
+institutions [@ea_nz; @transpower_nz], provided in heterogeneous formats, and lack consistent 
+temporal and spatial alignment. As a result, researchers frequently implement bespoke,
 non-reproducible data pipelines, limiting transparency and comparability
 between studies.
 
 Earlier versions of the data preparation workflow and resulting datasets were
-used in conference studies [@bruneau_conf1; @bruneau_conf2].
+used in conference studies [@bruneau_conf1; @bruneau_conf2]. The present package
+formalises and generalises the workflow into a reusable, documented and open-source 
+software tool.
 
 pypsa_nza_data addresses this gap by providing a transparent and reproducible
-data-preparation workflow tailored to New Zealand’s electricity system. By
+data preparation workflow tailored to New Zealand’s electricity system. By
 formalising data acquisition, cleaning, and transformation into a single,
 documented pipeline, the package reduces duplication of effort and enables
 consistent use of PyPSA-based models in academic and policy research contexts.

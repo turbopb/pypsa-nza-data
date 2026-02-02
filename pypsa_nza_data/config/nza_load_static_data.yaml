@@ -2,11 +2,11 @@
 # PyPSA-NZA Data Download Configuration
 # ==============================================================================
 # This file controls ALL aspects of data downloading:
-#   - Where to download from (URLs)
+#   - Download locations from (URLs)
 #   - Where to save files (directories)
 #   - What to download (datasets)
 #
-# To change anything, just edit this file - no need to touch Python code!
+# To change anything, just edit this file - no need to modify Python code.
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
