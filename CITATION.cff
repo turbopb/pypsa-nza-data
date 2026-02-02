@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as described below."
+title: "pypsa-nza-data: Reproducible preparation of New Zealand electricity system data for PyPSA"
+type: software
+authors:
+  - family-names: Bruneau
+    given-names: Phillippe
+    orcid: https://orcid.org/0009-0002-7136-3477
+  - family-names: Pons
+    given-names: Dirk
+    orcid: https://orcid.org/0000-0001-7141-0291
+  - family-names: Wood
+    given-names: Alan
+  - family-names: Shepard
+    given-names: Patrick
+repository-code: "https://github.com/turbopb/pypsa-nza-data"
+license: MIT
+keywords:
+  - PyPSA
+  - electricity systems
+  - data preparation
+  - energy systems modelling
+  - New Zealand

@@ -76,12 +76,13 @@ The package is organised by function:
 
 ```text
 pypsa_nza_data/
-├── loaders/        # Download raw static and time-series data
-├── processors/     # Clean, transform, and harmonise datasets
-├── demo/           # Reproducible demonstration scripts
-├── utils/          # Workspace initialisation and helpers
-├── config/         # YAML configuration files
-└── resources/      # Manual mapping templates
+├── config/             # YAML configuration files
+├── demo/               # Reproducible demonstration scripts
+├── geospatial_utils/   # geospatial coordinate conversion scripts
+├── loaders/            # Download raw static and time-series data
+├── processors/         # Clean, transform, and harmonise datasets
+├── utils/              # Workspace initialisation and helpers
+└── resources/          # Manual mapping templates
 ````
 
 All scripts are executed via `python -m pypsa_nza_data.<module>`.
