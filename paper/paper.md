@@ -89,6 +89,6 @@ integration with PyPSA without performing optimisation.
 AI-assisted tools, including large language models, were used to support routine
 software development tasks such as refactoring and debugging. All conceptual
 design, modelling assumptions, and validation of results were performed by the
-authors, who take full responsibility for the software and documentation.
+first author, who takes full responsibility for the software and documentation.
 
 ## References
