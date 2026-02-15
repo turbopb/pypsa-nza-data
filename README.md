@@ -85,6 +85,7 @@ and utils direcories. A specific functionality is invoked by entering
 ```
 python -m pypsa_nza_data.<module>
 ```
+---
 For example, raw data is loaded from url by running the loader pipeline : 
 ---
 python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root dispatch_data
