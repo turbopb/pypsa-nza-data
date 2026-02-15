@@ -125,12 +125,12 @@ python -m pypsa_nza_data.<module>
                 │
                 ▼
 ┌────────────────────────────────────┐
-│             Workspace             │
+│             Workspace              │
 │                                    │
-│  config/   user YAML              │
-│  data/     raw + processed        │
-│  outputs/  networks, figures      │
-│  logs/     diagnostics            │
+│  config/   user YAML               │
+│  data/     raw + processed         │
+│  outputs/  networks, figures       │
+│  logs/     diagnostics             │
 └────────────────────────────────────┘
 ```
 
