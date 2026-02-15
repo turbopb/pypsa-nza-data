@@ -1,0 +1,8 @@
+python -c "import pypsa_nza_data.demo._demo_utils as u; import inspect; print('UTILS FILE:', u.__file__); print('HAS PKG LOADER:', '_read_yaml_text_from_package' in dir(u)); print('LOAD SRC LINE:', inspect.getsource(u.load_and_merge_yaml).splitlines()[0:5])"
+
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis> python -c "import pypsa_nza_data.demo._demo_utils as u; import inspect; print('UTILS FILE:', u.__file__); print('HAS PKG LOADER:', '_read_yaml_text_from_package' in dir(u)); print('LOAD SRC LINE:', inspect.getsource(u.load_and_merge_yaml).splitlines()[0:5])"
+UTILS FILE: C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\demo\_demo_utils.py
+HAS PKG LOADER: True
+LOAD SRC LINE: ['def load_and_merge_yaml(config_paths: List[str]) -> Dict[str, Any]:', '    """', '    Load multiple YAML configs and merge them (later overrides earlier).', '', '    Resolution:']
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis>
+

@@ -1,0 +1,279 @@
+
+1. Download raw data
+python -m pypsa_nza_data.download.some_downloader `
+  --root C:\Users\Public\Documents\Thesis\analysis\dispatch_data
+  
+    Code writes to:
+    <root>\data\raw
+  
+  
+2. Process /Transform
+python -m pypsa_nza_data.process.some_processor `
+  --root C:\Users\Public\Documents\Thesis\analysis\dispatch_data `
+  --config C:\Users\Public\Documents\Thesis\analysis\dispatch_data\config\whatever.yaml  
+ 
+    Code writes to:
+    <root>\data\processed
+ 
+ 
+ 3. Build demo network
+ python -m pypsa_nza_data.demo.nza_demo_build_network `
+  --root C:\Users\Public\Documents\Thesis\analysis\dispatch_data `
+  --config C:\Users\Public\Documents\Thesis\analysis\dispatch_data\config\nza_process_dynamic_data.yaml
+  
+  Code reads from processed + static and writes to outputs.
+  
+  
+  
+The only time you can get caught
+
+If a script:
+forgets to use --root, or
+silently falls back to package resources.
+But as long as you always pass absolute --root (and config when needed), you’re safe.
+
+
+A good habit (seriously helpful later)
+Define once in PowerShell:
+$ROOT = "C:\Users\Public\Documents\Thesis\analysis\dispatch_data"
+
+Then run :
+python -m ... --root $ROOT --config "$ROOT\config\file.yaml"
+
+
+
+#-------------------------------------------------------------------------------
+
+Here’s a **mature, publishable** way to structure this so you can reproduce *any* figure/network years later from a frozen workspace, without touching the repo or your installed package.
+
+## Workspace layout that scales
+
+Pick one workspace per study / dataset snapshot:
+
+```
+dispatch_data/
++- README.md
++- config/
+¦  +- pipeline.yaml
+¦  +- nza_process_dynamic_data.yaml
+¦  +- overrides/
+¦  ¦  +- scenario_high_demand.yaml
+¦  ¦  +- dry_year.yaml
+¦  +- locks/
+¦     +- inputs.lock.yaml
++- data/
+¦  +- raw/
+¦  +- interim/              # optional: “between” processing steps
+¦  +- processed/
+¦  +- network/
++- outputs/
+¦  +- logs/
+¦  +- reports/
+¦  +- figures/
+¦  +- networks/
++- runs/
+¦  +- 2026-02-15_1705_build_network/
+¦  ¦  +- command.txt
+¦  ¦  +- env.txt
+¦  ¦  +- resolved_config.yaml
+¦  ¦  +- stdout_stderr.log
+¦  +- ...
++- env/
+   +- requirements.txt
+   +- environment.yml        # optional
+```
+
+Why this works:
+
+* **config/** is what you edit and version-control
+* **data/** is the deterministic input/output tree
+* **outputs/** is where artifacts go
+* **runs/** stores *exactly what happened* for each run
+* **env/** pins the software environment used
+
+---
+
+## 1) Always create a “run folder” per execution
+
+Each time you run a pipeline step, create:
+
+```
+runs/YYYY-MM-DD_HHMM_<step-name>/
+```
+
+and write four tiny files:
+
+### A) `command.txt`
+
+The exact command you ran (copy/pasteable).
+
+### B) `env.txt`
+
+At minimum:
+
+* Python version
+* OS
+* `pip freeze`
+
+### C) `resolved_config.yaml`
+
+The *final merged config* actually used (after defaults/overrides).
+
+### D) `stdout_stderr.log`
+
+The full terminal output.
+
+This is what makes reproduction effortless.
+
+Even if your code changes later, you can say:
+
+> “Re-run using this config + this environment + this command.”
+
+---
+
+## 2) Pin input datasets with an “inputs lock” file
+
+In `config/locks/inputs.lock.yaml` store *provenance*:
+
+* source URL(s)
+* download date
+* file sizes
+* hashes (sha256) of key raw files
+
+Example:
+
+```yaml
+inputs:
+  ea_dispatch:
+    url: "..."
+    downloaded_at: "2026-02-15"
+    files:
+      - path: "data/raw/ea/dispatch_2024.csv"
+        sha256: "..."
+        bytes: 123456789
+```
+
+This prevents “mystery drift” when upstream data changes.
+
+---
+
+## 3) Treat configs as “base + overrides” (don’t edit the base every time)
+
+Keep one stable base config:
+
+* `config/nza_process_dynamic_data.yaml`
+
+Then for scenarios, add tiny override files:
+
+* `config/overrides/dry_year.yaml`
+* `config/overrides/high_demand.yaml`
+
+At run time you pass both:
+
+```powershell
+python -m pypsa_nza_data.demo.nza_demo_build_network `
+  --root   C:\...\dispatch_data `
+  --config C:\...\dispatch_data\config\nza_process_dynamic_data.yaml `
+  --config C:\...\dispatch_data\config\overrides\dry_year.yaml `
+  --year 2024 --months jan
+```
+
+(Your loader already supports multiple configs merged in order.)
+
+This gives you:
+
+* clean diffs
+* repeatable scenarios
+* no “config spaghetti”
+
+---
+
+## 4) Freeze the software environment
+
+At minimum, store:
+
+* `pip freeze > env/requirements.txt`
+
+Better:
+
+* `conda env export > env/environment.yml`
+
+Best practice for publication:
+
+* record the package version (git commit or installed version)
+* record OS and Python version
+
+---
+
+## 5) Version-control the workspace *config* (not the data)
+
+Put in git:
+
+* `config/**`
+* `README.md`
+* maybe small metadata files
+
+Do **not** git-add huge `data/` unless you intentionally use git-lfs.
+
+Instead:
+
+* keep data local
+* lock it with hashes
+* optionally archive a tarball snapshot for final thesis submission
+
+---
+
+## 6) Your “Workspace README.md” template (copy/paste)
+
+Put this in `dispatch_data/README.md`:
+
+* What this workspace is for
+* How to run the pipeline (commands with absolute root)
+* Which outputs are expected
+* Where the locked inputs are recorded
+
+Example skeleton:
+
+```md
+# dispatch_data workspace
+
+## Purpose
+Reproducible data + config workspace for PyPSA-NZ-A processing and demo network builds.
+
+## Root
+This folder is the workspace root. All commands should use `--root <this-folder>`.
+
+## Quickstart
+1. Download raw data:
+   - command: ...
+2. Process:
+   - command: ...
+3. Build demo network:
+   - command: ...
+
+## Data provenance
+See `config/locks/inputs.lock.yaml`.
+
+## Runs
+Each execution writes a run record under `runs/`.
+```
+
+---
+
+## 7) Practical “do this now” checklist (5–10 minutes)
+
+1. Create folders:
+
+   * `dispatch_data/config`, `dispatch_data/outputs`, `dispatch_data/runs`, `dispatch_data/env`
+2. Copy your working YAML into:
+
+   * `dispatch_data/config/nza_process_dynamic_data.yaml`
+3. Run your demo with absolute paths (Option A).
+4. Create the run record folder and save:
+
+   * `command.txt`
+   * `stdout_stderr.log` (copy terminal output)
+   * `env.txt` (`python --version` and `pip freeze`)
+   * `resolved_config.yaml` (copy the YAML you used)
+
+If you want, paste your current `dispatch_data` tree (just folder names), and I’ll tell you the smallest set of folders/files to add to match this structure with minimal fuss.

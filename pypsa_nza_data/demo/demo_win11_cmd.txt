@@ -1,0 +1,82 @@
+python -m pypsa_nza_data.demo.nza_demo_build_network `
+--root  C:\Users\Public\Documents\Thesis\analysis\dispatch_data `
+--config pypsa_nza_data/config/paths.yaml `
+--config pypsa_nza_data/config/nza_process_static_data.yaml `
+--config pypsa_nza_data/config/nza_process_dynamic_data.yaml `
+--config pypsa_nza_data/config/nza_create_load_profile.yaml `   
+--year 2024 --months all `
+
+
+
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> python -m pypsa_nza_data.demo.nza_demo_build_network `
+>> --root  C:\Users\Public\Documents\Thesis\analysis\dispatch_data `
+>> --config pypsa_nza_data/config/paths.yaml `
+>> --config pypsa_nza_data/config/nza_process_static_data.yaml `
+>> --config pypsa_nza_data/config/nza_process_dynamic_data.yaml `
+>> --config pypsa_nza_data/config/nza_create_load_profile.yaml `
+Building PyPSA demo networks for year=2024, months=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+Demand dir: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\processed\2024\demand\d_MW
+Manual dir: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\manual
+Static candidates:
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\processed\static (exists=True)
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\raw\static (exists=True)
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\raw\static\csv (exists=False)
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\processed\static\csv (exists=False)
+Outputs: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\demo
+  * 202401: saved 202401.nc
+  * 202402: saved 202402.nc
+  * 202403: saved 202403.nc
+  * 202404: saved 202404.nc
+  * 202405: saved 202405.nc
+  * 202406: saved 202406.nc
+  * 202407: saved 202407.nc
+  * 202408: saved 202408.nc
+  * 202409: saved 202409.nc
+  * 202410: saved 202410.nc
+  * 202411: saved 202411.nc
+  * 202412: saved 202412.nc
+? Annual rollup written: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\demo\summaries\2024_annual_rollup.txt
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> --year 2024 --months all
+At line:1 char:3
++ --year 2024 --months all
++   ~
+Missing expression after unary operator '--'.
+At line:1 char:3
++ --year 2024 --months all
++   ~~~~
+Unexpected token 'year' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingExpressionAfterOperator
+
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> cd ..
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis> python -m pypsa_nza_data.demo.nza_demo_build_network `
+>> --root  C:\Users\Public\Documents\Thesis\analysis\dispatch_data `
+>> --config pypsa_nza_data/config/paths.yaml `
+>> --config pypsa_nza_data/config/nza_process_static_data.yaml `
+>> --config pypsa_nza_data/config/nza_process_dynamic_data.yaml `
+>> --config pypsa_nza_data/config/nza_create_load_profile.yaml `
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\demo\nza_demo_build_network.py", line 539, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\demo\nza_demo_build_network.py", line 474, in main
+    cfg = load_and_merge_yaml(args.config)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data\pypsa_nza_data\demo\nza_demo_build_network.py", line 53, in load_and_merge_yaml
+    raise FileNotFoundError(f"Config not found: {path}")
+FileNotFoundError: Config not found: pypsa_nza_data\config\paths.yaml
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis> --year 2024 --months all
+
+
+
+
+
+
+
+python -m pypsa_nza_data.demo.nza_demo_build_network --root  C:\Users\Public\Documents\Thesis\analysis\dispatch_data --config pypsa_nza_data/config/paths.yaml `
+--config pypsa_nza_data/config/nza_process_static_data.yaml `
+--config pypsa_nza_data/config/nza_process_dynamic_data.yaml `
+--config pypsa_nza_data/config/nza_create_load_profile.yaml `   
+--year 2024 --months all `

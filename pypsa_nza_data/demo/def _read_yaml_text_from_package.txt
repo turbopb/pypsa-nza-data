@@ -1,0 +1,21 @@
+def _read_yaml_text_from_package(p: str) -> str:
+    """
+    Read a YAML file that is bundled inside the installed pypsa_nza_data package.
+
+    Supports CLI args like:
+      - "pypsa_nza_data/config/paths.yaml"
+      - "pypsa_nza_data\\config\\paths.yaml"
+      - "config/paths.yaml"
+      - "config\\paths.yaml"
+    """
+    rel = p.replace("\\", "/").lstrip("/")
+
+    # allow passing "pypsa_nza_data/config/..." as well as "config/..."
+    if rel.startswith("pypsa_nza_data/"):
+        rel = rel[len("pypsa_nza_data/"):]
+
+    root = resources.files("pypsa_nza_data").joinpath(rel)
+    candidate = root.joinpath(*rel.split("/"))
+    if not candidate.is_file():
+        raise FileNotFoundError(f"Config not found on disk or in package: {p}")
+    return candidate.read_text(encoding="utf-8")

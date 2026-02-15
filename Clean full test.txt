@@ -1,0 +1,122 @@
+Clean, step-by-step test that proves “inside repo” and “outside repo” both work, using the **same workspace** and **full-path config** (Option A). No code changes.
+
+I’m going to assume your correct workspace is:
+
+`C:\Users\Public\Documents\Thesis\analysis\dispatch_data`
+
+and your config is:
+
+`C:\Users\Public\Documents\Thesis\analysis\dispatch_data\config\nza_process_dynamic_data.yaml`
+
+If your paths differ, substitute accordingly.
+
+---
+
+## Step 0 — Define two variables (avoids typos)
+
+In PowerShell:
+
+```powershell
+$REPO = "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data"
+$ROOT = "C:\Users\Public\Documents\Thesis\analysis\dispatch_data"
+$CFG  = "$ROOT\config\nza_process_dynamic_data.yaml"
+```
+
+Quick sanity checks:
+
+```powershell
+Test-Path $REPO
+Test-Path $ROOT
+Test-Path $CFG
+```
+
+You want: `True True True`.
+
+---
+
+## Step 1 — “Inside repo” run (from repo root)
+
+```powershell
+cd $REPO
+python -m pypsa_nza_data.demo.nza_demo_build_network `
+  --root $ROOT `
+  --config $CFG `
+  --year 2024 --months jan
+```
+
+What to look for:
+
+* It should print demand dir under `$ROOT\data\processed\...`
+* It should not show `exists=False` for everything unless your static tables truly aren’t there
+* It should either complete or fail with a *real missing file* message (not a missing key)
+
+If it fails, copy the last ~25 lines of the traceback.
+
+---
+
+## Step 2 — “Outside repo” run (from a totally different directory)
+
+Pick somewhere that’s definitely not the repo, e.g. your Documents folder:
+
+```powershell
+cd "C:\Users\Public\Documents"
+python -m pypsa_nza_data.demo.nza_demo_build_network `
+  --root $ROOT `
+  --config $CFG `
+  --year 2024 --months jan
+```
+
+This proves the command is independent of:
+
+* current working directory
+* repo layout
+
+Again: if it fails, copy the last ~25 lines.
+
+---
+
+## Step 3 — Confirm outputs landed under the workspace (not the repo)
+
+After each run, check for new/updated outputs. Your earlier log showed:
+
+`Outputs: <root>\demo`
+
+So check:
+
+```powershell
+dir "$ROOT\demo" -Recurse | Select-Object -First 20 FullName
+```
+
+If your demo writes elsewhere (e.g. `outputs/`), use that folder instead.
+
+---
+
+## Step 4 — Optional: verify you used the intended YAML (no guessing)
+
+Run this one-liner to print the keys loaded from the YAML you passed:
+
+```powershell
+python -c "import yaml; from pathlib import Path; c=yaml.safe_load(Path(r'$CFG').read_text(encoding='utf-8')); print('Top keys:', sorted(c.keys())); print('paths keys:', sorted(c.get('paths', {}).keys())); print('filename keys:', sorted(c.get('filename', {}).keys()))"
+```
+
+You should see `paths` and `filename` keys listed.
+
+---
+
+## If Step 1 succeeds but Step 2 fails
+
+That would indicate you’re running from source in Step 1 but from a different environment in Step 2 (less likely) *or* you have a hidden dependency on CWD in the demo. In that case, paste the error and I’ll point to the exact assumption.
+
+---
+
+## If both runs succeed
+
+You’ve proven exactly what you wanted:
+
+* The demos run from anywhere
+* The workspace is the root of truth
+* The config is explicitly chosen and not falling back to package defaults
+
+---
+
+Run Step 1 first and paste the console output (even if it succeeds) — I’ll tell you whether everything looks healthy and what to check next.

@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
 import yaml
-from importlib import resources
 
 
 def suppress_demo_warnings() -> None:
@@ -44,52 +43,20 @@ def deep_update(base: Dict[str, Any], other: Dict[str, Any]) -> Dict[str, Any]:
     return base
 
 
-def _read_yaml_text_from_package(p: str) -> str:
-    """
-    Read a YAML file that is bundled inside the installed pypsa_nza_data package.
-
-    Supports CLI args like:
-      - "pypsa_nza_data/config/paths.yaml"
-      - "pypsa_nza_data\\config\\paths.yaml"
-      - "config/paths.yaml"
-      - "config\\paths.yaml"
-    """
-    rel = p.replace("\\", "/").lstrip("/")
-
-    # allow passing "pypsa_nza_data/config/..." as well as "config/..."
-    if rel.startswith("pypsa_nza_data/"):
-        rel = rel[len("pypsa_nza_data/"):]
-
-    pkg_root = resources.files("pypsa_nza_data")
-    candidate = pkg_root.joinpath(*rel.split("/"))
-    
-    if not candidate.is_file():
-        raise FileNotFoundError(f"Config not found on disk or in package: {p}")
-    return candidate.read_text(encoding="utf-8")
-
-
 def load_and_merge_yaml(config_paths: List[str]) -> Dict[str, Any]:
     """
     Load multiple YAML configs and merge them (later overrides earlier).
-
-    Resolution:
-      1) If the given path exists on disk (absolute or relative to CWD), load it.
-      2) Otherwise, try loading from installed package resources.
     """
     merged: Dict[str, Any] = {}
     for p in config_paths:
         path = Path(p)
-
-        if path.exists():
-            text = path.read_text(encoding="utf-8")
-        else:
-            text = _read_yaml_text_from_package(p)
-
-        data = yaml.safe_load(text) or {}
+        if not path.exists():
+            raise FileNotFoundError(f"Config not found: {path}")
+        with path.open("r", encoding="utf-8") as f:
+            data = yaml.safe_load(f) or {}
         if not isinstance(data, dict):
-            raise ValueError(f"Config must be a YAML mapping/dict: {p}")
+            raise ValueError(f"Config must be a YAML mapping/dict: {path}")
         merged = deep_update(merged, data)
-
     return merged
 
 

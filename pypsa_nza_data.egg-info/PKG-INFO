@@ -8,12 +8,14 @@ Project-URL: Repository, https://github.com/turbopb/pypsa-nza-data
 Project-URL: Documentation, https://github.com/turbopb/pypsa-nza-data#readme
 Requires-Python: >=3.9
 Description-Content-Type: text/markdown
+License-File: LICENSE
 Requires-Dist: requests
 Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: pyyaml
 Requires-Dist: matplotlib
 Requires-Dist: pypsa>=0.25
+Dynamic: license-file
 
 # pypsa-nza-data
 
@@ -93,12 +95,13 @@ The package is organised by function:
 
 ```text
 pypsa_nza_data/
-├── loaders/        # Download raw static and time-series data
-├── processors/     # Clean, transform, and harmonise datasets
-├── demo/           # Reproducible demonstration scripts
-├── utils/          # Workspace initialisation and helpers
-├── config/         # YAML configuration files
-└── resources/      # Manual mapping templates
+├── config/             # YAML configuration files
+├── demo/               # Reproducible demonstration scripts
+├── geospatial_utils/   # geospatial coordinate conversion scripts
+├── loaders/            # Download raw static and time-series data
+├── processors/         # Clean, transform, and harmonise datasets
+├── utils/              # Workspace initialisation and helpers
+└── resources/          # Manual mapping templates
 ````
 
 All scripts are executed via `python -m pypsa_nza_data.<module>`.

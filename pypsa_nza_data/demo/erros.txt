@@ -1,0 +1,42 @@
+python -m pypsa_nza_data.demo.nza_demo_build_network `
+  --root C:\Users\Public\Documents\Thesis\dispatch_data `
+  --config config\nza_create_load_profile.yaml `
+  --year 2024 --months jan
+
+Test-Path "C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\processed\2024\demand\d_MW\202401_d_MW.csv"
+Test-Path "C:\Users\Public\Documents\Thesis\analysis\dispatch_data\config\nza_process_dynamic_data.yaml"
+
+
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> $REPO = "C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data"
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> Test-Path $REPO
+True
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> $REPO
+C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> $ROOT = "C:\Users\Public\Documents\Thesis\analysis\dispatch_data"
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> Test-Path $ROOT
+True
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> $ROOT
+C:\Users\Public\Documents\Thesis\analysis\dispatch_data
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> $CFG  = "$ROOT\config\nza_process_dynamic_data.yaml"
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> Test-Path $CFG
+True
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis> dir $CFG
+
+
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> $CFG  = "$ROOT\config\nza_create_load_profile.yaml"
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data> python -m pypsa_nza_data.demo.nza_demo_build_network `
+>>   --root $ROOT `
+>>   --config $CFG `
+>>   --year 2024 --months jan
+Building PyPSA demo networks for year=2024, months=[1]
+Demand dir: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\processed\2024\demand\d_MW
+Manual dir: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\manual
+Static candidates:
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\processed\static (exists=True)
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\raw\static (exists=True)
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\raw\static\csv (exists=False)
+  - C:\Users\Public\Documents\Thesis\analysis\dispatch_data\data\processed\static\csv (exists=False)
+Outputs: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\demo
+  * 202401: saved 202401.nc
+? Annual rollup written: C:\Users\Public\Documents\Thesis\analysis\dispatch_data\demo\summaries\2024_annual_rollup.txt
+(pypsa-nza-data) PS C:\Users\Public\Documents\Thesis\analysis\pypsa-nza-data>

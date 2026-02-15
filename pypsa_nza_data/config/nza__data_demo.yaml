@@ -1,0 +1,24 @@
+# ==============================================================================
+# PyPSA-NZA-DATA : Demo build-network configuration (minimal)
+# ==============================================================================
+# Paths are resolved relative to the workspace root passed via --root.
+
+paths:
+  # Static topology tables (searched first; demo also tries common fallbacks under <root>/data/raw/static)
+  dirpath_static: "data/processed/static/"
+
+  # Processed demand time series (expects files like 202401_d_MW.csv)
+  dirpath_d_MW: "data/processed/2024/demand/d_MW"
+
+  # Optional: if you also have processed generator time series (the demo will use it if present)
+  # dirpath_g_MW: "data/processed/2024/gen/g_MW/"
+
+filename:
+  # Topology tables (searched in static candidates and manual dir fallback)
+  bus_data:  "busses.csv"
+  line_data: "lines_data.csv"
+  link_data: "links_data.csv"
+  gen_data:  "gen_data.csv"
+
+# Suffix appended to YYYYMM to form demand filenames, e.g. 202401 + "_d_MW.csv"
+demand_file_suffix: "_d_MW.csv"

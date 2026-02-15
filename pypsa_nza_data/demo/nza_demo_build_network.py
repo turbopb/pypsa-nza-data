@@ -12,6 +12,8 @@ import pandas as pd
 import pypsa
 import yaml
 
+from ._demo_utils import load_and_merge_yaml, parse_months_arg, require_cfg, resolve_under_root 
+
 
 # ---------------------------
 # Demo noise suppression
@@ -45,18 +47,18 @@ def deep_update(base: Dict[str, Any], other: Dict[str, Any]) -> Dict[str, Any]:
     return base
 
 
-def load_and_merge_yaml(config_paths: List[str]) -> Dict[str, Any]:
-    merged: Dict[str, Any] = {}
-    for p in config_paths:
-        path = Path(p)
-        if not path.exists():
-            raise FileNotFoundError(f"Config not found: {path}")
-        with path.open("r", encoding="utf-8") as f:
-            data = yaml.safe_load(f) or {}
-        if not isinstance(data, dict):
-            raise ValueError(f"Config must be a YAML mapping/dict: {path}")
-        merged = deep_update(merged, data)
-    return merged
+# def load_and_merge_yaml(config_paths: List[str]) -> Dict[str, Any]:
+#     merged: Dict[str, Any] = {}
+#     for p in config_paths:
+#         path = Path(p)
+#         if not path.exists():
+#             raise FileNotFoundError(f"Config not found: {path}")
+#         with path.open("r", encoding="utf-8") as f:
+#             data = yaml.safe_load(f) or {}
+#         if not isinstance(data, dict):
+#             raise ValueError(f"Config must be a YAML mapping/dict: {path}")
+#         merged = deep_update(merged, data)
+#     return merged
 
 
 def require_cfg(cfg: Dict[str, Any], dotted_key: str) -> Any:
