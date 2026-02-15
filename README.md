@@ -83,7 +83,7 @@ Package functionality is embodied in modules wihin the loaders, processors, demo
 and utils direcories. A specific functionality is invoked on the command line by   
 
 ```
-python -m pypsa_nza_data.<module>
+python -m pypsa_nza_data.<module dir><module name> --<option flags> 
 ```
 
 For example, raw data is loaded from url by running the loader pipeline : 
@@ -360,7 +360,6 @@ versioned, and cited.
 This structure allows researchers, reviewers, and future users to trace how
 each modelling input was derived and to repeat or modify the procedure
 without reverse-engineering the code.
----
 
 ## Reproducibility checklist
 
