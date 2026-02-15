@@ -79,19 +79,23 @@ pypsa_nza_data/
 └── resources/          # Manual mapping templates
 ```
 
-Run everything via:
+Package functionality is embodied in modules wihin the loaders, processors, demo 
+and utils direcories. A specific functionality is invoked by entering  
 
 ```
 python -m pypsa_nza_data.<module>
 ```
-
+For example, raw data is loaded from url by running the loader pipeline : 
+---
+python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root dispatch_data
+where "nza_run_loader_pipeline" is the python module inside the "loaders" directory 
+and "--root dispatch_data" is an options flag indicating the name of the workspace.
 ---
 
-## Workspace philosophy (CRITICAL)
+## Workspace philosophy
 
-The repository contains **code only**.
-
-All operations require a workspace supplied via:
+The repository contains **code only** and all operations require a workspace (working directory) 
+created by the user and specified on the command line via an option flag:
 
 ```
 --root <workspace>
@@ -103,7 +107,7 @@ Example:
 workspace/
 ├── config/
 ├── data/
-├── outputs/
+├── demo/
 └── logs/
 ```
 

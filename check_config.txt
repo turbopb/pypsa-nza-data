@@ -1,1 +1,0 @@
-python -c "from importlib import resources; p=resources.files('pypsa_nza_data').joinpath('config/paths.yaml'); print('exists:', p.is_file()); print('path:', p)"
