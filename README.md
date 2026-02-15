@@ -91,8 +91,9 @@ For example, raw data is loaded from url by running the loader pipeline :
 ```
 python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root dispatch_data
 ```
-where ```nza_run_loader_pipeline``` is the python module inside the "loaders" directory 
-and "--root dispatch_data" is an options flag indicating the name of the workspace.
+where ```nza_run_loader_pipeline``` is the python module inside the ```loaders``` directory 
+and ```--root dispatch_data``` is an options flag indicating the name of the workspace 
+("```dispatch_data```" in this example).
 
 
 ## Workspace philosophy
@@ -331,7 +332,34 @@ Examples:
 ├── summaries/
 └── figures/
 ```
+## Methodological transparency
 
+`pypsa-nza-data` is designed to make every transformation from raw public data
+to modelling-ready inputs explicit and auditable.
+
+The software follows three principles:
+
+1. **No hidden state**  
+   All inputs, intermediate artefacts, and outputs live inside a user-defined
+   workspace. The repository itself is never modified during execution.
+
+2. **Configuration-driven behaviour**  
+   Data locations, mappings, and processing choices are defined in YAML files.
+   Re-running the pipeline with the same configuration and environment will
+   reproduce identical results.
+
+3. **Separation of acquisition and interpretation**  
+   Raw datasets are downloaded without alteration. Cleaning, alignment,
+   aggregation, and assumption-based modifications are performed in distinct,
+   documented processing stages.
+
+Manual adjustments (for example, where public information is incomplete or
+ambiguous) are externalised as workspace files so they can be inspected,
+versioned, and cited.
+
+This structure allows researchers, reviewers, and future users to trace how
+each modelling input was derived and to repeat or modify the procedure
+without reverse-engineering the code.
 ---
 
 ## Reproducibility checklist
