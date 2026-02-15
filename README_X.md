@@ -1,0 +1,609 @@
+# pypsa-nza-data
+
+`pypsa-nza-data` is a Python-based data preparation and processing toolkit for
+constructing PyPSA-compatible power system datasets for New Zealand (Aotearoa).
+
+The package provides a transparent, reproducible pipeline for downloading,
+cleaning, and transforming authoritative public electricity datasets into
+consistent formats suitable for PyPSA-based modelling workflows.
+
+---
+
+## Overview
+
+Electricity system modelling requires substantial data preparation before
+analysis can begin. In the case of New Zealand, relevant datasets are publicly available
+but heterogeneous, distributed across multiple sources, and not directly
+compatible with modelling frameworks such as PyPSA.
+
+`pypsa-nza-data` addresses this gap by providing a structured, end-to-end data
+pipeline that:
+
+- downloads raw static and time-series electricity data,
+- cleans, validates, and aligns the data temporally and spatially,
+- produces PyPSA-compatible inputs, and
+- demonstrates successful PyPSA network construction.
+
+The package is intended for academic and policy research where transparency,
+reproducibility, and traceability of data preparation are essential.
+
+---
+
+## What this package does
+
+This package:
+
+- Downloads raw static and dynamic electricity data from authoritative New
+  Zealand sources (e.g. Electricity Authority, Transpower)
+- Cleans, aligns, and aggregates datasets into consistent formats
+- Performs robust temporal alignment and unit conversion (energy → power)
+- Saves all outputs to a user-defined external workspace (external to the repo)
+- Provides reproducible demonstration scripts that:
+  - create inventories of data outputs
+  - construct PyPSA networks and export NetCDF files
+
+---
+
+## What this package does NOT do
+
+This package does **not**:
+
+- Perform power system optimisation
+- Solve dispatch or capacity expansion problems
+- Provide policy scenarios or forecasts
+- Ship raw data inside the repository
+
+It is a data-preparation and demonstration package, not a modelling study.
+
+---
+
+## Data sources
+
+The pipeline draws on publicly available datasets from New Zealand electricity
+sector institutions, including:
+
+- Electricity Authority (generation and demand data)
+- Transpower New Zealand (transmission network information)
+
+Source datasets are accessed programmatically and are not redistributed in this
+repository.
+
+---
+
+## Repository structure
+
+The package is organised by function:
+
+```text
+pypsa_nza_data/
+├── config/             # YAML configuration files
+├── demo/               # Reproducible demonstration scripts
+├── geospatial_utils/   # geospatial coordinate conversion scripts
+├── loaders/            # Download raw static and time-series data
+├── processors/         # Clean, transform, and harmonise datasets
+├── utils/              # Workspace initialisation and helpers
+└── resources/          # Manual mapping templates
+````
+
+All scripts are executed via `python -m pypsa_nza_data.<module>`.
+
+---
+
+## Configuration and portability
+
+All file paths are defined relative to a user-specified `--root` workspace
+directory. No data or logs are written inside the repository.
+
+The software does not rely on `PYTHONPATH`, IDE state, or hard-coded absolute
+paths. All file system interactions use standard Python path handling.
+
+The package has been verified to run identically on both Windows and Linux
+systems.
+
+---
+
+## Manual transmission geometry and generator metadata
+
+Certain transmission line geometries and generator metadata from public sources 
+are either not available, not defined consistently or in some way not appropraite 
+for direct inclusion. These are are therefore modified externally and imported 
+manually.
+
+These manual CSV files are:
+
+* initialised automatically into the workspace during setup,
+* treated as explicit, version-controlled inputs, and
+* documented as assumptions rather than hidden transformations.
+
+This approach prioritises transparency and reproducibility over automation.
+
+---
+
+## Installation and platform compatibility
+
+The package requires Python ≥ 3.9 and is developed and tested using Conda-based
+environments.
+
+```
+git clone https://github.com/turbopb/pypsa-nza-data.git
+cd pypsa-nza-data
+
+conda create -n pypsa-nza-joss python=3.10 -y
+conda activate pypsa-nza-joss
+
+python -m pip install -e .
+```
+
+The software has been verified on both Windows and Linux platforms.
+
+---
+
+## Quickstart (end-to-end)
+
+Choose or create an empty directory to act as a workspace:
+
+```
+mkdir ~/pypsa_nza_workspace
+```
+
+Run the full data preparation pipeline:
+
+```
+python -m pypsa_nza_data.loaders.nza_run_loader_pipeline \
+  --root ~/pypsa_nza_workspace
+
+python -m pypsa_nza_data.utils.nza_init_workspace \
+  --root ~/pypsa_nza_workspace
+
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline \
+  --all \
+  --root ~/pypsa_nza_workspace
+```
+
+All raw data, processed outputs, and logs are written under the workspace
+directory.
+
+---
+
+## Demonstrations
+
+Two demonstration scripts are provided to verify correct installation and
+integration with PyPSA.
+
+### Demo 1: Data inventory and provenance
+
+This demo inventories all raw, processed, and derived datasets produced by the
+pipeline.
+
+```
+python -m pypsa_nza_data.demo.nza_demo_data_inventory \
+  --root ~/pypsa_nza_workspace \
+  --config pypsa_nza_data/config/paths.yaml \
+  --config pypsa_nza_data/config/nza_load_static_data.yaml \
+  --config pypsa_nza_data/config/nza_load_dynamic_data.yaml \
+  --config pypsa_nza_data/config/nza_process_static_data.yaml \
+  --config pypsa_nza_data/config/nza_process_dynamic_data.yaml
+```
+
+Outputs are written to:
+
+```
+<workspace>/demo/inventory/
+```
+
+---
+
+### Demo 2: PyPSA network construction
+
+This demo constructs a PyPSA network for a full year of data and exports monthly
+NetCDF files along with a network topology plot.
+
+```bash
+python -m pypsa_nza_data.demo.nza_demo_build_network \
+  --root ~/pypsa_nza_workspace \
+  --config pypsa_nza_data/config/paths.yaml \
+  --config pypsa_nza_data/config/nza_process_static_data.yaml \
+  --config pypsa_nza_data/config/nza_process_dynamic_data.yaml \
+  --config pypsa_nza_data/config/nza_create_load_profile.yaml \
+  --year 2024 \
+  --months all
+```
+
+Outputs include:
+
+* Monthly PyPSA NetCDF network files
+* A single network topology map
+* Annual summary statistics
+
+---
+
+## Reproducibility and design principles
+
+* All scripts are executed via `python -m`
+* All outputs are written exclusively to a user-defined workspace
+* No generated data are committed to the repository
+* All configuration is explicit and file-based
+* The full pipeline is deterministic and cross-platform
+
+
+Perfect — this is exactly the right moment to strengthen the README.
+Your software now behaves like a **real research platform** with a proper workspace contract, and the documentation should make that crystal clear for future-you and for reviewers.
+
+I’ll:
+
+✔ keep your structure
+✔ add Windows + Linux setup
+✔ document the CLI
+✔ formalise the workspace idea
+✔ include the PowerShell run script
+✔ remove ambiguity around package vs workspace configs
+✔ modernise the demo instructions
+✔ keep it readable
+
+Below is the **drop-in replacement README**.
+
+---
+
+# ✅ Updated README.md (full)
+
+````markdown
+# pypsa-nza-data
+
+`pypsa-nza-data` is a Python-based data preparation and processing toolkit for
+constructing PyPSA-compatible power system datasets for New Zealand (Aotearoa).
+
+The package provides a transparent, reproducible pipeline for downloading,
+cleaning, and transforming authoritative public electricity datasets into
+consistent formats suitable for PyPSA-based modelling workflows.
+
+---
+
+## Overview
+
+Electricity system modelling requires substantial data preparation before
+analysis can begin. In the case of New Zealand, relevant datasets are publicly available
+but heterogeneous, distributed across multiple sources, and not directly
+compatible with modelling frameworks such as PyPSA.
+
+`pypsa-nza-data` addresses this gap by providing a structured, end-to-end data
+pipeline that:
+
+- downloads raw static and time-series electricity data,
+- cleans, validates, and aligns the data temporally and spatially,
+- produces PyPSA-compatible inputs, and
+- demonstrates successful PyPSA network construction.
+
+The package is intended for academic and policy research where transparency,
+reproducibility, and traceability of data preparation are essential.
+
+---
+
+## What this package does
+
+This package:
+
+- Downloads raw static and dynamic electricity data from authoritative New
+  Zealand sources (e.g. Electricity Authority, Transpower)
+- Cleans, aligns, and aggregates datasets into consistent formats
+- Performs robust temporal alignment and unit conversion (energy → power)
+- Saves all outputs to a user-defined external workspace (never inside the repo)
+- Provides reproducible demonstration scripts that:
+  - create inventories of data outputs
+  - construct PyPSA networks and export NetCDF files
+
+---
+
+## What this package does NOT do
+
+This package does **not**:
+
+- Perform power system optimisation
+- Solve dispatch or capacity expansion problems
+- Provide policy scenarios or forecasts
+- Ship raw data inside the repository
+
+It is a data-preparation and demonstration package, not a modelling study.
+
+---
+
+## Data sources
+
+The pipeline draws on publicly available datasets from New Zealand electricity
+sector institutions, including:
+
+- Electricity Authority
+- Transpower New Zealand
+
+Source datasets are accessed programmatically and are not redistributed in this
+repository.
+
+---
+
+## Repository structure
+
+```text
+pypsa_nza_data/
+├── config/             # Example/default configuration files
+├── demo/               # Reproducible demonstration scripts
+├── geospatial_utils/   # Coordinate utilities
+├── loaders/            # Raw data downloaders
+├── processors/         # Cleaning and harmonisation
+├── utils/              # Workspace helpers
+└── resources/          # Manual mapping templates
+````
+
+All scripts are executed via:
+
+```
+python -m pypsa_nza_data.<module>
+```
+
+---
+
+## Workspace philosophy (IMPORTANT)
+
+The repository is **code only**.
+
+All runs operate on a **workspace** supplied via:
+
+```
+--root <workspace_path>
+```
+
+The workspace contains:
+
+```text
+workspace/
+├── config/
+├── data/
+├── outputs/
+└── logs/
+```
+
+Users edit configuration in the workspace, not inside the package.
+
+This guarantees:
+
+✅ portability
+✅ reproducibility
+✅ ability to archive studies
+✅ independence from installation location
+
+---
+
+## Installation
+
+Python ≥ 3.9 is required.
+
+---
+
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/turbopb/pypsa-nza-data.git
+cd pypsa-nza-data
+
+conda create -n pypsa-nza python=3.10 -y
+conda activate pypsa-nza
+
+python -m pip install -e .
+```
+
+---
+
+### Linux / macOS (bash)
+
+```bash
+git clone https://github.com/turbopb/pypsa-nza-data.git
+cd pypsa-nza-data
+
+conda create -n pypsa-nza python=3.10 -y
+conda activate pypsa-nza
+
+python -m pip install -e .
+```
+
+---
+
+## Creating a workspace
+
+Choose a directory anywhere on your machine:
+
+```bash
+mkdir dispatch_data
+```
+
+All pipeline steps will read/write under this folder.
+
+---
+
+## Running the pipeline
+
+### 1. Download raw data
+
+```bash
+python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root <workspace>
+```
+
+### 2. Initialise manual files
+
+```bash
+python -m pypsa_nza_data.utils.nza_init_workspace --root <workspace>
+```
+
+### 3. Process data
+
+```bash
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline --all --root <workspace>
+```
+
+---
+
+## Demonstrations
+
+---
+
+### Demo 1 — Data inventory
+
+Produces a structured inventory of inputs and outputs.
+
+```bash
+python -m pypsa_nza_data.demo.nza_demo_data_inventory \
+  --root <workspace>
+```
+
+Outputs:
+
+```
+<workspace>/demo/inventory/
+```
+
+---
+
+### Demo 2 — Build PyPSA networks
+
+Constructs monthly PyPSA networks and annual summaries.
+
+---
+
+### Canonical demo configuration
+
+The demo should use a workspace configuration file, e.g.:
+
+```
+<workspace>/config/nza_do_demo.yaml
+```
+
+---
+
+### Windows example (recommended)
+
+```powershell
+$ROOT = "C:\path\to\dispatch_data"
+$CFG  = "$ROOT\config\nza_do_demo.yaml"
+
+python -m pypsa_nza_data.demo.nza_demo_build_network `
+  --root $ROOT `
+  --config $CFG `
+  --year 2024 --months jan
+```
+
+---
+
+### Linux example
+
+```bash
+ROOT=/path/to/dispatch_data
+CFG=$ROOT/config/nza_do_demo.yaml
+
+python -m pypsa_nza_data.demo.nza_demo_build_network \
+  --root $ROOT \
+  --config $CFG \
+  --year 2024 --months jan
+```
+
+---
+
+## PowerShell run script (recommended)
+
+Create:
+
+```
+<workspace>/run_demo.ps1
+```
+
+```powershell
+$ROOT = Split-Path -Parent $MyInvocation.MyCommand.Path
+$CFG  = Join-Path $ROOT "config\nza_do_demo.yaml"
+
+python -m pypsa_nza_data.demo.nza_demo_build_network `
+  --root $ROOT `
+  --config $CFG `
+  --year 2024 --months jan
+```
+
+Run with:
+
+```powershell
+.\run_demo.ps1
+```
+
+No environment variables required.
+Works from anywhere.
+
+---
+
+## Command line interface (CLI)
+
+### Common parameters
+
+| Parameter  | Meaning                                      |
+| ---------- | -------------------------------------------- |
+| `--root`   | Workspace directory containing config + data |
+| `--config` | YAML configuration file (can be repeated)    |
+| `--year`   | Year to build                                |
+| `--months` | `jan`, `feb`, … or `all`                     |
+
+### Examples
+
+Single month:
+
+```
+--year 2024 --months jan
+```
+
+Full year:
+
+```
+--year 2024 --months all
+```
+
+---
+
+## Outputs from the network demo
+
+```
+<workspace>/demo/
+├── 202401.nc
+├── summaries/
+└── figures/
+```
+
+---
+
+## Reproducibility principles
+
+* Run via `python -m`
+* Explicit workspace
+* Explicit configs
+* Deterministic outputs
+* No repo writes
+
+---
+
+## License
+
+This project is released under an open-source licence. See `LICENSE`.
+
+```
+
+---
+
+If you want, next I can help you add:
+
+- a **quick architecture diagram**
+- a **pipeline flow chart**
+- or a **reviewer-friendly reproducibility checklist**
+
+These are excellent for JOSS / SoftwareX / thesis appendices.
+```
+
+
+---
+
+## License
+
+This project is released under an open-source licence. See `LICENSE` for details.
+
+```
+
