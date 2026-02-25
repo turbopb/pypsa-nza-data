@@ -319,6 +319,7 @@ Examples:
 
 ```
 --year 2024 --months jan
+--year 2024 --months jan,feb,mar OR --year 2024 --months 1,2,3
 --year 2024 --months all
 ```
 
