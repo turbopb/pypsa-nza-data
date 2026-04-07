@@ -1,0 +1,143 @@
+PlantName,PointOfConnectionCode,UnitCode,TechnologyCode,Technology,FuelCode,Fuel,PeakingPlantFlag,PlantOperatorCode,PlantOperator,DateCommissioned,DateDecommissioned,NameplateMegawatts,EffectiveStartDate,EffectiveEndDate
+Aratiatia,ARA2201,ARA0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1964-01-01,null,78.0,1900-01-01,9999-12-31
+Branch River (Arnold),ARG1101,BRR0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1983-01-01,null,12.0,1900-01-01,2021-10-01
+Branch River (Arnold),ARG1101,BRR0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1983-01-01,null,12.0,2021-10-01,9999-12-31
+Arapuni,ARI1101,ARI0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1929-01-01,null,84.0,1900-01-01,9999-12-31
+Arapuni,ARI1102,ARI0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1929-01-01,null,107.0,1900-01-01,9999-12-31
+Highbank,ASB0661,HBK0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1945-01-01,null,28.0,1900-01-01,2021-10-01
+Highbank,ASB0661,HBK0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1945-01-01,null,28.0,2021-10-01,9999-12-31
+Lauriston Solar Farm,ASB0661,LAU0,PV,Photovoltaic panels,SOL,Solar,N,GENE,Genesis Energy Limited,2025-02-01,null,47.0,2024-10-16,9999-12-31
+Ātiamuri,ATI2201,ATI0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1962-01-01,null,77.0,1900-01-01,9999-12-31
+Aviemore,AVI2201,AVI0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1968-01-01,null,220.0,1900-01-01,9999-12-31
+Benmore,BEN0162,BEN0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1968-01-01,null,270.0,1900-01-01,2012-10-28
+Benmore,BEN0163,BEN0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1968-01-01,null,270.0,1900-01-01,2011-08-09
+Benmore,BEN2202,BEN0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1965-01-01,null,540.0,1900-01-01,9999-12-31
+Tararua stage II,BPE0331,TWF0,ONW,Onshore wind,WIN,Wind,N,TRUS,TrustPower Ltd,2004-01-01,null,37.0,1900-01-01,2021-10-01
+Tararua stage II,BPE0331,TWF0,ONW,Onshore wind,WIN,Wind,N,CNIR,Manawa Energy Limited,2004-01-01,null,37.0,2021-10-01,9999-12-31
+Ruakākā Energy Park,BRB0331,RUK0,BAT,Chemical battery energy,ELE,Electrical energy,N,MERI,Meridian Energy Limited,null,null,100.0,2024-10-16,9999-12-31
+Waipori (2A/3/4),BWK1101,WPI0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1902-01-01,null,74.0,1900-01-01,2021-10-01
+Waipori (2A/3/4),BWK1101,WPI0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1902-01-01,null,74.0,2021-10-01,9999-12-31
+Roaring Meg,CML0331,TVT0,HYD,Hydro,HYD,Hydro,N,PIGE,Pioneer Generation,1936-01-01,null,12.0,1936-01-01,9999-12-31
+Cobb,COB0661,COB0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1994-01-01,null,32.0,1900-01-01,2015-01-31
+Coleridge,COL0661,COL0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1914-01-01,null,40.0,1900-01-01,2021-10-01
+Coleridge,COL0661,COL0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1914-01-01,null,40.0,2021-10-01,9999-12-31
+Teviot,CYD0331,TVT0,HYD,Hydro,HYD,Hydro,N,PIGE,Pioneer Generation,1924-01-01,null,22.0,1924-01-01,9999-12-31
+Clyde,CYD2201,CYD0,HYD,Hydro,HYD,Hydro,N,CTCT,Contact Energy Limited,1992-01-01,null,432.0,1900-01-01,9999-12-31
+Rangitaiki Solar Farm,EDG0331,RGT0,PV,Photovoltaic panels,SOL,Solar,N,LODE,Lodestone Solar Limited,2024-03-07,null,24.0,2023-10-25,9999-12-31
+Glenbrook Steel,GLN0332,GLN0,COG,Cogeneration,GAS,Gas,N,ALNT,Alinta ENZ Limited,1987-01-01,null,68.0,1987-01-01,9999-12-31
+Kaiwera Downs Wind Farm,GOR0331,KWD0,ONW,Onshore wind,WIN,Wind,N,MRPL,Mercury NZ Limited,2023-08-01,null,43.0,1900-01-01,9999-12-31
+Rotohiko,HLY0331,RHO0,BAT,Chemical battery energy storage system,ELE,Electrical energy,N,NPEL,Newpower Energy Limited,2023-11-23,null,35.0,2023-11-23,9999-12-31
+Taiohi Solar Farm,HLY0331,TOH0,PV,Photovoltaic panels,SOL,Solar,N,NPEL,Newpower Energy Limited,2025-09-15,null,22.4,2025-09-15,9999-12-31
+Huntly Rankine 1,HLY2201,HLY1,RKN,Rankine steam cycle engine,CLG,Coal/Gas,N,GENE,Genesis Energy Limited,1983-01-01,null,250.0,1900-01-01,9999-12-31
+Huntly Rankine 2,HLY2201,HLY2,RKN,Rankine steam cycle engine,CLG,Coal/Gas,N,GENE,Genesis Energy Limited,1983-01-01,null,250.0,1900-01-01,9999-12-31
+Huntly Rankine 3,HLY2201,HLY3,RKN,Rankine steam cycle engine,CLG,Coal/Gas,N,GENE,Genesis Energy Limited,1983-01-01,2014-01-23,250.0,1983-01-01,2014-01-23
+Huntly Rankine 4,HLY2201,HLY4,RKN,Rankine steam cycle engine,CLG,Coal/Gas,N,GENE,Genesis Energy Limited,1983-01-01,null,250.0,1983-01-01,9999-12-31
+Huntly 5,HLY2201,HLY5,CCGT,Combined cycle gas turbine,GAS,Gas,N,GENE,Genesis Energy Limited,2007-01-01,null,403.0,1900-01-01,9999-12-31
+Huntly 6,HLY2201,HLY6,OCGT,Open cycle gas turbine,GAS,Gas,Y,GENE,Genesis Energy Limited,2004-01-01,null,50.0,1900-01-01,9999-12-31
+Harapaki,HRP2201,HRP0,ONW,Onshore wind,WIN,Wind,N,MERI,Meridian Energy Limited,2023-11-17,null,176.0,2023-02-11,9999-12-31
+Patea unit 1,HWA1101,PTA1,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1984-01-01,null,11.5,1900-01-01,2021-10-01
+Patea unit 1,HWA1101,PTA1,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1984-01-01,null,11.5,2021-10-01,9999-12-31
+Patea unit 2,HWA1101,PTA2,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1984-01-01,null,11.0,1900-01-01,2021-10-01
+Patea unit 2,HWA1101,PTA2,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1984-01-01,null,11.0,2021-10-01,9999-12-31
+Patea unit 3,HWA1101,PTA3,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1984-01-01,null,12.0,1900-01-01,2021-10-01
+Patea unit 3,HWA1101,PTA3,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1984-01-01,null,12.0,2021-10-01,9999-12-31
+Fonterra Dairy - Whareroa,HWA1101,WAA1,COG,Cogeneration,GAS,Gas,N,TODD,Nova Energy Limited,1966-01-01,null,68.0,1996-01-01,9999-12-31
+Fonterra Dairy - Whareroa,HWA1102,WAA0,COG,Cogeneration,GAS,Gas,N,TODD,Nova Energy Limited,1966-01-01,null,68.0,1900-01-01,9999-12-31
+Fonterra Dairy - Whareroa,HWA1102,WAA1,COG,Cogeneration,GAS,Gas,N,TODD,Nova Energy Limited,1966-01-01,null,68.0,1900-01-01,9999-12-31
+Fonterra Dairy - Whareroa,HWA1102,WAA2,COG,Cogeneration,GAS,Gas,N,TODD,Nova Energy Limited,1966-01-01,null,68.0,1996-01-01,9999-12-31
+Mahinerangi (Waipori B),HWB0331,MAH0,ONW,Onshore wind,WIN,Wind,N,TRUS,TrustPower Ltd,2011-01-01,null,36.0,1900-01-01,2021-10-01
+Mahinerangi (Waipori B),HWB0331,MAH0,ONW,Onshore wind,WIN,Wind,N,CNIR,Manawa Energy Limited,2011-01-01,null,36.0,2021-10-01,9999-12-31
+Deep Stream (Waipori A),HWB0331,WPI0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,2008-01-01,null,26.0,1900-01-01,2021-10-01
+Deep Stream (Waipori A),HWB0331,WPI0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,2008-01-01,null,26.0,2021-10-01,9999-12-31
+Junction Road,JRD1101,JRD0,OCGT,Open cycle gas turbine,GAS,Gas,Y,TGTL,Nova Energy Limited,2020-01-01,null,130.0,1900-01-01,9999-12-31
+Kawerau,KAW0111,TAM0,GEO,Geothermal,GEO,Geothermal,N,TAOM,Eastland Generation Limited,2018-01-01,null,27.0,2018-01-01,9999-12-31
+Norske Skog CoGen,KAW0112,ONU0,GEO,Geothermal,GEO,Geothermal,N,SKOG,Norske Skog Tasman Ltd,1966-01-01,null,53.0,1900-01-01,2023-05-05
+Carter Holt Harvey Energy Ltd CoGen,KAW0112,ONU0,GEO,Geothermal,GEO,Geothermal,N,CHHE,Oji Fibre Solutions,1966-01-01,null,53.0,2023-05-06,9999-12-31
+Kawerau,KAW1101,KAG0,GEO,Geothermal,GEO,Geothermal,N,MRPL,Mercury NZ Limited,2008-01-01,null,109.0,1900-01-01,9999-12-31
+Kinleith,KIN0112,KIN0,COG,Cogeneration,GAS,Gas,N,TRUS,TrustPower Ltd,1998-01-01,null,40.0,1900-01-01,2021-10-01
+Kinleith,KIN0112,KIN0,COG,Cogeneration,GAS,Gas,N,CNIR,Manawa Energy Limited,1998-01-01,null,40.0,2021-10-01,9999-12-31
+Kohirā Solar Farm,KOE1101,KSF0,PV,Photovoltaic panels,SOL,Solar,N,LODE,Lodestone Solar Limited,2023-10-25,null,24.0,2023-10-25,9999-12-31
+Ngāwhā B,KOE1101,NGB0,GEO,Geothermal,GEO,Geothermal,N,NGAG,Ngawha Generation Limited,2020-01-01,null,31.5,1900-01-01,9999-12-31
+Pukenui Solar Farm,KOE1101,PSF0,PV,Photovoltaic panels,SOL,Solar,N,FNSF,Far North Solar Farms,2025-05-23,null,20.8,2025-05-21,9999-12-31
+Kapuni,KPA1101,KPI1,COG,Cogeneration,GAS,Gas,N,TODD,Nova Energy Limited,1998-01-01,null,25.0,1998-01-01,9999-12-31
+Karāpiro,KPO1101,KPO0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1948-01-01,null,112.5,1900-01-01,9999-12-31
+Kūmara,KUM0661,KUM0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1928-01-01,null,10.0,1900-01-01,2021-10-01
+Kūmara,KUM0661,KUM0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1928-01-01,null,10.0,2021-10-01,9999-12-31
+Tararua stage I,LTN0331,TWF0,ONW,Onshore wind,WIN,Wind,N,TRUS,TrustPower Ltd,1999-01-01,null,36.0,1900-01-01,2021-10-01
+Tararua stage I,LTN0331,TWF0,ONW,Onshore wind,WIN,Wind,N,CNIR,Manawa Energy Limited,1999-01-01,null,36.0,2021-10-01,9999-12-31
+Turitea Wind Farm,LTN2201,TUR0,ONW,Onshore wind,WIN,Wind,N,MRPL,Mercury NZ Limited,2021-01-01,null,222.0,2021-01-01,9999-12-31
+Manapōuri,MAN2201,MAN0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1972-01-01,null,802.0,1900-01-01,9999-12-31
+Aniwhenua,MAT1101,ANI0,HYD,Hydro,HYD,Hydro,N,TODD,Todd Energy,1981-01-01,null,25.0,1900-01-01,2016-04-30
+Aniwhenua,MAT1101,ANI0,HYD,Hydro,HYD,Hydro,N,PUNZ,Pulse Energy Alliance LP,1981-01-01,null,25.0,2016-05-01,9999-12-31
+Matahina,MAT1101,MAT0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1967-01-01,null,80.0,1900-01-01,2021-10-01
+Matahina,MAT1101,MAT0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1967-01-01,null,80.0,2021-10-01,9999-12-31
+Matahina,MAT1102,MAT0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1967-01-01,null,80.0,2012-12-14,2014-02-23
+Mangahao,MHO0331,MHO0,HYD,Hydro,HYD,Hydro,N,KING,King Country Energy Limited,1924-01-01,null,42.0,1924-01-01,9999-12-31
+McKee,MKE1101,MKE1,OCGT,Open cycle gas turbine,GAS,Gas,Y,TGTL,Nova Energy Limited,2013-01-01,null,100.0,1900-01-01,9999-12-31
+Maraetai,MTI2201,MTI0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1971-01-01,null,360.0,1900-01-01,9999-12-31
+Te Puna Mauri ō Omaru at Ruawai,MTO0331,RWI0,PV,Photovoltaic panels,SOL,Solar,N,NPGL,Northpower Limited,2024-12-05,null,16.8,2024-12-05,9999-12-31
+Nga Awa Pūrua,NAP2201,NAP0,GEO,Geothermal,GEO,Geothermal,N,NAPJ,Nga Awa Purua Joint Venture,2010-01-01,null,144.0,1900-01-01,9999-12-31
+Ngā Tamariki,NAP2202,NTM0,GEO,Geothermal,GEO,Geothermal,N,MRPL,Mercury NZ Limited,2013-01-01,null,87.0,1900-01-01,9999-12-31
+White Hill,NMA0331,WHL0,ONW,Onshore wind,WIN,Wind,N,MERI,Meridian Energy Limited,2007-01-01,null,58.0,1900-01-01,9999-12-31
+New Plymouth,NPL2201,NPL3,N/A,N/A,N/A,N/A,N,N/A,N/A,1974-01-01,2012-02-29,600.0,1900-01-01,9999-12-31
+Paerau Gorge,NSY0331,PAE0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1984-01-01,null,12.5,1900-01-01,2021-10-01
+Paerau Gorge,NSY0331,PAE0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1984-01-01,null,12.5,2021-10-01,9999-12-31
+Ōhau A,OHA2201,OHA0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1980-01-01,null,264.0,1900-01-01,9999-12-31
+Ōhau B,OHB2201,OHB0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1984-01-01,null,212.0,1900-01-01,9999-12-31
+Ōhau C,OHC2201,OHC0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1985-01-01,null,212.0,1900-01-01,9999-12-31
+Ōhakuri,OHK2201,OHK0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1962-01-01,null,109.0,1900-01-01,9999-12-31
+Ōhaaki,OKI2201,OKI0,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,1992-01-01,null,44.0,1900-01-01,9999-12-31
+Ōtāhuhu A,OTA1101,OTG0,OCGT,Open cycle gas turbine,GAS,Gas,N,CTCT,Contact Energy Limited,1968-01-01,2014-05-02,180.0,1968-01-01,2014-05-02
+Ōtāhuhu B,OTA2202,OTC0,OCGT,Open cycle gas turbine,GAS,Gas,N,CTCT,Contact Energy Limited,2000-01-01,2015-09-30,400.0,2000-01-01,2015-09-30
+Poihipi,PPI2201,PPI0,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,1997-01-01,null,55.0,1900-01-01,9999-12-31
+Wheao and Flaxy,ROT1101,WHE0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1982-01-01,null,24.0,1900-01-01,2021-10-01
+Wheao and Flaxy,ROT1101,WHE0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1982-01-01,null,24.0,2021-10-01,9999-12-31
+Roxburgh,ROX1101,ROX0,HYD,Hydro,HYD,Hydro,N,CTCT,Contact Energy Limited,1956-01-01,null,123.0,1900-01-01,9999-12-31
+Roxburgh,ROX2201,ROX0,HYD,Hydro,HYD,Hydro,N,CTCT,Contact Energy Limited,1956-01-01,null,205.0,1900-01-01,9999-12-31
+Rangipo,RPO2201,RPO0,HYD,Hydro,HYD,Hydro,N,GENE,Genesis Energy Limited,1983-01-01,null,120.0,1900-01-01,9999-12-31
+Stratford Peaker 1,SFD2201,SFD21,OCGT,Open cycle gas turbine,GAS,Gas,Y,CTCT,Contact Energy Limited,2011-01-01,null,106.0,1900-01-01,9999-12-31
+Stratford Peaker 2,SFD2201,SFD22,OCGT,Open cycle gas turbine,GAS,Gas,Y,CTCT,Contact Energy Limited,2011-01-01,null,106.0,1900-01-01,9999-12-31
+Taranaki Combined Cycle,SFD2201,SPL0,CCGT,Combined cycle gas turbine,GAS,Gas,N,CTCT,Contact Energy Limited,1998-01-01,null,377.0,1900-01-01,2022-05-31
+Taranaki Combined Cycle,SFD2201,SPL0,CCGT,Combined cycle gas turbine,GAS,Gas,N,CTCT,Contact Energy Limited,1998-01-01,null,360.0,2022-06-01,2023-10-31
+Taranaki Combined Cycle,SFD2201,SPL0,CCGT,Combined cycle gas turbine,GAS,Gas,N,CTCT,Contact Energy Limited,1998-01-01,null,330.0,2023-11-01,9999-12-31
+Cobb,STK0661,COB0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1944-01-01,null,32.0,2015-02-01,2021-10-01
+Cobb,STK0661,COB0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1944-01-01,null,32.0,2021-10-01,9999-12-31
+Southdown,SWN2201,SWN0,COG,Cogeneration,GAS,Gas,N,MRPL,Mercury NZ Limited,1996-01-01,2016-01-19,130.0,1996-01-01,2016-01-19
+Southdown Battery,SWN2201,SWN1,BAT,Chemical battery energy storage system,ELE,Electrical energy,N,MRPL,Mercury NZ Limited,2017-01-01,2022-05-23,1.0,2017-01-01,2022-05-23
+Southdown 5,SWN2201,SWN5,CCGT,Combined cycle gas turbine,GAS,Gas,N,MRPL,Mercury NZ Limited,2007-01-01,2016-01-19,50.0,2007-01-01,9999-12-31
+Te Huka 3,TAB0331,TAC0,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,2024-09-24,null,51.4,2024-09-24,+10000-01-01
+Tauhara,TAB2201,TAB0,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,2023-10-05,null,174.0,1900-01-01,9999-12-31
+Kaimai 5,TGA0331,KMI0,HYD,Hydro,HYD,Hydro,N,TRUS,TrustPower Ltd,1972-01-01,null,42.0,1900-01-01,2021-10-01
+Kaimai 5,TGA0331,KMI0,HYD,Hydro,HYD,Hydro,N,CNIR,Manawa Energy Limited,1972-01-01,null,42.0,2021-10-01,9999-12-31
+Te Mihi 1,THI2201,THI1,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,2014-01-01,null,90.0,1900-01-01,9999-12-31
+Te Mihi 2,THI2201,THI2,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,2014-01-01,null,91.0,1900-01-01,9999-12-31
+Takapō A,TKA0111,TKA0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1951-01-01,null,25.0,1899-12-31,2011-05-31
+Takapō A,TKA0111,TKA1,HYD,Hydro,HYD,Hydro,N,GENE,Genesis Energy Limited,1951-01-01,null,25.0,2011-06-01,9999-12-31
+Takapō B,TKB2201,TKB0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1977-01-01,null,160.0,1899-12-31,2011-05-31
+Takapō B,TKB2201,TKB1,HYD,Hydro,HYD,Hydro,N,GENE,Genesis Energy Limited,1977-01-01,null,160.0,2011-06-01,9999-12-31
+Tokaanu,TKU2201,TKU0,HYD,Hydro,HYD,Hydro,N,GENE,Genesis Energy Limited,1973-01-01,null,242.0,1900-01-01,9999-12-31
+Kaitawa,TUI1101,KTW0,HYD,Hydro,HYD,Hydro,N,GENE,Genesis Energy Limited,1948-01-01,null,36.0,1900-01-01,9999-12-31
+Pirirpaua,TUI1101,PRI0,HYD,Hydro,HYD,Hydro,N,GENE,Genesis Energy Limited,1943-01-01,null,44.0,1900-01-01,9999-12-31
+Tuai,TUI1101,TUI0,HYD,Hydro,HYD,Hydro,N,GENE,Genesis Energy Limited,1929-01-01,null,60.0,1900-01-01,9999-12-31
+Te Rere Hau,TWC2201,NZW0,ONW,Onshore wind,WIN,Wind,N,NZWF,NZ Windfarms Limited,2011-01-01,null,49.0,1900-01-01,9999-12-31
+Tararua Wind Farm 3,TWC2201,TWF0,ONW,Onshore wind,WIN,Wind,N,TRUS,TrustPower Ltd,2007-01-01,null,93.0,1900-01-01,2021-10-01
+Tararua Wind Farm 3,TWC2201,TWF0,ONW,Onshore wind,WIN,Wind,N,CNIR,Manawa Energy Limited,2007-01-01,null,93.0,2021-10-01,9999-12-31
+Te Rapa,TWH0331,TRC1,COG,Cogeneration,GAS,Gas,N,CTCT,Contact Energy Limited,1999-01-01,null,48.0,1900-01-01,9999-12-31
+Te Uku,TWH0331,TUK0,ONW,Onshore wind,WIN,Wind,N,MERI,Meridian Energy Limited,2011-01-01,null,64.4,1900-01-01,9999-12-31
+Te Herenga o Te Rā Solar Farm,WAI0331,HTR0,PV,Photovoltaic panels,SOL,Solar,N,LODE,Lodestone Solar Limited,2024-11-22,null,33.0,2024-11-28,9999-12-31
+Te Āpiti,WDV1101,TAP0,ONW,Onshore wind,WIN,Wind,N,MERI,Meridian Energy Limited,2004-01-01,null,90.0,1900-01-01,9999-12-31
+Whirinaki,WHI2201,WHI0,OCGT,Open cycle gas turbine,DSL,Diesel,Y,CTCT,Contact Energy Limited,2004-01-01,null,156.0,1900-01-01,2023-11-09
+Whirinaki,WHI2201,WHI1,OCGT,Open cycle gas turbine,DSL,Diesel,Y,CTCT,Contact Energy Limited,2004-01-01,null,52.0,2023-11-09,9999-12-31
+Whirinaki,WHI2201,WHI2,OCGT,Open cycle gas turbine,DSL,Diesel,Y,CTCT,Contact Energy Limited,2004-01-01,null,52.0,2023-11-09,9999-12-31
+Whirinaki,WHI2201,WHI3,OCGT,Open cycle gas turbine,DSL,Diesel,Y,CTCT,Contact Energy Limited,2004-01-01,null,52.0,2023-11-09,9999-12-31
+Mill Creek,WIL0331,MCK0,ONW,Onshore wind,WIN,Wind,N,MERI,Meridian Energy Limited,2014-01-01,null,60.0,2014-01-01,9999-12-31
+Mokai,WKM2201,MOK0,GEO,Geothermal,GEO,Geothermal,N,TUAR,Tuaropaki Power Company Limited,2000-01-01,null,112.0,1900-01-01,9999-12-31
+Whakamaru,WKM2201,WKM0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1956-01-01,null,124.0,1900-01-01,9999-12-31
+Waipāpa,WPA2201,WPA0,HYD,Hydro,HYD,Hydro,N,MRPL,Mercury NZ Limited,1961-01-01,null,54.0,1900-01-01,9999-12-31
+Rotokawa,WRK0331,RKA0,GEO,Geothermal,GEO,Geothermal,N,MRPL,Mercury NZ Limited,1997-01-01,null,36.0,1900-01-01,9999-12-31
+Te Huka,WRK0331,TAA0,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,2010-01-01,null,30.0,1900-01-01,9999-12-31
+Wairakei,WRK2201,WRK0,GEO,Geothermal,GEO,Geothermal,N,CTCT,Contact Energy Limited,1958-01-01,null,152.0,1900-01-01,9999-12-31
+Waitaki,WTK0111,WTK0,HYD,Hydro,HYD,Hydro,N,MERI,Meridian Energy Limited,1935-01-01,null,95.0,1900-01-01,9999-12-31
+Waipipi,WVY1101,WPP0,ONW,Onshore wind,WIN,Wind,N,GENE,Genesis Energy Limited,2020-01-01,null,133.0,1900-01-01,9999-12-31
+West Wind 1,WWD1102,WWD0,ONW,Onshore wind,WIN,Wind,N,MERI,Meridian Energy Limited,2009-01-01,null,80.0,1900-01-01,9999-12-31
+West Wind 2,WWD1103,WWD0,ONW,Onshore wind,WIN,Wind,N,MERI,Meridian Energy Limited,2009-01-01,null,80.0,1900-01-01,9999-12-31

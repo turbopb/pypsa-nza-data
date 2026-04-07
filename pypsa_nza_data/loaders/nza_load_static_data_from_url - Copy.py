@@ -155,6 +155,7 @@ class DirectoryManager:
 # =============================================================================
 # Downloader
 # =============================================================================
+
 class DataDownloader:
     """Downloads data from configured sources."""
 
@@ -167,9 +168,10 @@ class DataDownloader:
 
     def download_transpower_dataset(self, dataset_config: Dict, output_path: Path) -> bool:
         dataset_id = dataset_config["dataset_id"]
-        fmt        = dataset_config["format"]
+        fmt = dataset_config["format"]
+
         transpower = self.sources["transpower"]
-        base_url   = transpower["base_url"]
+        base_url = transpower["base_url"]
 
         if fmt == "csv":
             url = f"{base_url}/datasets/{dataset_id}.csv"
@@ -179,47 +181,39 @@ class DataDownloader:
             logger.error(f"Unsupported format: {fmt}")
             return False
 
-        max_retries = 5
-        chunk_size  = 65536  # 64KB chunks -- more robust for large files
-
         logger.info(f"    Attempting URL: {url}")
         logger.info(f"    Output file:    {output_path}")
 
-        for attempt in range(1, max_retries + 1):
-            try:
-                resp = self.session.get(url, stream=True, timeout=120)
-                if resp.status_code == 200:
-                    with open(output_path, "wb") as f:
-                        for chunk in resp.iter_content(chunk_size=chunk_size):
-                            if chunk:
-                                f.write(chunk)
-                    return True
-                if resp.status_code == 404:
-                    logger.warning("    Direct download returned 404; "
-                                   "trying ArcGIS API fallback...")
-                    return self._download_via_api(dataset_config, output_path)
-                logger.error(f"    HTTP {resp.status_code}")
-                return False
-            except Exception as e:
-                logger.warning(f"    Attempt {attempt}/{max_retries} failed: {e}")
-                if attempt < max_retries:
-                    import time
-                    wait = 2 ** attempt
-                    logger.info(f"    Retrying in {wait} seconds...")
-                    time.sleep(wait)
-                else:
-                    logger.error(f"    Download error: {e}")
-                    return False
+        try:
+            resp = self.session.get(url, stream=True, timeout=60)
 
-        return False
+            if resp.status_code == 200:
+                with open(output_path, "wb") as f:
+                    for chunk in resp.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+                return True
+
+            if resp.status_code == 404:
+                logger.warning("    Direct download returned 404; trying ArcGIS API fallback...")
+                return self._download_via_api(dataset_config, output_path)
+
+            logger.error(f"    HTTP {resp.status_code}")
+            return False
+
+        except Exception as e:
+            logger.error(f"    Download error: {e}")
+            return False
 
     def _download_via_api(self, dataset_config: Dict, output_path: Path) -> bool:
-        dataset_id   = dataset_config["dataset_id"]
-        transpower   = self.sources["transpower"]
-        api_url      = transpower["api_url"]
+        dataset_id = dataset_config["dataset_id"]
+        transpower = self.sources["transpower"]
+        api_url = transpower["api_url"]
+
         service_name = dataset_id.replace("_0", "")
-        query_url    = f"{api_url}/{service_name}/FeatureServer/0/query"
-        params       = {"where": "1=1", "outFields": "*", "f": "json", "returnGeometry": "true"}
+        query_url = f"{api_url}/{service_name}/FeatureServer/0/query"
+
+        params = {"where": "1=1", "outFields": "*", "f": "json", "returnGeometry": "true"}
 
         logger.info(f"    Attempting API: {query_url}")
 
@@ -243,10 +237,11 @@ class DataDownloader:
 
     def download_ea_dataset(self, dataset_config: Dict, output_path: Path) -> bool:
         url_path = dataset_config["url_path"]
-        ea       = self.sources["electricity_authority"]
-        base_url = str(ea["base_url"]).rstrip("/")
+        ea = self.sources["electricity_authority"]
+        base_url = ea["base_url"]
+        base_url = str(base_url).rstrip("/")
         url_path = str(url_path).lstrip("/")
-        url      = f"{base_url}/{url_path}"
+        url = f"{base_url}/{url_path}"
 
         logger.info(f"    Attempting URL: {url}")
         logger.info(f"    Output file:    {output_path}")
@@ -279,6 +274,7 @@ class DataDownloader:
 
         logger.error(f"Unknown source '{source}' for dataset '{dataset_name}'")
         return False
+
 
 # =============================================================================
 # Validation
