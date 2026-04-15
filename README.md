@@ -73,8 +73,9 @@ pypsa_nza_data/
 ├── config/             # Example/default configuration templates
 ├── demo/               # Demonstration scripts
 ├── geospatial_utils/   # Coordinate utilities
-├── loaders/            # Raw data download
-├── processors/         # Cleaning and harmonisation
+├── loaders/            # Raw data download from EA and Transpower
+├── processors/         # Cleaning and harmonisation into PyPSA components
+├── analysis/           # EA time series aggregation, validation and plotting
 ├── utils/              # Workspace helpers
 └── resources/          # Manual mapping templates
 ```
