@@ -310,7 +310,7 @@ def list_filenames_in_directory(
         if entry.is_file():
             files.append(str(entry) if include_full_path else entry.name)
 
-    return files
+    return sorted(files)
 
 
 def rename_files_with_prefix(
