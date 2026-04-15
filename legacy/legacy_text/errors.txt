@@ -1,1 +1,0 @@
-"C:\Users\Public\Documents\Thesis\analysis\dispatch_data\config\nza_load_dynamic_data.yaml"
