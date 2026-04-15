@@ -95,6 +95,129 @@ where ```nza_run_loader_pipeline``` is the python module inside the ```loaders``
 and ```--root dispatch_data``` is an options flag indicating the name of the workspace 
 ("```dispatch_data```" in this example).
 
+## Analysis submodule
+
+The `analysis/` submodule provides post-processing and analysis tools for
+working with the EA half-hourly time series datasets. It operates on
+processed monthly CSV files produced by the `processors/` pipeline and
+produces annual aggregated datasets, a site registry, validation outputs,
+and plots.
+
+### Modules
+
+| Module | Purpose |
+|---|---|
+| `nza_poc_aggregator` | Aggregates half-hourly POC-level data to site level with energy conservation checking. Processes a single monthly CSV file. |
+| `nza_process_annual` | Orchestrates full-year processing of monthly export, import, or generation dispatch files. Produces annual site-aggregated time series CSVs. |
+| `nza_build_site_registry` | Builds the definitive PyPSA bus registry from the union of all sites appearing in the annual export and import datasets. Merges with `nodes.csv` to add coordinates and metadata. |
+| `nza_validate_gen_import` | Systematic five-check validation of the discrepancy between annual generation dispatch and grid import totals. Documents the investigation for reproducibility. |
+| `nza_plot_annual_overview` | Plots annual overview of generation dispatch, grid import, and grid export. Produces three groups of plots: all-three dataset overview, import/export model inputs, and validation plots. |
+
+### Running the analysis pipeline
+
+**Process a full year of export, import, or generation dispatch data:**
+
+```
+python -m pypsa_nza_data.analysis.nza_process_annual \
+  --year 2024 \
+  --basedir <workspace>/data/processed \
+  --outdir  <workspace>/data/processed/annual \
+  --flow export
+
+python -m pypsa_nza_data.analysis.nza_process_annual \
+  --year 2024 \
+  --basedir <workspace>/data/processed \
+  --outdir  <workspace>/data/processed/annual \
+  --flow import
+
+python -m pypsa_nza_data.analysis.nza_process_annual \
+  --year 2024 \
+  --basedir <workspace>/data/processed \
+  --outdir  <workspace>/data/processed/annual \
+  --flow gen
+```
+
+**Build the site registry:**
+
+```
+python -m pypsa_nza_data.analysis.nza_build_site_registry \
+  --year   2024 \
+  --anndir <workspace>/data/processed/annual \
+  --nodes  <workspace>/data/manual/nodes.csv \
+  --outdir <workspace>/data/processed/annual
+```
+
+**Produce overview plots:**
+
+```
+# All plots (default)
+python -m pypsa_nza_data.analysis.nza_plot_annual_overview \
+  --year   2024 \
+  --anndir <workspace>/data/processed/annual \
+  --outdir <workspace>/data/processed/plots
+
+# Import/export model inputs only
+python -m pypsa_nza_data.analysis.nza_plot_annual_overview \
+  --year 2024 --no-all-three --no-validation
+
+# Validation plots only
+python -m pypsa_nza_data.analysis.nza_plot_annual_overview \
+  --year 2024 --no-all-three --no-import-export
+```
+
+**Run the generation dispatch vs grid import validation:**
+
+```
+python -m pypsa_nza_data.analysis.nza_validate_gen_import \
+  --anndir <workspace>/data/processed/annual \
+  --rawdir <workspace>/data/processed
+```
+
+### Annual outputs
+
+Running the full analysis pipeline for a given year produces:
+
+```
+<workspace>/data/processed/annual/
+├── 2024_export_sites_all.csv       # annual demand time series, site level
+├── 2024_import_sites_all.csv       # annual generation time series, site level
+├── 2024_gen_sites_all.csv          # annual dispatch time series, site level
+├── 2024_site_registry.csv          # definitive bus list with coordinates
+├── 2024_export_monthly_summary.csv
+├── 2024_import_monthly_summary.csv
+└── 2024_gen_monthly_summary.csv
+
+<workspace>/data/processed/plots/
+├── 2024_annual_timeseries.png
+├── 2024_monthly_bar.png
+├── 2024_weekly_detail_2024-07-07.png
+├── 2024_annual_timeseries_imp_exp.png
+├── 2024_monthly_bar_imp_exp.png
+├── 2024_weekly_detail_imp_exp_2024-07-07.png
+├── 2024_validation_scatter.png
+├── 2024_validation_accounting.png
+└── 2024_validation_site_diff.png
+```
+
+### Data notes
+
+The analysis module processes three distinct EA datasets which differ in
+scope and metering convention:
+
+- **Grid export** (`export`) — energy leaving the National Grid at GXPs.
+  Used as demand (load) inputs in the PyPSA model.
+- **Grid import** (`import`) — energy entering the National Grid at GIPs.
+  Used as generation inputs in the PyPSA model.
+- **Generation dispatch** (`gen`) — metered generation at registered
+  generator sites, mapped from GIP injections by the EA. Used for
+  carrier classification and capacity factor derivation.
+
+A systematic discrepancy of approximately 4.8% exists between the annual
+generation dispatch total and the grid import total. Investigation
+confirmed this is not attributable to data processing artefacts. Full
+details are documented in `nza_validate_gen_import.py` and in the
+accompanying thesis appendix.
+
 
 ## Workspace philosophy
 
