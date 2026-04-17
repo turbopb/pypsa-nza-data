@@ -96,6 +96,152 @@ where ```nza_run_loader_pipeline``` is the python module inside the ```loaders``
 and ```--root dispatch_data``` is an options flag indicating the name of the workspace 
 ("```dispatch_data```" in this example).
 
+
+
+## Workspace philosophy
+
+The repository contains **code only** and all operations require a workspace (working directory) 
+created by the user and specified on the command line via an option flag:
+
+```
+--root <workspace>
+```
+
+Example:
+
+```text
+workspace/
+├── config/
+├── data/
+├── demo/
+└── logs/
+```
+
+Users modify configs in the workspace, not in the package.
+
+This ensures:
+
+- reproducibility  
+- portability  
+- archive capability  
+- independence from installation location  
+
+---
+
+## System architecture
+
+```
+python -m pypsa_nza_data.<module>
+                │
+                ▼
+┌────────────────────────────────────┐
+│             Workspace              │
+│                                    │
+│  config/   user YAML               │
+│  data/     raw + processed         │
+│  outputs/  networks, figures       │
+│  logs/     diagnostics             │
+└────────────────────────────────────┘
+```
+
+No script writes to the repository.
+
+---
+
+## Installation
+
+Python ≥ 3.9.
+
+---
+
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/turbopb/pypsa-nza-data.git
+cd pypsa-nza-data
+
+conda create -n pypsa-nza python=3.10 -y
+conda activate pypsa-nza
+
+python -m pip install -e .
+```
+
+---
+
+### Linux / macOS
+
+```bash
+git clone https://github.com/turbopb/pypsa-nza-data.git
+cd pypsa-nza-data
+
+conda create -n pypsa-nza python=3.10 -y
+conda activate pypsa-nza
+
+python -m pip install -e .
+```
+
+---
+
+## Creating a workspace
+
+```
+mkdir dispatch_data
+```
+
+---
+
+# Pipeline overview
+
+```
+Download raw data
+        ↓
+Initialise manual inputs
+        ↓
+Process & harmonise
+        ↓
+Create demand/generation
+        ↓
+Build PyPSA network
+        ↓
+Export NetCDF + summaries
+```
+
+---
+
+## Loaders
+
+STEP 1 : Download raw data from the Electricity Authority and Transpower websites
+```
+
+Assuming a working directory called "pypsa_nza_workspace" with full path  
+"C:\Users\Public\Documents\Thesis\analysis\pypsa_nza_workspace"" has been created 
+and has been populated with a "\config" directory containing appropriate .yaml 
+config files, define local environment variables $ROOT, $CFG_STAT, $CFG_DYN:   
+
+    $ROOT = "C:\Users\Public\Documents\Thesis\analysis\pypsa_nza_workspace"
+    $CFG_STAT = "$ROOT\config\nza_load_static_data.yaml"
+    $CFG_DYN = "$ROOT\config\nza_load_dynamic_data.yaml"
+
+Then execute:
+python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root $ROOT --dynamic-config $CFG_DYN  --static-config $CFG_STAT
+  
+  
+  
+  
+python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root <workspace>
+```
+
+### Initialise manual inputs
+```
+python -m pypsa_nza_data.utils.nza_init_workspace --root <workspace>
+```
+
+## Processors
+```
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline --all --root <workspace>
+```
+
+---
 ## Analysis submodule
 
 The `analysis/` submodule provides post-processing and analysis tools for
@@ -218,150 +364,6 @@ generation dispatch total and the grid import total. Investigation
 confirmed this is not attributable to data processing artefacts. Full
 details are documented in `nza_validate_gen_import.py` and in the
 accompanying thesis appendix.
-
-
-## Workspace philosophy
-
-The repository contains **code only** and all operations require a workspace (working directory) 
-created by the user and specified on the command line via an option flag:
-
-```
---root <workspace>
-```
-
-Example:
-
-```text
-workspace/
-├── config/
-├── data/
-├── demo/
-└── logs/
-```
-
-Users modify configs in the workspace, not in the package.
-
-This ensures:
-
-- reproducibility  
-- portability  
-- archive capability  
-- independence from installation location  
-
----
-
-## System architecture
-
-```
-python -m pypsa_nza_data.<module>
-                │
-                ▼
-┌────────────────────────────────────┐
-│             Workspace              │
-│                                    │
-│  config/   user YAML               │
-│  data/     raw + processed         │
-│  outputs/  networks, figures       │
-│  logs/     diagnostics             │
-└────────────────────────────────────┘
-```
-
-No script writes to the repository.
-
----
-
-## Installation
-
-Python ≥ 3.9.
-
----
-
-### Windows (PowerShell)
-
-```powershell
-git clone https://github.com/turbopb/pypsa-nza-data.git
-cd pypsa-nza-data
-
-conda create -n pypsa-nza python=3.10 -y
-conda activate pypsa-nza
-
-python -m pip install -e .
-```
-
----
-
-### Linux / macOS
-
-```bash
-git clone https://github.com/turbopb/pypsa-nza-data.git
-cd pypsa-nza-data
-
-conda create -n pypsa-nza python=3.10 -y
-conda activate pypsa-nza
-
-python -m pip install -e .
-```
-
----
-
-## Creating a workspace
-
-```
-mkdir dispatch_data
-```
-
----
-
-## Pipeline overview
-
-```
-Download raw data
-        ↓
-Initialise manual inputs
-        ↓
-Process & harmonise
-        ↓
-Create demand/generation
-        ↓
-Build PyPSA network
-        ↓
-Export NetCDF + summaries
-```
-
----
-
-## Running the pipelines
-
-STEP 1 : Download raw data from the Electricity Authority and Transpower websites
-```
-
-Assuming a working directory called "pypsa_nza_workspace" with full path  
-"C:\Users\Public\Documents\Thesis\analysis\pypsa_nza_workspace"" has been created 
-and has been populated with a "\config" directory containing appropriate .yaml 
-config files, define local environment variables $ROOT, $CFG_STAT, $CFG_DYN:   
-
-    $ROOT = "C:\Users\Public\Documents\Thesis\analysis\pypsa_nza_workspace"
-    $CFG_STAT = "$ROOT\config\nza_load_static_data.yaml"
-    $CFG_DYN = "$ROOT\config\nza_load_dynamic_data.yaml"
-
-Then execute:
-python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root $ROOT --dynamic-config $CFG_DYN  --static-config $CFG_STAT
-  
-  
-  
-  
-python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root <workspace>
-```
-
-### Initialise manual inputs
-```
-python -m pypsa_nza_data.utils.nza_init_workspace --root <workspace>
-```
-
-### Process
-```
-python -m pypsa_nza_data.processors.nza_run_processing_pipeline --all --root <workspace>
-```
 
 ---
 
