@@ -80,8 +80,8 @@ pypsa_nza_data/
 └── resources/          # Manual mapping templates
 ```
 
-Package functionality is embodied in modules wihin the loaders, processors, demo 
-and utils direcories. A specific functionality is invoked on the command line by   
+Package functionality is embodied in modules wihin the loaders, processors, demo, 
+analysis and utils direcories. A specific functionality is invoked on the command line by   
 
 ```
 python -m pypsa_nza_data.<module dir><module name> --<option flags> 
@@ -330,10 +330,26 @@ Export NetCDF + summaries
 
 ---
 
-## Running the pipeline
+## Running the pipelines
 
-### Download
+STEP 1 : Download raw data from the Electricity Authority and Transpower websites
 ```
+
+Assuming a working directory called "pypsa_nza_workspace" with full path  
+"C:\Users\Public\Documents\Thesis\analysis\pypsa_nza_workspace"" has been created 
+and has been populated with a "\config" directory containing appropriate .yaml 
+config files, define local environment variables $ROOT, $CFG_STAT, $CFG_DYN:   
+
+    $ROOT = "C:\Users\Public\Documents\Thesis\analysis\pypsa_nza_workspace"
+    $CFG_STAT = "$ROOT\config\nza_load_static_data.yaml"
+    $CFG_DYN = "$ROOT\config\nza_load_dynamic_data.yaml"
+
+Then execute:
+python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root $ROOT --dynamic-config $CFG_DYN  --static-config $CFG_STAT
+  
+  
+  
+  
 python -m pypsa_nza_data.loaders.nza_run_loader_pipeline --root <workspace>
 ```
 
