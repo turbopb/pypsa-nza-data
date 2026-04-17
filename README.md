@@ -239,6 +239,21 @@ python -m pypsa_nza_data.utils.nza_init_workspace --root <workspace>
 ## Processors
 ```
 python -m pypsa_nza_data.processors.nza_run_processing_pipeline --all --root <workspace>
+
+$CFG_DYN_PROC = "$ROOT\config\nza_process_dynamic_data.yaml"
+$CFG_STAT_PROC = "$ROOT\config\nza_process_static_data.yaml"
+$CFG_CVRT_PROC = "$ROOT\config\nza_convert_energy_to_power.yaml"
+
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline --root $ROOT --dynamic  --config-dynamic $CFG_DYN_PROC
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline --root $ROOT --static  --config-static $CFG_STAT_PROC
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline --root $ROOT --convert  --config-convert $CFG_CVRT_PROC
+
+
+python -m pypsa_nza_data.processors.nza_run_processing_pipeline --root $ROOT `
+ --dynamic  --config-dynamic $CFG_DYN_PROC `
+ --static  --config-static $CFG_STAT_PROC `
+ --convert  --config-convert $CFG_CVRT_PROC
+
 ```
 
 ---
