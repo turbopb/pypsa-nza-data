@@ -269,10 +269,10 @@ and plots.
 
 | Module | Purpose |
 |---|---|
-| `nza_poc_aggregator` | Aggregates half-hourly POC-level data to site level with energy conservation checking. Processes a single monthly CSV file. |
+| `nza_poc_aggregator` | Aggregates half-hourly POC-level EA data to site level with energy conservation checking. Processes a single monthly CSV file. |
 | `nza_process_annual` | Orchestrates full-year processing of monthly export, import, or generation dispatch files. Produces annual site-aggregated time series CSVs. |
 | `nza_build_site_registry` | Builds the definitive PyPSA bus registry from the union of all sites appearing in the annual export and import datasets. Merges with `nodes.csv` to add coordinates and metadata. |
-| `nza_validate_gen_import` | Systematic five-check validation of the discrepancy between annual generation dispatch and grid import totals. Documents the investigation for reproducibility. |
+| `nza_validate_gen_import` | Systematic seven-check validation of the discrepancy between annual generation dispatch and grid import totals. Identifies embedded generation as the cause and documents the finding for reproducibility. |
 | `nza_plot_annual_overview` | Plots annual overview of generation dispatch, grid import, and grid export. Produces three groups of plots: all-three dataset overview, import/export model inputs, and validation plots. |
 
 ### Running the analysis pipeline
@@ -281,22 +281,22 @@ and plots.
 
 ```
 python -m pypsa_nza_data.analysis.nza_process_annual \
-  --year 2024 \
+  --year    2024 \
   --basedir <workspace>/data/processed \
   --outdir  <workspace>/data/processed/annual \
-  --flow export
+  --flow    export
 
 python -m pypsa_nza_data.analysis.nza_process_annual \
-  --year 2024 \
+  --year    2024 \
   --basedir <workspace>/data/processed \
   --outdir  <workspace>/data/processed/annual \
-  --flow import
+  --flow    import
 
 python -m pypsa_nza_data.analysis.nza_process_annual \
-  --year 2024 \
+  --year    2024 \
   --basedir <workspace>/data/processed \
   --outdir  <workspace>/data/processed/annual \
-  --flow gen
+  --flow    gen
 ```
 
 **Build the site registry:**
@@ -330,9 +330,18 @@ python -m pypsa_nza_data.analysis.nza_plot_annual_overview \
 **Run the generation dispatch vs grid import validation:**
 
 ```
+# Single year
 python -m pypsa_nza_data.analysis.nza_validate_gen_import \
   --anndir <workspace>/data/processed/annual \
-  --rawdir <workspace>/data/processed
+  --rawdir <workspace>/data/processed \
+  --year   2024
+
+# Multi-year comparison
+python -m pypsa_nza_data.analysis.nza_validate_gen_import \
+  --anndir <workspace>/data/processed/annual \
+  --rawdir <workspace>/data/processed \
+  --year   2024 \
+  --years  2024,2025
 ```
 
 ### Annual outputs
@@ -341,24 +350,25 @@ Running the full analysis pipeline for a given year produces:
 
 ```
 <workspace>/data/processed/annual/
-├── 2024_export_sites_all.csv       # annual demand time series, site level
-├── 2024_import_sites_all.csv       # annual generation time series, site level
-├── 2024_gen_sites_all.csv          # annual dispatch time series, site level
-├── 2024_site_registry.csv          # definitive bus list with coordinates
-├── 2024_export_monthly_summary.csv
-├── 2024_import_monthly_summary.csv
-└── 2024_gen_monthly_summary.csv
+    2024_export_sites_all.csv         annual demand time series, site level
+    2024_import_sites_all.csv         annual generation time series, site level
+    2024_gen_sites_all.csv            annual dispatch time series, site level
+    2024_site_registry.csv            definitive bus list with coordinates
+    2024_poc_level_comparison.csv     POC-level gen dispatch vs import table
+    2024_export_monthly_summary.csv
+    2024_import_monthly_summary.csv
+    2024_gen_monthly_summary.csv
 
 <workspace>/data/processed/plots/
-├── 2024_annual_timeseries.png
-├── 2024_monthly_bar.png
-├── 2024_weekly_detail_2024-07-07.png
-├── 2024_annual_timeseries_imp_exp.png
-├── 2024_monthly_bar_imp_exp.png
-├── 2024_weekly_detail_imp_exp_2024-07-07.png
-├── 2024_validation_scatter.png
-├── 2024_validation_accounting.png
-└── 2024_validation_site_diff.png
+    2024_annual_timeseries.png
+    2024_monthly_bar.png
+    2024_weekly_detail_2024-07-07.png
+    2024_annual_timeseries_imp_exp.png
+    2024_monthly_bar_imp_exp.png
+    2024_weekly_detail_imp_exp_2024-07-07.png
+    2024_validation_scatter.png
+    2024_validation_accounting.png
+    2024_validation_site_diff.png
 ```
 
 ### Data notes
@@ -366,20 +376,37 @@ Running the full analysis pipeline for a given year produces:
 The analysis module processes three distinct EA datasets which differ in
 scope and metering convention:
 
-- **Grid export** (`export`) — energy leaving the National Grid at GXPs.
-  Used as demand (load) inputs in the PyPSA model.
-- **Grid import** (`import`) — energy entering the National Grid at GIPs.
-  Used as generation inputs in the PyPSA model.
-- **Generation dispatch** (`gen`) — metered generation at registered
-  generator sites, mapped from GIP injections by the EA. Used for
-  carrier classification and capacity factor derivation.
+- **Grid export** (`export`) --- energy leaving the National Grid at GXPs.
+  Used as demand (load) inputs in the PyPSA model. Records net demand at
+  the National Grid boundary, i.e. gross consumer demand minus any local
+  embedded generation already serving that demand before it reaches the grid.
+- **Grid import** (`import`) --- energy entering the National Grid at GIPs.
+  Used as generation inputs in the PyPSA model. Captures only generation
+  that directly crosses the National Grid boundary.
+- **Generation dispatch** (`gen`) --- metered generation at registered
+  generator sites, mapped from GIP injections by the EA. Used for carrier
+  classification and capacity factor derivation.
 
-A systematic discrepancy of approximately 4.8% exists between the annual
-generation dispatch total and the grid import total. Investigation
-confirmed this is not attributable to data processing artefacts. Full
-details are documented in `nza_validate_gen_import.py` and in the
-accompanying thesis appendix.
+**Known discrepancy between generation dispatch and grid import:**
 
+A systematic discrepancy exists between the annual generation dispatch
+total and the grid import total: approximately 4.8% in 2024 and 4.3% in
+2025. Seven systematic checks confirmed that this discrepancy is fully
+explained by **embedded generation** --- generators registered in the EA
+dispatch system that connect to the distribution network below the National
+Grid boundary at sub-transmission voltages (11, 33, or 66 kV). Their
+output is consumed locally and does not appear as metered grid import.
+Thirteen such generators were identified with a combined installed capacity
+of 710 MW, including Tararua wind (stages I and II), White Hill wind,
+Kaiwera Downs wind, Mill Creek wind, Glenbrook Steel gas cogeneration,
+Kaimai 5 hydro, and several geothermal and solar sites.
+
+**Modelling implication:** grid import and grid export are self-consistent
+PyPSA model inputs. The grid export figures record net demand at the
+National Grid boundary and already account for local embedded generation.
+Embedded generation must not be added separately to the model to avoid
+double-counting. Full validation details and code are in
+`nza_validate_gen_import.py`.
 ---
 
 ## Demonstrations

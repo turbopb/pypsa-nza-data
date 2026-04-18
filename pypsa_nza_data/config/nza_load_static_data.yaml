@@ -112,6 +112,7 @@ datasets:
     enabled: true
     source: "electricity_authority"
     url_path: "MappingsAndGeospatial/NetworkSupplyPointsTable/20250830_NetworkSupplyPointsTable.csv"
+    https://www.emi.ea.govt.nz/Wholesale/Reports/R_NSPL_DR?_si=v|3
     format: "csv"
     filename: "NetworkSupplyPointsTable.csv"
     directory: "static_data_dir"

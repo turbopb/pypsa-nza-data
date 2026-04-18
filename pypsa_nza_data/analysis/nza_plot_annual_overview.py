@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-plot_annual_overview.py
+nza_plot_annual_overview.py
 
 Plots annual overview of generation dispatch, grid import and grid export
 time series for a given year. Includes validation plots for the discrepancy
 between generation dispatch and grid import totals.
 
 Usage:
-    python plot_annual_overview.py --year 2024 --anndir ./annual --outdir ./plots
+    python -m pypsa_nza_data.analysis.nza_plot_annual_overview
+        --year 2024 --anndir ./annual --outdir ./plots
 
     # Plot only three-dataset overview
-    python plot_annual_overview.py --year 2024 --no-import-export --no-validation
+    python -m pypsa_nza_data.analysis.nza_plot_annual_overview
+        --year 2024 --no-import-export --no-validation
 
     # Plot only import/export (model inputs)
-    python plot_annual_overview.py --year 2024 --no-all-three --no-validation
+    python -m pypsa_nza_data.analysis.nza_plot_annual_overview
+        --year 2024 --no-all-three --no-validation
 
     # Plot only validation
-    python plot_annual_overview.py --year 2024 --no-all-three --no-import-export
+    python -m pypsa_nza_data.analysis.nza_plot_annual_overview
+        --year 2024 --no-all-three --no-import-export
 """
 
 import argparse
@@ -35,10 +39,26 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # --- Colour scheme ----------------------------------------------------------
-# Consistent across all plots in this script
 COL_GEN = "steelblue"
 COL_IMP = "darkorange"
 COL_EXP = "seagreen"
+
+# --- Validation accounting values by year -----------------------------------
+# Derived from nza_validate_gen_import.py checks
+ACCOUNTING = {
+    2024: {
+        "total_gap"  : 1992.0,
+        "unmatched"  :   60.3,
+        "extra_pocs" :   45.2,
+        "embedded"   : 1889.0,  # sum of dispatch at identified embedded POCs
+    },
+    2025: {
+        "total_gap"  : 1754.0,
+        "unmatched"  :  113.9,
+        "extra_pocs" :  382.7,
+        "embedded"   : 1257.1,  # from Check 6 common POC total difference
+    },
+}
 
 
 # ============================================================================
@@ -71,7 +91,7 @@ def load_annual(anndir: Path, year: int, flow: str) -> pd.Series:
 
 def load_annual_df(anndir: Path, year: int, flow: str) -> pd.DataFrame:
     """
-    Load annual site-aggregated file and return full DataFrame (one column per site).
+    Load annual site-aggregated file and return full DataFrame.
 
     Parameters
     ----------
@@ -333,16 +353,14 @@ def plot_validation_scatter(anndir: Path,
     Scatter plot of annual generation dispatch vs grid import at site level.
 
     Sites lying on the 1:1 diagonal are identical in both datasets.
-    Deviations from the diagonal indicate discrepancies.
+    Sites above the diagonal are embedded generators.
     """
     gen_df = load_annual_df(anndir, year, "gen")
     imp_df = load_annual_df(anndir, year, "import")
 
-    # Annual totals per site
     gen_tot = gen_df.sum() / 1000.0
     imp_tot = imp_df.sum() / 1000.0
 
-    # Common sites only
     common = gen_tot.index.intersection(imp_tot.index)
     gen_c  = gen_tot.loc[common]
     imp_c  = imp_tot.loc[common]
@@ -352,14 +370,12 @@ def plot_validation_scatter(anndir: Path,
     ax.scatter(gen_c.values, imp_c.values,
                color=COL_IMP, alpha=0.7, s=40, zorder=3)
 
-    # 1:1 reference line
     lim_max = max(gen_c.max(), imp_c.max()) * 1.05
     ax.plot([0, lim_max], [0, lim_max],
             color="gray", linewidth=1.0, linestyle="--",
             label="1:1 line (identical)")
 
-    # Label notable sites
-    notable = ["MAN", "HLY", "BEN", "ROX", "KPO"]
+    notable = ["MAN", "HLY", "BEN", "ROX", "KPO", "GLN", "KOE", "WRK"]
     for site in notable:
         if site in common:
             ax.annotate(site,
@@ -385,29 +401,38 @@ def plot_validation_scatter(anndir: Path,
 def plot_validation_accounting(year: int,
                                 outdir: Path) -> None:
     """
-    Horizontal bar chart showing the five-check accounting of the
+    Horizontal bar chart showing the four-category accounting of the
     generation dispatch vs grid import discrepancy.
+
+    Categories:
+    1. Unmatched import sites
+    2. Extra sub-transmission POCs
+    3. Identified embedded generation
+    4. Residual (metering tolerance)
     """
-    # Values from the validation analysis
-    total_gap      = 1992.0
-    unmatched      =   60.3
-    extra_pocs     =   45.2
-    unexplained    = total_gap - unmatched - extra_pocs
+    acc = ACCOUNTING.get(year, ACCOUNTING[2024])
+
+    total_gap   = acc["total_gap"]
+    unmatched   = acc["unmatched"]
+    extra_pocs  = acc["extra_pocs"]
+    embedded    = acc["embedded"]
+    residual    = total_gap - unmatched - extra_pocs - embedded
 
     labels = [
         "Unmatched import sites\n(not in gen dispatch register)",
         "Extra sub-transmission POCs\nat generation sites",
-        "Unexplained remainder\n(EA methodology)"
+        "Identified embedded generation\n(13 generators, 710 MW)",
+        "Residual\n(metering tolerance)",
     ]
-    values = [unmatched, extra_pocs, unexplained]
-    colors = [COL_EXP, COL_IMP, "tomato"]
+    values = [unmatched, extra_pocs, embedded, residual]
+    colors = [COL_EXP, COL_IMP, COL_GEN, "lightgray"]
 
-    fig, ax = plt.subplots(figsize=(9, 4))
+    fig, ax = plt.subplots(figsize=(10, 5))
     bars = ax.barh(labels, values, color=colors, edgecolor="white", height=0.5)
 
-    # Value labels on bars
     for bar, val in zip(bars, values):
-        ax.text(bar.get_width() + 10, bar.get_y() + bar.get_height() / 2,
+        ax.text(bar.get_width() + 5,
+                bar.get_y() + bar.get_height() / 2,
                 f"{val:.1f} GWh",
                 va="center", fontsize=9)
 
@@ -418,7 +443,7 @@ def plot_validation_accounting(year: int,
         f"Accounting for generation dispatch vs grid import gap -- {year}",
         fontsize=12)
     ax.legend()
-    ax.set_xlim(0, total_gap * 1.25)
+    ax.set_xlim(0, total_gap * 1.2)
     ax.grid(True, alpha=0.3, axis="x")
     fig.tight_layout()
 
@@ -436,7 +461,7 @@ def plot_validation_site_diff(anndir: Path,
     Bar chart of annual difference (gen dispatch minus grid import) per site,
     sorted by magnitude, showing top_n sites.
 
-    Positive values mean gen dispatch > import.
+    Positive values mean gen dispatch > import (embedded generators).
     Negative values mean import > gen dispatch (unusual).
     """
     gen_df = load_annual_df(anndir, year, "gen")
@@ -490,27 +515,22 @@ def main():
                         help="Week start date for weekly detail plots, "
                              "e.g. 2024-07-07 (default: first week of July)")
 
-    # Plot group toggles -- all default to True
     parser.add_argument("--no-all-three",     action="store_true",
-                        help="Skip three-dataset overview plots "
-                             "(annual, monthly, weekly)")
+                        help="Skip three-dataset overview plots")
     parser.add_argument("--no-import-export", action="store_true",
-                        help="Skip import/export only plots "
-                             "(model input plots)")
+                        help="Skip import/export only plots")
     parser.add_argument("--no-validation",    action="store_true",
-                        help="Skip validation plots "
-                             "(scatter, accounting, site diff)")
+                        help="Skip validation plots")
 
     args   = parser.parse_args()
     anndir = Path(args.anndir)
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
-    plot_all_three     = not args.no_all_three
-    plot_imp_exp       = not args.no_import_export
-    plot_validation    = not args.no_validation
+    plot_all_three  = not args.no_all_three
+    plot_imp_exp    = not args.no_import_export
+    plot_validation = not args.no_validation
 
-    # Determine which datasets to load
     need_gen = plot_all_three or plot_validation
     need_imp = plot_all_three or plot_imp_exp or plot_validation
     need_exp = plot_all_three or plot_imp_exp
@@ -519,7 +539,6 @@ def main():
     imp = load_annual(anndir, args.year, "import") if need_imp else None
     exp = load_annual(anndir, args.year, "export") if need_exp else None
 
-    # --- Group A: all three datasets ----------------------------------------
     if plot_all_three:
         log.info("--- Plotting three-dataset overview ---")
         plot_annual_timeseries(gen, imp, exp, args.year, outdir)
@@ -527,7 +546,6 @@ def main():
         plot_weekly_detail(gen, imp, exp, args.year, outdir,
                            week_start=args.week)
 
-    # --- Group B: import/export only ----------------------------------------
     if plot_imp_exp:
         log.info("--- Plotting import/export model inputs ---")
         plot_annual_timeseries_imp_exp(imp, exp, args.year, outdir)
@@ -535,7 +553,6 @@ def main():
         plot_weekly_detail_imp_exp(imp, exp, args.year, outdir,
                                    week_start=args.week)
 
-    # --- Group C: validation ------------------------------------------------
     if plot_validation:
         log.info("--- Plotting validation ---")
         plot_validation_scatter(anndir, args.year, outdir)
