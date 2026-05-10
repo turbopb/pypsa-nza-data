@@ -19,7 +19,7 @@ aggregates POC-level data to site level.
 
 ## Primary Sources (Downloaded)
 
-### 1. Transpower — `Site.csv`
+### 1. Transpower — `Sites.csv`
 **What it is:** The complete register of all named sites on the NZ National
 Grid, as maintained by Transpower. Contains site codes, names, island
 classification (NI/SI), and geographic coordinates.
@@ -49,7 +49,7 @@ Downloaded from the EA's EMI data portal. Three file types, one file per month:
 This is the opposite of the intuitive convention. In this codebase, EA
 "export" = load timeseries input; EA "import" = generation timeseries input.
 
-**Resolution:** 30-minute half-hourly intervals. 1,488 timesteps per 31-day
+**Resolution:** 30-minute (i.e., half-hourly intervals). 1,488 timesteps per 31-day
 month (48 half-hours × 31 days).
 
 **Storage location:**
