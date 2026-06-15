@@ -1,0 +1,370 @@
+================================================================================
+QGIS PROCEDURE: DIGITISING JUNCTION POINTS AND EXPORTING COORDINATES
+QGIS Version 3.40.7-Bratislava
+================================================================================
+
+NEED
+----
+The .gpkg file (GeoPackage) is needed because CSV files are read-only in QGIS, i.e.
+you cannot add, move, or edit points in a CSV layer. GeoPackage is a spatial database
+format that QGIS can both read and write, so it's the editable working format for
+digitising new junction points.
+
+The workflow is:
+
+  1. Create a new empty GeoPackage point layer in QGIS
+  2. Add your JCT_ junction points by clicking on the map
+  3. Extract coordinates (Add Geometry Attributes)
+  4. Export to CSV for use in the pipeline
+
+Separate GeoPackage files are maintained for each island:
+  junctions_si.gpkg  --  SI junction points
+  junctions_ni.gpkg  --  NI junction points
+
+Both are stored in: pypsa_nza_workspace\data\manual\
+
+
+PURPOSE
+-------
+To manually digitise junction/tap points on transmission lines in QGIS and
+export their NZTM coordinates to a CSV file for use in Python/PyPSA workflows.
+
+IMPORTANT NOTES
+---------------
+- A GeoPackage (.gpkg) is a permanent layer file. Use this, not a scratch layer
+  (scratch layers are lost when QGIS closes).
+- Do NOT use a shapefile -- it has column name length limitations.
+- Coordinates are stored in the geometry, NOT as attribute columns. You must
+  run "Add Geometry Attributes" to extract them into columns for export.
+- Always STOP editing before running any Processing tool -- tools cannot
+  reliably read a layer that is still in edit mode.
+- The field name "name" is reserved by QGIS. Use "junction_name" or similar.
+- When creating a new field, you MUST click "Add to Fields List" before
+  clicking OK, otherwise QGIS discards the field silently.
+- Ctrl+E does NOT work reliably in QGIS 3.40.7 to toggle editing.
+  Use the pencil button in the toolbar or Edit menu instead.
+- A GeoPackage file loaded by dragging onto the map loads as a CONTAINER
+  (no tick box, no editing tools available). You must load it via
+  Layer -> Add Layer -> Add Vector Layer to get a proper editable layer.
+- The project CRS must be EPSG:2193 (NZTM2000). If the bottom-right of the
+  QGIS window shows EPSG:4326, snapping will not work. Fix via
+  Project -> Properties -> CRS -> search 2193 -> select EPSG:2193 -> OK.
+- The "Added geom info" layer is temporary. If you accidentally delete it
+  before exporting, your points are NOT lost -- they are safe in the .gpkg
+  file. Simply re-run Add Geometry Attributes to regenerate it.
+
+
+================================================================================
+PART 1 -- FIRST TIME SETUP: CREATE THE GEOPACKAGE LAYER
+================================================================================
+
+Step 1 -- Create the GeoPackage layer
+--------------------------------------
+1. Layer -> Create Layer -> New GeoPackage Layer
+2. Click "..." next to Database -> navigate to pypsa_nza_workspace\data\manual\ ->
+   type filename "junctions_ni.gpkg" (or "junctions_si.gpkg") -> click Save
+3. Table name: junctions_ni (or junctions_si)
+4. Geometry type: Point
+5. CRS: click the globe icon -> search "2193" ->
+   select EPSG:2193 -- NZTM2000 -> OK
+6. In the fields section:
+   - Type "junction_name" in the Name box
+   - Leave type as Text
+   - Set Length to 20
+   - Click "Add to Fields List" -- confirm it appears in the list below
+     (if you skip this step QGIS will warn you the field was discarded)
+7. Click OK
+
+The layer is created and added to the Layers panel.
+
+IMPORTANT: After creation the layer may appear as a GeoPackage container
+(no tick box). If this happens, follow Step 2 below to load it correctly.
+
+
+Step 2 -- Load the junctions layer correctly
+---------------------------------------------
+This step is required both after first creation AND every time you restart QGIS.
+Do NOT drag the .gpkg file onto the map -- this loads it as a container with
+no tick box and no editing tools available.
+
+The correct way to load it:
+1. Layer -> Add Layer -> Add Vector Layer
+2. Click "..." and browse to your junctions_ni.gpkg file
+3. Click Add
+4. If QGIS asks which layer to load, select "junctions_ni"
+
+The layer now appears in the Layers panel WITH a tick box and is fully editable.
+
+IMPORTANT: The Layers panel may show junctions_ni listed TWICE -- once as the
+editable layer (yellow dot, tick box) and once as the container (no tick box).
+Always select the one WITH the yellow dot when editing. If in doubt, remove
+both entries and reload via Add Vector Layer.
+
+
+Step 3 -- Set up snapping
+--------------------------
+1. Project -> Snapping Options
+2. Click the magnet icon to enable snapping
+3. Set mode to: Vertex
+4. Tolerance: 10 pixels
+5. Close the snapping panel
+
+IMPORTANT: Snapping will not work if the project CRS is wrong. Check the
+bottom-right corner of the QGIS window -- it must show EPSG:2193. If it shows
+EPSG:4326, fix it: Project -> Properties -> CRS -> search 2193 ->
+select EPSG:2193 -- NZTM2000 -> OK.
+
+
+Step 4 -- Start editing
+------------------------
+1. Click the "junctions_ni" layer in the Layers panel to select it --
+   select the one WITH the yellow dot (tick box), not the container
+2. Start editing using ONE of these methods:
+   - Click the PENCIL icon in the toolbar
+   - Edit menu -> Toggle Editing
+   NOTE: Ctrl+E does not work reliably in QGIS 3.40.7 -- use the above instead
+3. Confirm editing is active -- the pencil icon should appear highlighted
+4. The Add Point Feature button (dot with a star) should now be visible
+   and active in the digitising toolbar
+
+If the Add Point Feature button does not appear, the wrong layer is selected
+(e.g. a line layer or the container). Make sure the yellow-dot junctions_ni
+layer is selected and editing is active.
+
+
+Step 5 -- Digitise the junction points
+---------------------------------------
+1. Click the "Add Point Feature" button in the digitising toolbar
+   (icon looks like a dot with a small star)
+2. Hover over the junction point on the map --
+   wait for the PINK SNAP SQUARE to appear on the line endpoint
+3. Click -- a dialog box appears asking for "junction_name"
+4. Type the name (e.g. JCT_PRM_A) -> click OK
+5. Repeat for each junction point
+6. When all points are added:
+   - Press Ctrl+S to save (or File -> Save)
+   - Stop editing using the PENCIL button or Edit -> Toggle Editing
+     (important -- always stop editing before running Processing tools)
+
+
+Step 6 -- Extract coordinates using Add Geometry Attributes
+------------------------------------------------------------
+This step extracts the X and Y coordinates from the point geometry into
+regular attribute columns so they can be exported to CSV.
+
+IMPORTANT: The points are stored in the geometry of the GeoPackage, NOT as
+plain columns. You cannot see xcoord/ycoord in the attribute table until you
+run this step. This is normal -- the points are there, just not yet extracted.
+
+1. Processing -> Toolbox
+2. Search for "Add geometry attributes"
+3. Double-click it to open
+4. Input layer: select "junctions_ni" (the yellow dot layer)
+5. Calculate using: Layer CRS
+6. Click Run
+
+NOTE: You may see a warning about "fid" and "Autogenerate" -- this is harmless,
+ignore it. The tool still runs correctly.
+
+A new temporary layer called "Added geom info" appears in the Layers panel.
+
+IMPORTANT: This layer is TEMPORARY. If you accidentally close or delete it
+before exporting, your points are NOT lost -- they are permanently saved in
+junctions_ni.gpkg. Simply re-run this step to regenerate the layer.
+
+
+Step 7 -- Verify the coordinates
+---------------------------------
+1. Right-click "Added geom info" -> Open Attribute Table
+2. Confirm "xcoord" and "ycoord" columns are present with NZTM values
+
+   Expected ranges:
+     NI: eastings ~1,700,000 -- 1,800,000  |  northings ~5,400,000 -- 5,700,000
+     SI: eastings ~1,100,000 -- 1,600,000  |  northings ~4,900,000 -- 5,400,000
+     Full NZ: eastings ~1,000,000 -- 1,800,000  |  northings ~4,700,000 -- 6,200,000
+
+If the xcoord/ycoord values are small decimals (e.g. 170.08, -37.09), the
+project CRS is EPSG:4326 (WGS84 degrees) not EPSG:2193. Fix the project CRS
+(see Step 3), delete this layer, and re-run Add Geometry Attributes.
+
+
+Step 8 -- Export to CSV
+------------------------
+1. Right-click "Added geom info" -> Export -> Save Features As
+2. Format: CSV
+3. CRS: EPSG:2193
+4. Click "..." to set output filename:
+   - NI: junctions_ni.csv
+   - SI: junctions_si.csv
+   Save to pypsa_nza_workspace\data\manual\
+5. Click OK
+
+The CSV will contain junction_name, xcoord, ycoord and a geometry column.
+The geometry column is harmless -- you only need junction_name, xcoord, ycoord.
+
+
+Step 9 -- Tidy up
+------------------
+Right-click "Added geom info" -> Remove Layer
+
+This temporary layer is no longer needed. Your master data is in the .gpkg file.
+
+
+================================================================================
+PART 2 -- ADDING MORE POINTS AND UPDATING THE CSV
+================================================================================
+
+Each time you restart QGIS you must reload the layer correctly (see Part 1
+Step 2). Do not drag the .gpkg file -- always use Add Vector Layer.
+
+The key thing to understand: your points are ALWAYS safe in the .gpkg file.
+The "Added geom info" layer and the CSV are derived outputs -- they can be
+regenerated at any time from the .gpkg.
+
+1.  Layer -> Add Layer -> Add Vector Layer -> browse to junctions_ni.gpkg -> Add
+    Select "junctions_ni" if prompted. Confirm the layer has a yellow dot
+    and a tick box in the Layers panel.
+
+2.  Check the project CRS is EPSG:2193 (bottom-right of QGIS window).
+    If it shows EPSG:4326, fix it: Project -> Properties -> CRS -> 2193 -> OK.
+
+3.  Click the junctions_ni layer (yellow dot) in the Layers panel to select it.
+
+4.  Start editing:
+    - Click the PENCIL icon in the toolbar, OR
+    - Edit menu -> Toggle Editing
+    The Add Point Feature button (dot with star) should now appear.
+
+5.  Click the Add Point Feature button.
+
+6.  Hover over the junction location -- wait for the pink snap square -- click.
+    If no snap square appears, check snapping is enabled (Project -> Snapping
+    Options, magnet icon on) and the project CRS is EPSG:2193.
+
+7.  Enter the junction name -> click OK.
+
+8.  Repeat steps 5-7 for each new point.
+
+9.  Save: Ctrl+S
+
+10. Stop editing: click the PENCIL icon or Edit -> Toggle Editing.
+    Always stop editing before running Processing tools.
+
+11. Run Processing -> Toolbox -> Add Geometry Attributes:
+    Input layer: junctions_ni | Calculate using: Layer CRS | Run
+
+12. Verify xcoord/ycoord in the "Added geom info" attribute table.
+
+13. Export "Added geom info" to CSV (overwriting the previous CSV):
+    Right-click -> Export -> Save Features As -> CSV -> EPSG:2193 ->
+    save as junctions_ni.csv in pypsa_nza_workspace\data\manual\
+
+14. Right-click "Added geom info" -> Remove Layer.
+
+If you accidentally delete "Added geom info" before step 13, simply
+repeat steps 11-13. The points are safe in the .gpkg file.
+
+
+================================================================================
+PART 3 -- USING THE COORDINATES IN PYTHON
+================================================================================
+
+The exported junctions_ni.csv contains columns:
+    junction_name, xcoord, ycoord, (geometry -- ignore this)
+
+To add these to nodes.csv, add rows with the following column mapping.
+
+nodes.csv column structure:
+    site, name, island, lat, lon, x, y, volts
+
+    - site   = junction_name (used as the short code, e.g. JCT_PRM_A)
+    - name   = junction_name (or a longer descriptive name if preferred)
+    - island = NI or SI
+    - lat    = leave blank or calculate later from x/y using nztm_geod.py
+    - lon    = leave blank or calculate later from x/y using nztm_geod.py
+    - x      = xcoord  (NZTM easting, metres)
+    - y      = ycoord  (NZTM northing, metres)
+    - volts  = voltage of the line at the junction (e.g. 220)
+
+Note: all coordinate column names in nodes.csv are lowercase (x, y, lat, lon).
+JCT_ points are distinguished from registered Transpower/EA sites by their
+prefix and are not present in the Transpower Sites.csv source file.
+
+
+================================================================================
+FILES TO KEEP
+================================================================================
+
+    junctions_ni.gpkg  --  master NI GeoPackage, load via Add Vector Layer each session
+    junctions_si.gpkg  --  master SI GeoPackage, load via Add Vector Layer each session
+    junctions_ni.csv   --  NI coordinate export, add rows to nodes.csv for Python
+    junctions_si.csv   --  SI coordinate export, add rows to nodes.csv for Python
+
+The "Added geom info" temporary layer does NOT need to be saved -- remove it
+after each export. It can be regenerated at any time from the .gpkg file.
+
+
+================================================================================
+COMMON PROBLEMS AND SOLUTIONS
+================================================================================
+
+Problem: No tick box next to junctions layer, no editing tools available
+Solution: You loaded the GeoPackage container by dragging. Remove it and reload
+          via Layer -> Add Layer -> Add Vector Layer -> browse to junctions_ni.gpkg
+
+Problem: junctions_ni appears twice in the Layers panel
+Solution: One entry is the editable layer (yellow dot, tick box), the other is
+          the container. Select the yellow dot one for editing. If unsure,
+          remove both and reload via Add Vector Layer.
+
+Problem: Add Point Feature button not visible or greyed out
+Solution: Either editing is not active, or the wrong layer is selected. Click
+          the yellow-dot junctions_ni layer, then Edit -> Toggle Editing.
+          The button only appears for point layers in edit mode.
+
+Problem: "Toggle Editing" not visible in Edit menu, pencil greyed out
+Solution: The layer is a CSV or other read-only format, not a GeoPackage.
+          CSV layers cannot be edited in QGIS. Create or load a .gpkg file
+          instead (see Part 1).
+
+Problem: Ctrl+E does not toggle editing
+Solution: Known issue in QGIS 3.40.7. Use the pencil toolbar button or
+          Edit -> Toggle Editing instead.
+
+Problem: Snapping not working -- pink square does not appear
+Solution: Check two things:
+          (1) Snapping is enabled: Project -> Snapping Options -> magnet icon on
+          (2) Project CRS is EPSG:2193: check bottom-right of QGIS window.
+              If it shows EPSG:4326, fix it: Project -> Properties -> CRS ->
+              search 2193 -> EPSG:2193 -> OK. Then try snapping again.
+
+Problem: Measure tool keeps appearing when clicking on the map
+Solution: You have accidentally activated the Measure tool. Click the Pan Map
+          button (hand icon) in the toolbar, or press Escape, to deactivate it.
+          Then click the Add Point Feature button to resume digitising.
+
+Problem: "Added geom info" layer was deleted before exporting to CSV
+Solution: Your points are NOT lost -- they are saved in junctions_ni.gpkg.
+          Re-run Processing -> Toolbox -> Add Geometry Attributes with
+          input layer junctions_ni, then export to CSV as before.
+
+Problem: Field was discarded when creating the layer
+Solution: After typing the field name you must click "Add to Fields List"
+          before clicking OK.
+
+Problem: Add Geometry Attributes output is empty
+Solution: The layer was still in edit mode. Stop editing first (pencil button),
+          then run the tool again.
+
+Problem: fid / Autogenerate warning when running Add Geometry Attributes
+Solution: This is harmless -- ignore it. The tool runs correctly regardless.
+
+Problem: xcoord/ycoord values are small decimals (e.g. 170.08, -37.09)
+Solution: The project CRS is EPSG:4326 (WGS84 degrees) not EPSG:2193 (NZTM2000).
+          Delete the "Added geom info" layer, fix the project CRS to EPSG:2193
+          (Project -> Properties -> CRS), then re-run Add Geometry Attributes.
+
+
+================================================================================
+END OF PROCEDURE
+================================================================================
